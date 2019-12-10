@@ -97,6 +97,11 @@ public class CircularLinkedList {
      * Space Complexity: O(1)
      */
     public void traverseList (){
+        if(head == null){
+            System.out.println("Empty!");
+            return;
+        }
+
         ListNode current = head;
         do {
             System.out.print(current.data +" -> ");
@@ -133,11 +138,38 @@ public class CircularLinkedList {
      * Time complexity: O(n)
      * Space complexity: O(1)
      */
-    /*public ListNode deleteNode(int value){
+    public ListNode deleteNode(int value){
+        //Empty list
         if(head == null)
             return null;
-
-    }*/
-
+        ListNode prev = null, curr = head;
+        do{
+            //Node to be deleted is found.
+            if(curr.data == value){
+                //First Node needs to be deleted
+                if(prev==null){
+                    //Only Node in LinkedList
+                    if(curr.next==head){
+                        head = null;
+                    }else{
+                        head = curr.next;
+                        curr.next = null;
+                        ListNode ptr = head;
+                        while (ptr.next !=curr)
+                            ptr = ptr.next;
+                        ptr.next = head;
+                    }
+                }else {
+                    prev.next = curr.next;
+                    curr.next = null;
+                }
+                return head;
+            }
+            prev = curr;
+            curr = curr.next;
+        }while(curr!=head);
+        //After traversing the list the node to be deleted was not found.
+        return head;
+    }
 
 }

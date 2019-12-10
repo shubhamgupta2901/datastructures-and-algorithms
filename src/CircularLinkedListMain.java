@@ -19,5 +19,15 @@ public class CircularLinkedListMain {
         System.out.println("found 7:"+found);
         found = list.searchNode(9) != null ? true :false;
         System.out.println("found 9:"+found);
+
+        list.deleteNode(0);
+        list.deleteNode(7);
+        list.deleteNode(4);
+        list.deleteNode(1);
+        list.deleteNode(6);
+        list.deleteNode(2);
+        list.deleteNode(3);
+        list.deleteNode(5);
+        list.traverseList();
     }
 }
