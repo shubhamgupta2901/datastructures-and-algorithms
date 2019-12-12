@@ -13,7 +13,7 @@ public class StackWithLinkedList {
      * With using a Double LinkedList which maintains a tail pointer in addition to a head pointer,
      * we can perform stack's push and pop operation in constant time as well
      */
-    class LinkedList{
+    static class LinkedList{
 
         class Node{
             public int data;
@@ -99,23 +99,51 @@ public class StackWithLinkedList {
 
     }
 
+    private LinkedList list;
 
+    public StackWithLinkedList() {
+        list = new LinkedList();
+    }
+
+    /**
+     * Push element value into stack
+     * @param value
+     * @return true if element is pushed, false if element is not pushed
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
     public boolean push(int value) {
-        return false;
+        return list.insertElementAtEnd(value);
     }
 
-
+    /**
+     * Removes the element on top of the stack
+     * @return popped element
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
     public int pop() {
-        return 0;
+        return list.deleteElementFromEnd();
     }
 
-
+    /**
+     * Get the top element in stack without popping
+     * @return top element
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
     public int peek() {
-        return 0;
+        return list.peekTailElement();
     }
 
-
+    /**
+     * Return whether the stack is empty
+     * @return true if stack is empty, else false
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
     public boolean isEmpty() {
-        return false;
+        return list.isEmpty();
     }
+
 }
