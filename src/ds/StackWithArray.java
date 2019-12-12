@@ -5,13 +5,13 @@ package ds;
  * Pros: Easy to implement, push and pop operations can be performed in constant time
  * Con: Array will have fixed size.
  */
-public class Stack {
+public class StackWithArray {
 
     private int[] arr;
     private int top;
     private int capacity;
 
-    public Stack() {
+    public StackWithArray() {
         capacity = 10;
         top = -1;
         arr = new int[capacity];
@@ -19,7 +19,7 @@ public class Stack {
             arr[i] = Integer.MIN_VALUE;
     }
 
-    public Stack(int capacity){
+    public StackWithArray(int capacity){
         top = -1;
         arr = new int[capacity];
         for(int i =0; i<capacity; i++)
@@ -84,7 +84,7 @@ public class Stack {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    public boolean isFull(){
+    private boolean isFull(){
         return top == capacity-1;
     }
 
