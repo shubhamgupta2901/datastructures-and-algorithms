@@ -1,9 +1,9 @@
-import ds.StackWithArray;
+import ds.Stack;
 
 public class StackMain {
 
     public static void main(String[] args) {
-        StackWithArray stack = new StackWithArray();
+        Stack stack = new Stack();
         System.out.println(stack.isEmpty());
         System.out.println(stack.peek());
         System.out.println(stack.pop());
