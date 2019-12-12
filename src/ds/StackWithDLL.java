@@ -1,5 +1,7 @@
 package ds;
 
+import ds.interfaces.IStack;
+
 /**
  * Implementing stack with a linked list.
  * One advantage over its implementation in array is we can have a dynamic sized stack.
@@ -8,7 +10,58 @@ package ds;
  * and delete an element from start(pop). There too push and pop can be performed in constant time.
  * See {@link StackWithLL}
  */
-public class StackWithDLL {
+public class StackWithDLL implements IStack {
+
+    private LinkedList list;
+
+    public StackWithDLL() {
+        list = new LinkedList();
+    }
+
+    /**
+     * Push element value into stack
+     * @param value
+     * @return true if element is pushed, false if element is not pushed
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    @Override
+    public boolean push(int value) {
+        return list.insertElementAtEnd(value);
+    }
+
+    /**
+     * Removes the element on top of the stack
+     * @return popped element
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    @Override
+    public int pop() {
+        return list.deleteElementFromEnd();
+    }
+
+    /**
+     * Get the top element in stack without popping
+     * @return top element
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    @Override
+    public int peek() {
+        return list.peekTailElement();
+    }
+
+    /**
+     * Return whether the stack is empty
+     * @return true if stack is empty, else false
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    @Override
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
 
     /**
      * Attempting to create a LinkedList which can efficiently perform insert and delete element at the end.
@@ -100,53 +153,6 @@ public class StackWithDLL {
             return tail.data;
         }
 
-    }
-
-    private LinkedList list;
-
-    public StackWithDLL() {
-        list = new LinkedList();
-    }
-
-    /**
-     * Push element value into stack
-     * @param value
-     * @return true if element is pushed, false if element is not pushed
-     * Time Complexity: O(1)
-     * Space Complexity: O(1)
-     */
-    public boolean push(int value) {
-        return list.insertElementAtEnd(value);
-    }
-
-    /**
-     * Removes the element on top of the stack
-     * @return popped element
-     * Time Complexity: O(1)
-     * Space Complexity: O(1)
-     */
-    public int pop() {
-        return list.deleteElementFromEnd();
-    }
-
-    /**
-     * Get the top element in stack without popping
-     * @return top element
-     * Time Complexity: O(1)
-     * Space Complexity: O(1)
-     */
-    public int peek() {
-        return list.peekTailElement();
-    }
-
-    /**
-     * Return whether the stack is empty
-     * @return true if stack is empty, else false
-     * Time Complexity: O(1)
-     * Space Complexity: O(1)
-     */
-    public boolean isEmpty() {
-        return list.isEmpty();
     }
 
 }

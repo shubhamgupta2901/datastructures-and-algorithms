@@ -1,11 +1,13 @@
 package ds;
 
+import ds.interfaces.IStack;
+
 /**
  * Array implementation of stack
  * Pros: Easy to implement, push and pop operations can be performed in constant time
  * Con: Array will have fixed size.
  */
-public class Stack {
+public class Stack implements IStack {
 
     private int[] arr;
     private int top;
@@ -34,6 +36,7 @@ public class Stack {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
+    @Override
     public boolean push(int value){
         //Overflow, can not insert element in stack
         if(isFull())
@@ -48,6 +51,7 @@ public class Stack {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
+    @Override
     public int pop(){
         //Empty stack cannot pop
         if(isEmpty())
@@ -62,6 +66,7 @@ public class Stack {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
+    @Override
     public int peek(){
         if(isEmpty())
             return Integer.MIN_VALUE;
@@ -74,6 +79,7 @@ public class Stack {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
+    @Override
     public boolean isEmpty(){
         return top == -1;
     }
