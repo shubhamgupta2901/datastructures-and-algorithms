@@ -1,18 +1,18 @@
-import ds.DoubleLinkedList;
+package playground;
 
-public class DoubleLinkedListMain {
+import ds.LinkedList;
+
+public class LinkedListMain {
     public static void main(String[] args) {
-        DoubleLinkedList list = new DoubleLinkedList();
-
-        list.insertNodeAtBeginning(2);
-        list.insertNodeAtBeginning(0);
-        list.insertNodeAtEnd(4);
-        list.insertNodeAtEnd(6);
+        LinkedList list = new LinkedList();
+        list.insertNodeAtBegining(4);
+        list.insertNodeAtBegining(3);
+        list.inserNodeAtEnd(5);
+        list.inserNodeAtEnd(6);
+        list.insertNodeAtPosition(2,0);
+        list.insertNodeAtPosition(7,5);
+        list.insertNodeAtPosition(0,0);
         list.insertNodeAtPosition(1,1);
-        list.insertNodeAtPosition(3,3);
-        list.insertNodeAtPosition(5,5);
-        list.insertNodeAtPosition(7,7);
-        list.insertNodeAtPosition(9,9);
         list.traverseLinkedList();
 
         boolean found = list.searchNode(0) != null ? true :false;
@@ -33,12 +33,6 @@ public class DoubleLinkedListMain {
         list.deleteNode(5);
         list.traverseLinkedList();
         list.deleteNode(9);
-        list.traverseLinkedList();
-        list.deleteNode(3);
-        list.traverseLinkedList();
-        list.deleteNode(2);
-        list.traverseLinkedList();
-        list.deleteNode(6);
         list.traverseLinkedList();
     }
 }

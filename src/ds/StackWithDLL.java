@@ -3,9 +3,12 @@ package ds;
 /**
  * Implementing stack with a linked list.
  * One advantage over its implementation in array is we can have a dynamic sized stack.
- *
+ * NOTE: The implementation has used a double linked list with tail pointer citing efficiency reasons during push and pop operations.
+ * Although there is nothing wrong with this implementation, I could have simply used a Single Linked List which inserts an element at start(push)
+ * and delete an element from start(pop). There too push and pop can be performed in constant time.
+ * See {@link StackWithLL}
  */
-public class StackWithLinkedList {
+public class StackWithDLL {
 
     /**
      * Attempting to create a LinkedList which can efficiently perform insert and delete element at the end.
@@ -101,7 +104,7 @@ public class StackWithLinkedList {
 
     private LinkedList list;
 
-    public StackWithLinkedList() {
+    public StackWithDLL() {
         list = new LinkedList();
     }
 
