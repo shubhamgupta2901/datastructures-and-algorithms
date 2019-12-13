@@ -1,18 +1,21 @@
 package playground;
 
-import ds.QueueArr;
-import ds.QueueArrInefficient;
+import ds.CircularQueue;
+import ds.LinearQueue;
+import ds.QueueLL;
 
 public class QueueMain {
     public static void main(String[] args) {
         QueueMain demo = new QueueMain();
-        demo.testQueueArrInefficient();
+        demo.testLinearQueue();
         System.out.println("----------");
-        demo.testQueueArr();
+        demo.testCircularQueue();
+        System.out.println("----------");
+        demo.testQueueLL();
     }
 
-    public void testQueueArrInefficient(){
-        QueueArrInefficient queue = new QueueArrInefficient();
+    public void testLinearQueue(){
+        LinearQueue queue = new LinearQueue();
         System.out.println("isEmpty "+queue.isEmpty());
         System.out.println("isFull "+ queue.isFull());
         System.out.println("dequeue: "+ queue.dequeue());
@@ -25,8 +28,8 @@ public class QueueMain {
 
     }
 
-    public void testQueueArr(){
-        QueueArr queue = new QueueArr();
+    public void testCircularQueue(){
+        CircularQueue queue = new CircularQueue();
         queue.enqueue(10);
         queue.enqueue(20);
         queue.enqueue(30);
@@ -40,7 +43,23 @@ public class QueueMain {
         queue.dequeue();
         queue.dequeue();
         queue.enqueue(70);
+    }
 
+    public void testQueueLL(){
+        QueueLL queue = new QueueLL();
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.enqueue(40);
+        queue.enqueue(50);
+        queue.enqueue(60);
+        queue.dequeue();
+        queue.dequeue();
+        queue.dequeue();
+        queue.enqueue(70);
 
     }
 }

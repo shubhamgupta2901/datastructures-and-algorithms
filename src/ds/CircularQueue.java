@@ -3,32 +3,29 @@ package ds;
 import ds.interfaces.IQueue;
 
 /**
- * This implementation of queue uses array.
- * The biggest issue with its implementation is its quite inefficient, because when deque operations are performed and
- * starting indices of array are emptied, it would not insert element there.
- * For efficient implementation see {@link QueueArr}
+ * Efficient implementation of Queue using array, when elements are dequeued,
+ * it can enqueue elements at starting indices of array again till the queue is full.
  */
+public class CircularQueue implements IQueue {
 
-public class QueueArrInefficient implements IQueue {
-    private int[] arr;
-    private int front , rear, size;
+    private int [] arr;
     private int capacity;
+    private int front,rear, size;
 
-    public QueueArrInefficient() {
+    public CircularQueue() {
         this.capacity = 5;
         this.arr = new int[this.capacity];
-        for(int i =0; i< this.capacity; i++)
-            this.arr[i] = Integer.MIN_VALUE;
         this.front = this.rear = -1;
+        this.size = 0;
     }
 
-    public QueueArrInefficient(int capacity) {
+    public CircularQueue(int capacity) {
         this.capacity = capacity;
-        this.arr = new int[capacity];
-        for(int i =0; i< capacity; i++)
-            this.arr[i] = Integer.MIN_VALUE;
+        this.arr = new int[this.capacity];
         this.front = this.rear = -1;
+        this.size = 0;
     }
+
 
     /**
      * Insert element at the end
@@ -41,9 +38,12 @@ public class QueueArrInefficient implements IQueue {
     public boolean enqueue(int value) {
         if(isFull())
             return false;
-        if(isEmpty())
+        if(front == -1&& rear == -1){
             front++;
-        arr[++rear] = value;
+        }
+        rear = ++rear%capacity;
+        arr[rear] = value;
+        size++;
         return true;
     }
 
@@ -57,7 +57,10 @@ public class QueueArrInefficient implements IQueue {
     public int dequeue() {
         if(isEmpty())
             return Integer.MIN_VALUE;
-        return arr[front++];
+        int element = arr[front];
+        front = ++front%capacity;
+        size--;
+        return element;
     }
 
     /**
@@ -81,9 +84,7 @@ public class QueueArrInefficient implements IQueue {
      */
     @Override
     public boolean isEmpty() {
-        if((front ==-1 && rear == -1) || front > rear)
-            return true;
-        return false;
+        return (size==0);
     }
 
     /**
@@ -93,6 +94,6 @@ public class QueueArrInefficient implements IQueue {
      * Space Complexity: O(1)
      */
     public boolean isFull(){
-        return (rear == capacity-1);
+        return (size==capacity);
     }
 }
