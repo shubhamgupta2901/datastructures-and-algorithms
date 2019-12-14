@@ -2,7 +2,9 @@ package ds;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BinaryTree {
@@ -107,6 +109,44 @@ public class BinaryTree {
         }
         return traversal;
 
+    }
+
+    /**
+     * TODO: non-iterative post order traversal.
+     * @return
+     */
+    public List<Integer> postOrderTraversal(){
+        return null;
+    }
+
+    /**
+     * Level order traversal of following tree would look like:
+     * ..........1
+     * ......./    \
+     * .....2       3
+     * ..../ \     / \
+     * ...4   5   6   7
+     *
+     * 1,2,3,4,5,6,7
+     * @return traversal list
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public List<Integer> levelOrderTraversal(){
+        List<Integer> traversal = new ArrayList<>();
+        if(root == null)
+            return traversal;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            TreeNode curr = queue.remove();
+            traversal.add(curr.data);
+            if(curr.left!=null)
+                queue.add(curr.left);
+            if(curr.right != null)
+                queue.add(curr.right);
+        }
+        return traversal;
     }
 
 
