@@ -14,7 +14,16 @@ public class BinaryTreeMain {
     private void testBinaryTree(){
         BinaryTree tree = new BinaryTree();
         tree.createTestTree();
-        List<Integer> list = tree.preorderTraversal();
-        Utils.printList(list);
+        List<Integer> traversal;
+        traversal= tree.preorderTraversal();
+        Utils.printList(traversal);
+        traversal = tree.recursivePreorderTraversal();
+        Utils.printList(traversal);
+        System.out.println("----------");
+        traversal= tree.inorderTraversal();
+        Utils.printList(traversal);
+        traversal= tree.recursiveInorderTraversal();
+        Utils.printList(traversal);
+        System.out.println("----------");
     }
 }

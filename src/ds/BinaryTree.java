@@ -51,10 +51,17 @@ public class BinaryTree {
         return root;
     }
 
+    /**
+     * Preorder Traversal of Binary Tree is defined as: (Root-Left-Right)
+     *  1.Visit the root
+     *  2.Traverse left subtree in preorder
+     *  3.Traverse right subtree in preorder
+     * @return traversal list
+     * Time Complexity: O(n) [Since we are traversing each node once]
+     * Space Complexity: O(n) [Using a stack]
+     */
     public List<Integer> preorderTraversal (){
         List<Integer> traversal = new ArrayList<>();
-        if(root == null)
-            return traversal;
         Stack<TreeNode> stack = new Stack<>();
         TreeNode curr = root;
         while(!stack.isEmpty() || curr!=null){
@@ -69,6 +76,70 @@ public class BinaryTree {
                 curr = curr.right;
             }
         }
+        return traversal;
+    }
+
+    /**
+     * Inorder Traversal of Binary Tree is defined as: (Left-Root-Right)
+     *  1.Traverse left subtree in inorder
+     *  2.Visit the root
+     *  3.Traverse right subtree in inorder
+     * @return traversal list
+     * Time Complexity: O(n) [Since we are traversing each node once]
+     * Space Complexity: O(n) [Using a stack]
+     */
+    public List<Integer> inorderTraversal(){
+        List<Integer> traversal = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        while(!stack.isEmpty() || curr !=null){
+
+            while(curr!=null){
+                stack.push(curr);
+                curr = curr.left;
+            }
+
+            if(!stack.isEmpty()){
+                curr = stack.pop();
+                traversal.add(curr.data);
+                curr = curr.right;
+            }
+        }
+        return traversal;
+
+    }
+
+
+
+    public List<Integer> recursivePreorderTraversal(){
+        List<Integer> traversal = new ArrayList<>();
+        traversal = recursivePreOrderTraversalHelper(root,traversal);
+        return traversal;
+
+    }
+
+    private List<Integer> recursivePreOrderTraversalHelper(TreeNode root, List<Integer> traversal){
+        if(root== null)
+            return traversal;
+        traversal.add(root.data);
+        recursivePreOrderTraversalHelper(root.left,traversal);
+        recursivePreOrderTraversalHelper(root.right, traversal);
+        return traversal;
+    }
+
+    public List<Integer> recursiveInorderTraversal(){
+        List<Integer> traversal = new ArrayList<>();
+        traversal = recursiveInOrderTraversalHelper(root,traversal);
+        return traversal;
+
+    }
+
+    private List<Integer> recursiveInOrderTraversalHelper(TreeNode root, List<Integer> traversal){
+        if(root== null)
+            return traversal;
+        recursiveInOrderTraversalHelper(root.left,traversal);
+        traversal.add(root.data);
+        recursiveInOrderTraversalHelper(root.right, traversal);
         return traversal;
     }
 
