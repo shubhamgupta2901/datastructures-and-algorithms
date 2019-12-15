@@ -20,14 +20,14 @@ public class BinaryTreeMain {
         System.out.println("Preorder Traversal:");
         traversal= tree.preOrderTraversal();
         Utils.printList(traversal);
-        traversal = tree.recursivePreorderTraversal();
+        traversal = tree.recursivePreOrderTraversal(tree.getRoot());
         Utils.printList(traversal);
         System.out.println("----------");
 
         System.out.println("Inorder Traversal:");
         traversal= tree.inOrderTraversal();
         Utils.printList(traversal);
-        traversal= tree.recursiveInorderTraversal();
+        traversal= tree.recursiveInOrderTraversal(tree.getRoot());
         Utils.printList(traversal);
         System.out.println("----------");
 
@@ -39,10 +39,25 @@ public class BinaryTreeMain {
         System.out.println("Search:");
         boolean found = tree.searchNode(4) != null ? true :false;
         System.out.println("found 4:"+found);
+        found = tree.recursiveSearchNode(tree.getRoot(),4) != null ? true :false;
+        System.out.println("found 4(recursively):"+found);
         found = tree.searchNode(7) != null ? true :false;
         System.out.println("found 7:"+found);
+        found = tree.recursiveSearchNode(tree.getRoot(),7) != null ? true :false;
+        System.out.println("found 7(recursively):"+found);
         found = tree.searchNode(9) != null ? true :false;
         System.out.println("found 9:"+found);
+        found = tree.recursiveSearchNode(tree.getRoot(),9) != null ? true :false;
+        System.out.println("found 9(recursively):"+found);
+        System.out.println("----------");
+
+        tree.insertNode(8);
+        System.out.println("Height of tree: "+ tree.height());
+        System.out.println("Height of tree (recursive): "+ tree.recursiveHeight(tree.getRoot()));
+        System.out.println("----------");
+
+        System.out.println("Size of tree: "+ tree.size());
+        System.out.println("Size of tree (recursive): "+ tree.recursiveSize(tree.getRoot()));
         System.out.println("----------");
 
         for(int i = 0; i<7; i++){
@@ -52,6 +67,8 @@ public class BinaryTreeMain {
             Utils.printList(traversal);
         }
         System.out.println("----------");
+
+
 
     }
 }

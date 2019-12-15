@@ -15,6 +15,8 @@ public interface IBinaryTree {
         }
     }
 
+    TreeNode getRoot();
+
     List<Integer> preOrderTraversal();
 
     List<Integer> inOrderTraversal();
@@ -28,4 +30,8 @@ public interface IBinaryTree {
     TreeNode deleteNode(int value);
 
     TreeNode insertNode(int value);
+
+    int height();
+
+    int size();
 }
