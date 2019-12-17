@@ -12,7 +12,7 @@ import java.util.Stack;
  * .....2       3
  * ..../ \     /
  * ...4   5   6
- * Here we are implementing complete binary tree as an array. So while we visualise a binary tree (complete), we use array to implement it.
+ * Here we are implementing complete binary tree as an ARRAY. So while we visualise a binary tree (complete), we use array to implement it.
  * While implementing a Binary Tree with array is not a space efficient way, the structure of Complete Binary Tree makes it a perfect
  * candidate for array implementation (improves time and space complexity of operations).
  * The idea is keep root at index 0, subsequent parent nodes in index n, their left child at index 2*n+1 and right child at index 2*n+2

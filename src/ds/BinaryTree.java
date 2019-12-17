@@ -215,7 +215,7 @@ public class BinaryTree implements IBinaryTree {
      * Will perform a level order traversal and find the first node which does not have a left or right child,
      * here we can insert our node.
      * @param value
-     * @return root of the tree.
+     * @return pointer where the new node is inserted
      * Time Complexity: O(n)
      * Space Complexity: O(n)
      */
@@ -233,7 +233,7 @@ public class BinaryTree implements IBinaryTree {
             TreeNode curr = queue.remove();
             if(curr.left == null){
                 curr.left = node;
-                return root;
+                return node;
             }else if (curr.right == null){
                 curr.right = node;
                 return root;
@@ -335,7 +335,7 @@ public class BinaryTree implements IBinaryTree {
             return node;
         TreeNode searchedNode = recursiveSearchNode(node.left, value);
         if(searchedNode != null)
-            return recursiveSearchNode(node.left,value);
+            return searchedNode;
         return recursiveSearchNode(node.right, value);
     }
 
