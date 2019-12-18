@@ -1,6 +1,8 @@
 package ds;
 
 
+import ds.interfaces.IBinarySearchTree;
+
 /**
  * A binary search tree is  a special kind of binary tree where all the left subtree elements should be less than (or equal to ) root data and all the right subtree elements should
  * be greater than (or equal to ) root data. This property should be satisfied at every node in the tree.
@@ -27,7 +29,7 @@ package ds;
  * Since root subtree is always between left subtree and right subtree data, performing inorder traversal on binary
  * search tree produces a sorted list
  */
-public class BinarySearchTree extends BinaryTree{
+public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
 
     public BinarySearchTree(){
         super();
@@ -41,7 +43,7 @@ public class BinarySearchTree extends BinaryTree{
      * Unfortunately, in worst cases a BST can be a skewed tree where it can degenerate to a linked list, reducing the
      * search time to O(n)
      * Space Complexity: O(1)
-     * For recursive implementation see {@link BinarySearchTree#recursivelySearchNode(TreeNode, int)}
+     * For recursive implementation see {@link BinarySearchTree#recursiveSearchNode(TreeNode, int)}
      */
     @Override
     public TreeNode searchNode(int value){
@@ -120,20 +122,104 @@ public class BinarySearchTree extends BinaryTree{
     }
 
     /**
+     * Minimum value of a bst is the first node traversed in inorder traversal of bst. (the left most node)
+     * We keep traversing to the left till we find the right most node
+     * @return
+     * Time Complexity: O(h) where h is the height of binary search tree
+     * Space Complexity: O(1)
+     * For recursive implementation see {@link BinarySearchTree#recursiveFindMin(TreeNode)}
+     */
+    @Override
+    public int findMin(){
+        if(root == null)
+            return Integer.MIN_VALUE;
+        TreeNode curr = root;
+        while(curr.left != null){
+            curr = curr.left;
+        }
+        return curr.data;
+    }
+
+    /**
+     * Maximum value of a bst is the last node traversed in inorder traversal of bst. (the right most node)
+     * We keep traversing to the right till we find the right most node
+     * @return
+     * Time Complexity: O(h) where h is the height of binary search tree
+     * Space Complexity: O(1)
+     * For recursive implementation see {@link BinarySearchTree#recursiveFindMax(TreeNode)}
+     */
+    @Override
+    public int findMax(){
+        if(root == null)
+            return Integer.MIN_VALUE;
+        TreeNode curr = root;
+        while(curr.right!=null){
+            curr = curr.right;
+        }
+        return curr.data;
+    }
+
+
+    /**
+     * In Binary Tree, Inorder successor of a node is the next node in inorder traversal of the Binary Tree.
+     * Inorder Successor is NULL for the last node in inorder traversal.
+     * In Binary Search Tree, Inorder Successor of an input node can also be defined as the node with the smallest key
+     * greater than the key of input node.
+     * For node X, if it has right subtree, then inorder successor of X is minimum value in right subtree.
+     * if it does not have right subtree, then inorder successor must be the ancestor of node.
+     * Here the idea is start from root and use search like technique - travel down the tree, if a node’s data is greater than root’s data then go right side,
+     * otherwise go to left side.
+     * <p>
+     * ..........20
+     * ......./    \
+     * .....8       22
+     * ..../ \
+     * ...4   12
+     * ....../  \
+     * .....10  14
+     * Here inorder successor of 8 is 10, inorder successor of 10 is 12, and inorder successor of 14 is 20.
+     * @param root Root of Binary Search Tree.
+     * @param node Node whose inorder successor needs to be found.
+     * @return Inorder Successor of node.
+     * Time complexity O(h), h is height of tree.
+     * Space complexity: O(1) if we find out the min value in bst iteratively.
+     */
+    @Override
+    public TreeNode inOrderSuccessor(TreeNode root, TreeNode node) {
+        if(root == null || node == null)
+            return null;
+
+        if(node.right != null)
+            return findMin(node.right);
+
+        TreeNode curr = root,successor = null;
+        while(curr!=null){
+            if(curr.data>node.data){
+                successor = curr;
+                curr = curr.left;
+            }
+            else
+                curr = curr.right;
+        }
+        return successor;
+    }
+
+
+    /**
      *
      * Time complexity : O(h) where h is height of the tree.
      * Space Complexity: O(n) for using recursive stack.
      * @param value value of node to be searched
      * @return searched node
      */
-    public TreeNode recursivelySearchNode(TreeNode root, int value){
+    public TreeNode recursiveSearchNode(TreeNode root, int value){
         if(root == null)
             return null;
         if(root.data == value)
             return root;
         if(value<root.data)
-            return recursivelySearchNode(root.left,value);
-        return recursivelySearchNode(root.right,value);
+            return recursiveSearchNode(root.left,value);
+        return recursiveSearchNode(root.right,value);
     }
 
     public TreeNode recursivelyInsertNode(int value){
@@ -161,6 +247,50 @@ public class BinarySearchTree extends BinaryTree{
         else
             root.right =  insertNode(root.right, value);
         return root;
+    }
+
+    /**
+     * Maximum value of a bst is the last node traversed in inorder traversal of bst. (the right most node)
+     * @param root
+     * @return max value in a tree or Integer.MIN_VALUE if empty
+     * Time Complexity: O(h) where h is the height of binary search tree
+     * Space Complexity: O(n) for using recursive stack.
+     */
+    public int recursiveFindMax(TreeNode root){
+        if(root == null)
+            return Integer.MIN_VALUE;
+        if(root.right == null)
+            return root.data;
+        return recursiveFindMax(root.right);
+    }
+
+    /**
+     * Minimum value of a bst is the first node traversed in inorder traversal of bst. (the left most node)
+     * @param root
+     * @return min value in a tree or Integer.MAX_VALUE if empty
+     * Time Complexity: O(h) where h is the height of binary search tree
+     * Space Complexity: O(n) for using recursive stack.
+     */
+    public int recursiveFindMin(TreeNode root){
+        if(root == null)
+            return Integer.MAX_VALUE;
+        if(root.left == null)
+            return root.data;
+        return recursiveFindMin(root.left);
+    }
+
+    /**
+     * Variation of {@link BinarySearchTree#findMin()}
+     * @param root root of tree
+     * @return node which contains the minimum value
+     */
+    private TreeNode findMin(TreeNode root){
+        if(root == null)
+            return null;
+        TreeNode curr = root;
+        while(curr.left!=null)
+            curr = curr.left;
+        return curr;
     }
 
 }
