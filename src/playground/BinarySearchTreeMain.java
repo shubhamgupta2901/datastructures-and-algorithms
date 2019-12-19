@@ -19,6 +19,8 @@ public class BinarySearchTreeMain {
             //tree.insertNode(value);
             tree.recursivelyInsertNode(value);
         }
+
+        System.out.println("Is valid BST: "+ tree.validateBST(tree.getRoot()));
         System.out.println("Inorder traversal");
         List<Integer> traversal = tree.inOrderTraversal();
         Utils.printList(traversal);
@@ -45,9 +47,9 @@ public class BinarySearchTreeMain {
         System.out.println("----------");
 
         System.out.println("Find min and max:");
-        System.out.println("Find min (iteratively): " + tree.findMin());
+        System.out.println("Find min (iteratively): " + tree.findMin(tree.getRoot()));
         System.out.println("Find min (recursively): " + tree.recursiveFindMin(tree.getRoot()));
-        System.out.println("Find max (iteratively): " + tree.findMax());
+        System.out.println("Find max (iteratively): " + tree.findMax(tree.getRoot()));
         System.out.println("Find max (recursively): " + tree.recursiveFindMax(tree.getRoot()));
         System.out.println("----------");
 
@@ -58,6 +60,15 @@ public class BinarySearchTreeMain {
             IBinaryTree.TreeNode successor = tree.inOrderSuccessor(tree.getRoot(),node);
             int successorData = successor != null ? successor.data : Integer.MIN_VALUE;
             System.out.println("Inorder successor of "+ value + ": "+ successorData);
+        }
+
+        System.out.println("----------");
+        System.out.println("Inorder predecessor");
+        for(Integer value: values){
+            IBinaryTree.TreeNode node = tree.searchNode(value);
+            IBinaryTree.TreeNode predecessor = tree.inOrderPredecessor(tree.getRoot(),node);
+            int predecessorData = predecessor != null ? predecessor.data : Integer.MIN_VALUE;
+            System.out.println("Inorder predecessor of "+ value + ": "+ predecessorData);
         }
         System.out.println("----------");
 

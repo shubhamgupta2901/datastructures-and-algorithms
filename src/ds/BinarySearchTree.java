@@ -36,6 +36,31 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
     }
 
     /**
+     * An efficient approach to validate BST involves looking at each node only once.
+     * The trick is to write a utility helper function {@link BinarySearchTree#validateBST(TreeNode, int, int)} that traverses down the tree
+     * keeping track of the narrowing min and max allowed values as it goes, looking at each node only once.
+     * The initial values for min and max should be INT_MIN and INT_MAX — they narrow from there.
+     * For a simpler but inefficient recursive implementation see {@link BinarySearchTree#recursiveValidateBST(TreeNode)}
+     * Time complexity: O(n)
+     * Space complexity: O(n)
+     */
+    @Override
+    public boolean validateBST(TreeNode root) {
+        return validateBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private boolean validateBST(TreeNode root, int minValue, int maxValue){
+        if(root == null)
+            return true;
+        if(root.data >= minValue && root.data<= maxValue)
+            return (validateBST(root.left,minValue, root.data)
+                    && (validateBST(root.right,root.data, maxValue)));
+        return false;
+    }
+
+
+
+    /**
      * @param value value of node to be searched
      * @return searched node
      * Time Complexity: O(h), where h is the height of tree.
@@ -60,9 +85,36 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
         return null;
     }
 
+    /**
+     * A node in binary tree can be deleted in O(n) time like here {@link BinaryTree#deleteNode(int)}
+     * However for BST, we can improve upon time complexity and perform delete operation in O(h) where h is the height of BST.
+     * We can use following algorithm:
+     * Node to be deleted is leaf: Simply remove from the tree.
+     *              50                             50
+     *            /     \         delete(20)      /   \
+     *           30      70       --------->    30     70
+     *          /  \    /  \                     \    /  \
+     *        20   40  60   80                   40  60   80
+     * Node to be deleted has only one child: Copy the child to the node and delete the child
+     *               50                            50
+     *            /     \         delete(30)      /   \
+     *           30      70       --------->    40     70
+     *             \    /  \                          /  \
+     *             40  60   80                       60   80
+     * Node to be deleted has two children: Find inorder successor of the node.
+     * Copy contents of the inorder successor to the node and RECURSIVELY delete the inorder successor. (inorder predecessor can also be used)
+     *               50                            60
+     *            /     \         delete(50)      /   \
+     *           40      70       --------->    40    70
+     *                  /  \                            \
+     *                 60   80                           80
+     *
+     * @param value value of node to be deleted
+     * @return
+     */
     @Override
     public TreeNode deleteNode(int value){
-        return super.deleteNode(value);
+        return null;
     }
 
     /**
@@ -124,21 +176,24 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
     /**
      * Minimum value of a bst is the first node traversed in inorder traversal of bst. (the left most node)
      * We keep traversing to the left till we find the right most node
+     * @param node root of the tree
      * @return
      * Time Complexity: O(h) where h is the height of binary search tree
      * Space Complexity: O(1)
      * For recursive implementation see {@link BinarySearchTree#recursiveFindMin(TreeNode)}
      */
     @Override
-    public int findMin(){
-        if(root == null)
-            return Integer.MIN_VALUE;
-        TreeNode curr = root;
+    public int findMin(TreeNode node){
+        if(node == null)
+            return Integer.MAX_VALUE;
+        TreeNode curr = node;
         while(curr.left != null){
             curr = curr.left;
         }
         return curr.data;
     }
+
+
 
     /**
      * Maximum value of a bst is the last node traversed in inorder traversal of bst. (the right most node)
@@ -149,10 +204,10 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
      * For recursive implementation see {@link BinarySearchTree#recursiveFindMax(TreeNode)}
      */
     @Override
-    public int findMax(){
-        if(root == null)
+    public int findMax(TreeNode node){
+        if(node == null)
             return Integer.MIN_VALUE;
-        TreeNode curr = root;
+        TreeNode curr = node;
         while(curr.right!=null){
             curr = curr.right;
         }
@@ -190,7 +245,7 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
             return null;
 
         if(node.right != null)
-            return findMin(node.right);
+            return findMinimum(node.right);
 
         TreeNode curr = root,successor = null;
         while(curr!=null){
@@ -204,6 +259,48 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
         return successor;
     }
 
+    /**
+     * @param root Root of Binary Search Tree.
+     * @param node Node whose inorder predecessor needs to be found.
+     * @return Inorder predecessor of node.
+     * Time complexity O(h), h is height of tree.
+     * Space complexity: O(1) if we find out the min value in bst iteratively.
+     */
+    @Override
+    public TreeNode inOrderPredecessor(TreeNode root, TreeNode node) {
+        if(root == null || node == null)
+            return null;
+
+        if(node.left!=null)
+            return findMaximum(node.left);
+
+        TreeNode curr = root, predecessor = null;
+        while(curr!=null){
+            if(curr.data<node.data){
+                predecessor = curr;
+                curr = curr.right;
+            }
+            else curr = curr.left;
+        }
+        return predecessor;
+    }
+
+
+    /**
+     * For a given binary tree, this function validates weather it is a BST or not.
+     * Simple but inefficient method to validate a BST.
+     * @param root
+     * @return
+     * Time complexity: O(nh) ?(check if correct) because we are traversing each node and for each node max/min function run of O(h)
+     * Space Complexity: O(nh) ?(check if correct) for recursive stack
+     */
+    public boolean recursiveValidateBST(TreeNode root) {
+        if(root == null)
+            return true;
+        if(root.data>= findMax(root.left) && root.data<= findMin(root.right))
+            return recursiveValidateBST(root.left) && recursiveValidateBST(root.right);
+        return false;
+    }
 
     /**
      *
@@ -280,16 +377,30 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
     }
 
     /**
-     * Variation of {@link BinarySearchTree#findMin()}
+     * Variation of {@link BinarySearchTree#findMin(TreeNode)}
      * @param root root of tree
      * @return node which contains the minimum value
      */
-    private TreeNode findMin(TreeNode root){
+    private TreeNode findMinimum(TreeNode root){
         if(root == null)
             return null;
         TreeNode curr = root;
         while(curr.left!=null)
             curr = curr.left;
+        return curr;
+    }
+
+    /**
+     * Variation of {@link BinarySearchTree#findMax(TreeNode)}
+     * @param root root of tree
+     * @return node which contains the maximum value
+     */
+    private TreeNode findMaximum(TreeNode root){
+        if(root == null)
+            return null;
+        TreeNode curr = root;
+        while(curr.right!=null)
+            curr = curr.right;
         return curr;
     }
 

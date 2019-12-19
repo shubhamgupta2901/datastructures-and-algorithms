@@ -2,10 +2,14 @@ package ds.interfaces;
 
 public interface IBinarySearchTree extends IBinaryTree{
 
-    int findMin();
+    boolean validateBST(TreeNode root);
 
-    int findMax();
+    int findMin(TreeNode node);
+
+    int findMax(TreeNode node);
 
     TreeNode inOrderSuccessor(TreeNode root, TreeNode node);
+
+    TreeNode inOrderPredecessor(TreeNode root, TreeNode node);
 
 }
