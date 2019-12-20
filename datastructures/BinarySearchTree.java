@@ -110,11 +110,37 @@ public class BinarySearchTree extends BinaryTree implements IBinarySearchTree {
      *                 60   80                           80
      *
      * @param value value of node to be deleted
-     * @return
+     * @return root of the tree
      */
     @Override
     public TreeNode deleteNode(int value){
-        return null;
+        root =  deleteNode(root,value);
+        return root;
+    }
+
+    private TreeNode deleteNode(TreeNode root, int value){
+        if(root== null)
+            return null;
+        if(root.data > value)
+            root.left = deleteNode(root.left, value);
+        else if (root.data < value)
+            root.right = deleteNode(root.right, value);
+        // this is the node to be deleted.
+        else{
+            // Node which have one or no child
+            if(root.left == null)
+                return root.right;
+            else  if(root.right == null)
+                return root.left;
+            // Node which have two children
+            else{
+                // get the inorder successor, copy the value and delete inorder successor
+                root.data = findMin(root.right);
+                root.right = deleteNode(root.right, root.data);
+            }
+
+        }
+        return root;
     }
 
     /**

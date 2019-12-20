@@ -6,6 +6,8 @@ package playground;
 import datastructures.BinarySearchTree;
 import datastructures.interfaces.IBinaryTree;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BinarySearchTreeMain {
@@ -16,7 +18,7 @@ public class BinarySearchTreeMain {
 
     public void testBinarySearchTree(){
         BinarySearchTree tree = new BinarySearchTree();
-        int[] values = new int[]{100,50,150,25,75,125,175,12,37};
+        Integer[] values = new Integer[]{100,50,150,25,75,125,175,12,37};
         for(Integer value : values){
             //tree.insertNode(value);
             tree.recursivelyInsertNode(value);
@@ -71,6 +73,17 @@ public class BinarySearchTreeMain {
             IBinaryTree.TreeNode predecessor = tree.inOrderPredecessor(tree.getRoot(),node);
             int predecessorData = predecessor != null ? predecessor.data : Integer.MIN_VALUE;
             System.out.println("Inorder predecessor of "+ value + ": "+ predecessorData);
+        }
+        System.out.println("----------");
+
+        System.out.println("Delete");
+        //shuffling the contents of array
+        List<Integer> valList = Arrays.asList(values);
+        Collections.shuffle(valList);
+        for(Integer value: valList){
+            System.out.println("Delete " + value);
+            tree.deleteNode(value);
+            Utils.printList(tree.inOrderTraversal());
         }
         System.out.println("----------");
 
