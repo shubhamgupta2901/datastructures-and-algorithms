@@ -12,10 +12,13 @@ public class BinaryTreeMain {
 
     }
 
+
     private void testBinaryTree(){
         BinaryTree tree = new BinaryTree();
         for(int i = 0; i<7; i++)
             tree.insertNode(i+1);
+
+        BinaryTreePrinter.print(tree.getRoot());
 
         List<Integer> traversal;
         System.out.println("Preorder Traversal:");
@@ -61,11 +64,10 @@ public class BinaryTreeMain {
         System.out.println("Size of tree (recursive): "+ tree.recursiveSize(tree.getRoot()));
         System.out.println("----------");
 
+        BinaryTreePrinter.print(tree.getRoot());
         for(int i = 0; i<7; i++){
-            System.out.println("Deleting "+ (i+1));
-            tree.deleteNode(i+1);
-            traversal= tree.levelOrderTraversal();
-            Utils.printList(traversal);
+            System.out.println("Deleting "+ (i+1));tree.deleteNode(i+1);
+            BinaryTreePrinter.print(tree.getRoot());
         }
         System.out.println("----------");
 
