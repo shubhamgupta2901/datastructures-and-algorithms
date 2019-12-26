@@ -30,20 +30,41 @@ public class AVLTree implements IAVLTree {
 
     /**
      * Since we have augmented the BST and keep track of height of each node, this operation can be done in constant time
+     * @param root of the tree
+     * @return
      * Time Complexity: O(1)
      * Space Complexity: O(1)
-     * @return
      */
     @Override
-    public int height() {
+    public int height(AVLTreeNode root) {
+        if(root == null)
+            return -1;
         return root.height;
     }
 
+    /**
+     * Takes the root of the Binary Tree as input and validates weather it is an AVL Tree or not.
+     * Note if the input is root of a Binary Search Tree, all we need to check is the height of nodes.
+     * For a Binary Tree we will need to validate the data as well as the height of every node.
+     * @param root
+     * @return
+     * Time Complexity: O(n)
+     * Space Complexity: O(n) For using a recursive stack.
+     */
     @Override
     public boolean validateAVL(AVLTreeNode root) {
-        return false;
+        return validateAVL(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
+    private boolean validateAVL(AVLTreeNode root, int minValue, int maxValue){
+        if(root == null)
+            return true;
+        boolean bstCondition = root.data >= minValue && root.data <= maxValue;
+        boolean avlCondition = Math.abs(height(root.left) -height(root.right)) <= 1 ;
+        if(bstCondition && avlCondition)
+            return validateAVL(root.left,minValue, root.data) && validateAVL(root.right, root.data, maxValue);
+        return false;
+    }
     @Override
     public AVLTreeNode insertNode(int value) {
         return null;

@@ -24,7 +24,7 @@ public interface IAVLTree {
 
     AVLTreeNode getRoot();
 
-    int height();
+    int height(AVLTreeNode root);
 
     boolean validateAVL(AVLTreeNode root);
 
