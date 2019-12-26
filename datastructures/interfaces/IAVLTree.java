@@ -1,4 +1,4 @@
-package datastructures;
+package datastructures.interfaces;
 
 
 
@@ -7,16 +7,16 @@ import java.util.List;
 /**
  *
  */
-public interface AVLTree {
-
+public interface IAVLTree {
 
     class AVLTreeNode {
-        public int data;
+        public int data, height;
         public AVLTreeNode left;
         public AVLTreeNode right;
 
         public AVLTreeNode(int data) {
             this.data = data;
+            this.height = 0;
             this.left = null;
             this.right = null;
         }
@@ -24,21 +24,13 @@ public interface AVLTree {
 
     AVLTreeNode getRoot();
 
-    List<Integer> preOrderTraversal();
+    int height();
 
-    List<Integer> inOrderTraversal();
-
-    List<Integer> postOrderTraversal();
-
-    List<Integer> levelOrderTraversal();
-
-    AVLTreeNode searchNode(int value);
-
-    AVLTreeNode deleteNode(int value);
+    boolean validateAVL(AVLTreeNode root);
 
     AVLTreeNode insertNode(int value);
 
-    int height();
+    AVLTreeNode deleteNode(int value);
 
-    int size();
+
 }
