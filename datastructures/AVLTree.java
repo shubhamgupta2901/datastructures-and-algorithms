@@ -76,4 +76,59 @@ public class AVLTree implements IAVLTree {
         return null;
     }
 
+    /**
+     * Right rotates a tree rooted at Z
+     * Right rotation of tree looks like:
+     *          Z                                      Y
+     *         / \                                   /   \
+     *        Y   T4      Right Rotate (Z)          X      Z
+     *       / \          - - - - - - - - ->      /  \    /  \
+     *      X   T3                               T1  T2  T3  T4
+     *     / \
+     *   T1   T2
+     * where T1, T2, T3 and T4 are subtrees.
+     * @return root of the rotated tree
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    private AVLTreeNode rightRotate(AVLTreeNode Z){
+        //perform rotation
+        AVLTreeNode Y = Z.left;
+        Z.left = Y.right;
+        Y.right = Z;
+
+        //update heights
+        Z.height = Math.max(height(Z.left),height(Z.right)) + 1;
+        Y.height = Math.max(height(Y.left), height(Y.right)) + 1;
+        return Y;
+    }
+
+    /**
+     * Left Rotates the tree rooted at Z.
+     * Left Rotation looks like:
+     *    Z                               Y
+     *  /  \                            /   \
+     * T1   Y     Left Rotate(Z)       Z      X
+     *     /  \   - - - - - - - ->    / \    / \
+     *    T2   X                     T1  T2 T3  T4
+     *        / \
+     *      T3  T4
+     * where T1, T2, T3 and T4 are subtrees.
+     * @return root of the rotated tree
+     * Time Complexity: O(1)
+     * Space Complexity: O(1)
+     */
+    private AVLTreeNode leftRotate(AVLTreeNode Z){
+        //perform rotation
+        AVLTreeNode Y = Z.right;
+        AVLTreeNode T2 = Y.left;
+        Y.right = Z;
+        Z.right = T2;
+
+        //update heights
+        Z.height = Math.max(height(Z.left), height(Z.right)) +1;
+        Y.height = Math.max(height(Y.left), height(Y.right)) + 1;
+        return Y;
+    }
+
 }
