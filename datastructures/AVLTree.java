@@ -8,8 +8,8 @@ import java.util.List;
  * AVL tree is a self-balancing Binary Search Tree (BST) where the difference between heights of left and right subtrees cannot be more than one for all nodes.
  * Why AVL Trees? Most of the BST operations (e.g., search, max, min, insert, delete.. etc) take O(h) time where h is the height of the BST.
  * The cost of these operations may become O(n) for a skewed Binary tree.
- * If we make sure that height of the tree remains O(logn) after every insertion and deletion, then we can guarantee an upper bound of O(logn) for all these operations.
- * The height of an AVL tree is always O(logn) where n is the number of nodes in the tree.
+ * If we make sure that height of the tree remains logn after every insertion and deletion, then we can guarantee an upper bound of O(logn) for all these operations.
+ * For an AVL Tree h = 1.44log(n)
  *
  * So all we are trying to do is balance a Binary Search Tree in such a way that after every insertion/deletion, the heights of left and right subtrees for every node
  * can not be more than 1. This will keep the height of BST ~O(logn).
@@ -65,9 +65,63 @@ public class AVLTree implements IAVLTree {
             return validateAVL(root.left,minValue, root.data) && validateAVL(root.right, root.data, maxValue);
         return false;
     }
+
+    /**
+     * Insertion in AVL Tree is similar to BST, except we need to balance the tree after insertion to ensure the tree is
+     * AVL after insertion.
+     * We take help of left and right rotation functions for rebalancing.
+     * @param value
+     * @return
+     * Time complexity: O(logn) since insertion takes O(logn) and rotate functions are O(1)
+     * Space Complexity: O(logn) for using recursive stack.
+     */
     @Override
     public AVLTreeNode insertNode(int value) {
-        return null;
+        root = insertNode(root, value);
+        return root;
+    }
+
+    private AVLTreeNode insertNode(AVLTreeNode root, int value){
+        //Insert node to tree
+        if(root == null)
+            return new AVLTreeNode(value);
+        //Duplicate keys are not allowed. This would simplify finding out which rotation to perform.
+        if(root.data> value)
+            root.left = insertNode(root.left, value);
+        else if(root.data<value)
+            root.right = insertNode(root.right,value);
+        else return root;
+
+        //Update height of node
+        root.height = Math.max(height(root.left), height(root.right)) + 1;
+
+        //Balance the tree
+        int balance = getHeightDiff(root);
+
+        //Left-Left case: Right Rotation
+        if(balance >1 && root.left.data >value)
+            root = rightRotate(root);
+
+        //Left-Right case: LR rotation
+        if(balance>1 && root.left.data < value){
+            root.left = leftRotate(root.left);
+            root = rightRotate(root);
+        }
+
+        //Right-Right Case: Left Rotation
+        if(balance <-1 && root.right.data < value){
+            root = leftRotate(root);
+        }
+
+        //Right-Left Case: RL rotation
+        if(balance<-1 && root.right.data>value){
+            root.right = rightRotate(root.right);
+            root = leftRotate(root);
+        }
+
+        return root;
+
+
     }
 
 
@@ -129,6 +183,12 @@ public class AVLTree implements IAVLTree {
         Z.height = Math.max(height(Z.left), height(Z.right)) +1;
         Y.height = Math.max(height(Y.left), height(Y.right)) + 1;
         return Y;
+    }
+
+    private int getHeightDiff(AVLTreeNode node){
+        if(node == null)
+            return 0;
+        return height(node.left) - height(node.right);
     }
 
 }
