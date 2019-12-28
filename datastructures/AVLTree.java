@@ -121,7 +121,6 @@ public class AVLTree implements IAVLTree {
 
         return root;
 
-
     }
 
 
@@ -176,7 +175,7 @@ public class AVLTree implements IAVLTree {
         //perform rotation
         AVLTreeNode Y = Z.right;
         AVLTreeNode T2 = Y.left;
-        Y.right = Z;
+        Y.left = Z;
         Z.right = T2;
 
         //update heights
