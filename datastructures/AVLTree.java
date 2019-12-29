@@ -2,8 +2,6 @@ package datastructures;
 
 import datastructures.interfaces.IAVLTree;
 
-import java.util.List;
-
 /**
  * AVL tree is a self-balancing Binary Search Tree (BST) where the difference between heights of left and right subtrees cannot be more than one for all nodes.
  * Why AVL Trees? Most of the BST operations (e.g., search, max, min, insert, delete.. etc) take O(h) time where h is the height of the BST.
@@ -96,7 +94,7 @@ public class AVLTree implements IAVLTree {
         root.height = Math.max(height(root.left), height(root.right)) + 1;
 
         //Balance the tree
-        int balance = getHeightDiff(root);
+        int balance = balance(root);
 
         //Left-Left case: Right Rotation
         if(balance >1 && root.left.data >value)
@@ -123,10 +121,90 @@ public class AVLTree implements IAVLTree {
 
     }
 
-
+    /**
+     * AVL deletion is similar to BST deletion, except after deleting node we need to perform some re-balancing to ensure the
+     * tree does not violate AVL property.
+     * Observation: In AVL insertion, we looked at the first node in [inserted node-> root] path which violates the AVL property.
+     * Once we balanced this node, all the other nodes in path automatically become balanced. Unlike insertion, during deletion
+     * after balancing this first node its ancestor may still be unbalanced and we may have to balance its ancestors as well.
+     * Algo:
+     * 1) Perform the normal BST deletion.
+     * 2) The current node must be one of the ancestors of the deleted node. Update the height of the current node.
+     * 3) Get the balance factor (left subtree height – right subtree height) of the current node.
+     * 4) If balance factor is greater than 1, then the current node is unbalanced and we are either in Left Left case or Left Right case.
+     *    To check whether it is Left Left case or Left Right case, get the balance factor of left subtree.
+     *    If balance factor of the left subtree is greater than or equal to 0, then it is Left Left case, else Left Right case.
+     * 5) If balance factor is less than -1, then the current node is unbalanced and we are either in Right Right case or Right Left case.
+     *    To check whether it is Right Right case or Right Left case, get the balance factor of right subtree.
+     *    If the balance factor of the right subtree is smaller than or equal to 0, then it is Right Right case, else Right Left case.
+     * @param value
+     * @return root of the tree
+     * Time Complexity: O(logn)
+     * Space Complexity: O(logn) for using recursive stack.
+     */
     @Override
     public AVLTreeNode deleteNode(int value) {
-        return null;
+        root = deleteNode(root,value);
+        return root;
+    }
+
+    private AVLTreeNode deleteNode(AVLTreeNode root, int value){
+        if(root == null)
+            return null;
+        if(root.data > value)
+            root.left = deleteNode(root.left,value);
+        else if(root.data< value)
+            root.right = deleteNode(root.right,value);
+        else{
+            if(root.left == null)
+                root = root.right;
+            else if(root.right ==  null)
+                root = root.left;
+            else{
+                root.data = inOrderSuccessor(root).data;
+                root.right = deleteNode(root.right, root.data);
+            }
+        }
+
+        if(root == null)
+            return root;
+
+        //update height
+        root.height = Math.max(height(root.left), height(root.right)) + 1;
+
+        //check balance
+        int balance = balance(root);
+
+        //balance AVL
+        if(balance>1){
+            //Left-Left Case: Right rotate
+            if(balance(root.left)>=0)
+                root = rightRotate(root);
+            //Left-Right Case: LR rotate
+            else{
+                root.left = leftRotate(root.left);
+                root = rightRotate(root);
+            }
+        }
+        else if(balance<-1){
+            //Right-Right Case: Left Rotate
+            if(balance(root.left)<=0)
+                root = leftRotate(root);
+            //Right Left Case: RL Rotate
+            else {
+                root.right = rightRotate(root.right);
+                root = leftRotate(root);
+            }
+        }
+
+        return root;
+    }
+
+    private AVLTreeNode inOrderSuccessor(AVLTreeNode node){
+        AVLTreeNode ptr = node.right;
+        while (ptr.left!=null)
+            ptr = ptr.left;
+        return ptr;
     }
 
     /**
@@ -184,7 +262,7 @@ public class AVLTree implements IAVLTree {
         return Y;
     }
 
-    private int getHeightDiff(AVLTreeNode node){
+    private int balance(AVLTreeNode node){
         if(node == null)
             return 0;
         return height(node.left) - height(node.right);
