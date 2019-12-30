@@ -22,13 +22,14 @@ package leetcode;
  *
  * Input: m = 7, n = 3
  * Output: 28
+ * TODO: Dynamic Programming solution
  */
 public class UniquePaths {
     /**
      * My idea of implementation was that there are total m-1 right moves the robot can move.
      * And there are total n-1 down moves that the robot can take.
      * In m+n-2 moves he will reach to the matrix[m][n], if he is at matrix[0][0] at start.
-     * So total possible combinations of moves can be (m+n-2)!/(m-1)!(n-1)!.
+     * So total possible combinations of moves can be (m-1+n-1)!/(m-1)!(n-1)!.
      * @param m
      * @param n
      * @return
@@ -52,9 +53,9 @@ public class UniquePaths {
         return factorial;
     }
 
-    private long multiplyTillLimit(int x, int y){
+    private long multiplyTillLimit(int x, int limit){
         long product = 1;
-        while(x>y){
+        while(x>limit){
             product*= x;
             x--;
         }
