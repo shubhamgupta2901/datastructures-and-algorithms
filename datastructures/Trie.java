@@ -12,7 +12,7 @@ public class Trie implements ITrie {
 
     @Override
     public boolean isEmpty() {
-        return root==null;
+        return root.children.isEmpty();
     }
 
     @Override
