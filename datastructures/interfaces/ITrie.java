@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public interface ITrie {
     class TrieNode {
-         HashMap<Character, TrieNode> children;
-         boolean endOfWord;
+        public HashMap<Character, TrieNode> children;
+        public boolean endOfWord;
 
         public TrieNode(){
             this.children = new HashMap<>();
