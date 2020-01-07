@@ -3,6 +3,7 @@ package leetcode;
 import java.util.LinkedList;
 
 /**
+ * <a href="https://leetcode.com/problems/design-hashmap/"/>
  * Design a HashMap without using any built-in hash table libraries.
  *
  * To be specific, your design should include these functions:
