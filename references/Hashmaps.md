@@ -1,21 +1,41 @@
 ### Contents
- * [Direct Access Table](#direct-access-table)
- * [Prehashing](#prehashing)
- * [Hashing](#hashing)
- * [Collision](#collision)
- * [Chaining](#chaining)
- * [Analysis](#analysis)
- * [Basic Implementation](#basic-implementation)
- * [hashCode and equals method in JAVA](#hashcode-and-equals-method-in-java)
+  * [TLDR](#tldr)
+  * [Direct Access Table](#direct-access-table)
+  * [Prehashing](#prehashing)
+  * [Hashing](#hashing)
+  * [Collision](#collision)
+  * [Chaining](#chaining)
+  * [Analysis](#analysis)
+  * [Basic Implementation](#basic-implementation)
+  * [hashCode and equals method in JAVA](#hashcode-and-equals-method-in-java)
+  
+### TLDR
   
 * Hashmap is a data-structure that stores the data in key-value pairs. 
 
-* Two main functions provided by hashmap are: ```void put(Object key, Object value)``` for storing and ```Object get(Object key)```for retrieving values from HashMap. 
+* Two main functions provided by hashmap are: 
+  * ```void put(Object key, Object value)``` for storing values in HashMap. 
+  * ```Object get(Object key)``` for retrieving values from HashMap. 
 
-* Time complexity of both functions is O(1).
+* Time complexity of both functions is O(1). key and values can be any type of datastructure.
+
+* Internally HashMap is an **array** of objects.At a higher level we want to store a value at a particluar index. We will have a **hash function** which will convert the key (any kind of object) to an integer. This integer is called **hashCode**. A hashCode can be a very large integer, so we pass it through a **mapping function**. This mapping function will remap the hashCode to a **index** of array.
+
+* **key** *---(hash function)--->* **hashCode** *---(mapping function)--->* **index of array.**.
+
+* When we need to store a key-value pair, we convert the key to index and keep the value in that index. When we need to fetch a value asociated with a given key, we convert that key to index and lookup the value at that index.
+
+* There are only finite number of hashcodes. **So two different objects(keys) can have same hashcodes.**
+
+* Additionaly, since the hashcode will be remapped to a even smaller index, **two different hashcodes can have same index**.
+
+* This raises a issue known as **collision**, which means two different keys are mapped to a same index. There are multiple ways to resolve collision, but the simplest is called as **chaining**. This suggests that rather than creating an array (of data type *value*),we should have an **array of linked list**. Each node of linked list represents a key-value pair, and when a new key is mapped to the same index, simply add it to the linked list of that index.
+
+* It may appear that the storing, lookup and removing of key-value pairs is not exactly O(1), because after converting a key to index, we are traversing the whole linked list (in worst case) to store, lookup or remove a key-value pair. But 
 
 
-#### Direct Access Table
+
+### Direct Access Table
 
 * One simple approach would be to implement such a data structure would be by using array to keep values. This is called **Direct Access Table**. 
 * Here index of the array will be the key.
@@ -25,7 +45,7 @@
   1. **Keys can be any data type**: It will be hard to associate every key with an integer.
   2. **Gigantic memory hog**: If the set of possible keys will be very large, we will have to create a really big array, occupying more space.
   
-#### Prehashing
+### Prehashing
   
 * Soultion to keys may not be integers: Map the keys non-negative integers to keep them in Direct Access Table. This is called 
 **Prehashing**. (This can be done because every object can be written down as array of bits which is a string).
@@ -34,7 +54,7 @@
  
  * Prehash function should not change values overtime. Suppose if you have an item which we wish to put in the hashmap. We compute the hash prehash of the key and then we put the item in the direct access tabl with index with prehash(key). And we want to search for that item in the table, and we call prehash(key) to get the index of the table in which the item is kept, Now if the value of prehash(key) change, we can not find the item.
  
-#### Hashing
+### Hashing
 
 * This is solution to gigantic size of the Direct Access Table. With hashing we will try to reduce the universe of all keys down to reasonable size for the table.
 
@@ -52,7 +72,7 @@
 * i.e hash(k<sub>i</sub>) = hash(k<sub>j</sub>) but k<sub>i</sub> != k<sub>j</sub>
 
 
-#### Chaining
+### Chaining
 
 * Technique to deal with collision.
 
@@ -66,7 +86,7 @@
 * But in practice, hashing works really well. Good hash() nicely distributes the items in hash map and most of the lists in the indices will have constant length.
 
 
-#### Analysis
+### Analysis
 
 * Expected length of one chain: Assuming thatt each key is equally likely to be hashed to any slot of the table, For n keys which we need to store in a table and m slots in the map, each chain length will be n/m. This is known as the load factor of Hash Map. (loadFactor = n/m).
 
@@ -316,7 +336,7 @@ KEY: d | VALUE:  100
 Removing all keys from hashmap
 Size of map after removing all keys: 0
 ```
-#### hashCode and equals method in JAVA
+### hashCode and equals method in JAVA
 
 * In Java ```equals()``` and ```hashCode()``` methods are present in the ```java.lang.Object``` class.
 
