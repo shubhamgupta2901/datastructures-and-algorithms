@@ -1,19 +1,19 @@
 package playground;
 
 import datastructures.HashMap;
+import datastructures.HashSet;
 
-import javax.rmi.CORBA.Util;
 import java.util.Objects;
 
-public class HashMapMain {
+public class HashingMain {
 
     public static void main(String[] args) {
-        HashMapMain demo = new HashMapMain();
-        demo.testHashMap();
+        HashingMain demo = new HashingMain();
+        demo.testHashSet();
     }
 
     private void testHashMap(){
-        int numOfEntries = Integer.MAX_VALUE-1;
+        int numOfEntries = 200000;
         HashMap map = new HashMap();
         String[] keys = new String[numOfEntries];
         Objects[] values = new Objects[numOfEntries];
@@ -31,6 +31,21 @@ public class HashMapMain {
 
         for (int i = 0; i<keys.length; i++)
             System.out.println(map.get(keys[i]) + " ");
+    }
+
+    private void testHashSet(){
+        int numOfEntries = 2000000;
+        HashSet set = new HashSet();
+        String[] keys = new String[numOfEntries];
+        for(int i = 0; i<numOfEntries; i++){
+            keys[i] = generateRandomStrings();
+        }
+
+        for(int i = 0; i<numOfEntries; i++)
+            set.add(keys[i]);
+
+        for (int i = 0; i<keys.length; i++)
+            System.out.println("Contains " + keys[i] + ": "+ set.contains(keys[i]));
     }
 
     private String generateRandomStrings(){

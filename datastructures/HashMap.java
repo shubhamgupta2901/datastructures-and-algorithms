@@ -9,7 +9,7 @@ import java.util.List;
  *
  * HashMap is a datastructure to store values in key-value pairs. It allows get and remove operations as well. It performs these operations in constant time.
  * Note on Time Complexity of get(), put() and remove() operations:
- * Depending on the hash function these operation range from O(1) to O(n).
+ * Depending on the hash function time complexity of these operation range from O(1) to O(n).
  * For a HashMap with n key-value pairs, If the hash function is bad and is mapping all the values to a single bucket, then all the above operations will require
  * traversing through the entire List in that bucket which is of size n.
  * But if the hash function is good and evenly distributes the key-value pairs in all the buckets, then with a reasonable loadFactor we can achieve O(1) time complexity.
@@ -119,10 +119,11 @@ public class HashMap implements IMap {
      * Note: sometimes the hashcode calculation itself goes beyond the Integer.MAX_VALUE, i.e 2147483647.
      * what happens then is that we get a negative integer after the overflow.
      * Although negative hashCodes are perfectly valid, but after hashing the key,
-     * just before we map it to an index in array, we should bitwise & the hashCode with Integer.MAX_VALUE;
+     * just before we map it to an index in array, we should bitwise & the hashCode
+     * with Integer.MAX_VALUE to map it to a valid index in buckets.
      *
      * @param key
-     * @return
+     * @return index of the buckets array, where this element will be added in the list.
      */
     private int hash(String key){
         int hashCode = key.hashCode();
@@ -142,6 +143,20 @@ public class HashMap implements IMap {
      * So, total number of key-value pairs that can be entered without crossing the load factor: 0.75 * 16 = 12.
      * As soon as the 13th element is entered, the load factor of our hashmap will be greater than 0.75.
      * So we will double the number of buckets in the hashmap.
+     *
+     * NOTE: Hash tables in real-time systems, cannot pay the price of enlarging the hash table all at once,
+     * because it may interrupt time-critical operations. If one cannot avoid dynamic resizing,
+     * a solution is to perform the resizing gradually. Disk-based hash tables almost always use some
+     * alternative to all-at-once rehashing, since the cost of rebuilding the entire table on disk would be too high.
+     *
+     * One alternative to enlarging the table all at once is Incremental resizing:
+     * During the resize, allocate the new hash table, but keep the old table unchanged.
+     * In each lookup or delete operation, check both tables.
+     * Perform insertion operations only in the new table.
+     * At each insertion also move r elements from the old table to the new table.
+     * When all elements are removed from the old table, deallocate it.
+     * To ensure that the old table is completely copied over before the new table itself needs to be enlarged,
+     * it is necessary to increase the size of the table by a factor of at least (r + 1)/r during resizing.
      * */
     private void expandIfRequired(){
         float currentLoadFactor = (float) size / (float) capacity;
