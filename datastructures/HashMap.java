@@ -1,6 +1,6 @@
 package datastructures;
 
-import datastructures.interfaces.IHashMap;
+import datastructures.interfaces.IMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * But if the hash function is good and evenly distributes the key-value pairs in all the buckets, then with a reasonable loadFactor we can achieve O(1) time complexity.
  */
 
-public class HashMap implements IHashMap {
+public class HashMap implements IMap {
 
     private static final int INITIAL_CAPACITY = 16;
     private static final float LOAD_FACTOR = 0.75f;

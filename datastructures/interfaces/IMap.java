@@ -1,6 +1,6 @@
 package datastructures.interfaces;
 
-public interface IHashMap {
+public interface IMap {
     int size();
 
     void put(String key, Object value);
