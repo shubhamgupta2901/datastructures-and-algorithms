@@ -73,4 +73,39 @@ public class ConstructBinaryTreeFromPreorderInorderTraversal {
             subarray[j] = arr[i];
         return subarray;
     }
+
+
+    /**
+     * A better approach where we are manipulating the indices of arrays only.
+     * Note: Still not efficient since recursion is using a lot of memory and time.
+     * Time complexity is 29 percentile, and memory usage is 11percentile, even worse than approach 1.
+     * This was expected. should be looking to solve this problem iteratively.
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTreeApproach2(int[] preorder, int[] inorder) {
+        return buildTreeHelper(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+    }
+
+    private TreeNode buildTreeHelper(int[] preorder, int[] inorder, int pStart, int pEnd, int inStart, int inEnd){
+        if(pStart> pEnd || inStart> inEnd)
+            return null;
+        if(pStart==pEnd)
+            return new TreeNode(preorder[pStart]);
+        TreeNode root = new TreeNode(preorder[pStart]);
+        int index = indexOf(inorder,inStart, inEnd, preorder[pStart]);
+        root.left = buildTreeHelper(preorder, inorder, pStart+1,pStart+index-inStart,inStart, index-1);
+        root.right = buildTreeHelper(preorder, inorder, pStart+index-inStart+1, pEnd, index+1, inEnd);
+        return root;
+    }
+
+    private int indexOf(int[] arr, int start, int end, int key ){
+        for(int i = start; i<=end; i++){
+            if(arr[i] == key)
+                return i;
+        }
+        return -1;
+    }
+
 }
