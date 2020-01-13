@@ -3,6 +3,7 @@ package leetcode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -122,6 +123,50 @@ public class FlattenNestedListIterator {
                 else flatten(nI.getList(),flatList);
             }
         }
+    }
+
+
+    /**
+     * Approach 3: This is space efficient method. But I realise I can not do away with the recursion.
+     * I can flatten all the NestedIntegers at once while the constructor is invoked or
+     * I can delay the flattening till user calls for next().
+     * This approach delays the flattening till I actually need an integer to return for next() call.
+     * Runtime percentile is 48.5
+     * Memory Usage percentile is 100
+     * Notice in asymptotic terms the Time and space complexities of all the three approaches is same.
+     * i.e. if there are total n integers (not nested integers)in the input, All these approaches
+     * would take O(n) time and O(n) space.
+     * This also goes to show how asymptotic analysis does not show the complete picture.
+     */
+    public class NestedIterator implements Iterator<Integer> {
+        private Stack<NestedInteger> stack;
+        public NestedIterator(List<NestedInteger> nestedList) {
+            this.stack = new Stack<>();
+            pushToStack(nestedList);
+        }
+
+        private void pushToStack(List<NestedInteger> nestedList){
+            for(int i = nestedList.size()-1; i>=0; i--){
+                NestedInteger nestedInteger = nestedList.get(i);
+                stack.push(nestedInteger);
+            }
+        }
+
+        @Override
+        public Integer next() {
+            return stack.pop().getInteger();
+        }
+
+        @Override
+        public boolean hasNext() {
+            while(!stack.isEmpty()){
+                if(stack.peek().isInteger())
+                    return true;
+                pushToStack(stack.pop().getList());
+            }
+            return false;
+        }
+
     }
 }
 
