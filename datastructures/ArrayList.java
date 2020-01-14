@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class ArrayList implements IList {
 
-    private static final int INITIAL_CAPACITY = 5;
+    private static final int INITIAL_CAPACITY = 10;
     private int[] arr;
     private int size, capacity;
 
