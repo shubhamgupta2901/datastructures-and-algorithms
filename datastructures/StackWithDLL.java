@@ -52,13 +52,27 @@ public class StackWithDLL implements IStack {
         return list.peekTailElement();
     }
 
+    @Override
+    public boolean empty() {
+        return false;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public int search(int element) {
+        return 0;
+    }
+
     /**
      * Return whether the stack is empty
      * @return true if stack is empty, else false
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    @Override
     public boolean isEmpty() {
         return list.isEmpty();
     }

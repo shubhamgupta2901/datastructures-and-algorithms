@@ -2,11 +2,15 @@ package datastructures.interfaces;
 
 public interface IStack {
 
-    boolean push(int value);
+    boolean push(int element);
 
     int pop();
 
     int peek();
 
-    boolean isEmpty();
+    boolean empty();
+
+    int size();
+
+    int search(int element);
 }
