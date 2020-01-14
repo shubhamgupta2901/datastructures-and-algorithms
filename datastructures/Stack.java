@@ -9,20 +9,23 @@ import java.util.EmptyStackException;
  * for performing operations.
  * Stack ADT can be implemented using several data structures most commonly using dynamic arrays
  * and linked lists. This is Linked List implementation of stacks.
+ *
+ * The idea is to maintain a linked list and insert element at beginning on push operations.
+ * and remove element from beginning on pop operations. This way we get to maintain LIFO order.
  */
 public class Stack implements IStack {
 
-    private class ListNode{
+    private class StackNode{
         int data;
-        ListNode next;
+        StackNode next;
 
-        ListNode(int data){
+        StackNode(int data){
             this.data = data;
         }
     }
 
     private int size;
-    private ListNode head;
+    private StackNode head;
 
     public Stack(){
         this.size = 0;
@@ -99,7 +102,7 @@ public class Stack implements IStack {
     @Override
     public int search(int element) {
         int i = 1;
-        ListNode curr = head;
+        StackNode curr = head;
         while (curr!=null){
             if(curr.data == element)
                 return i;
@@ -110,7 +113,7 @@ public class Stack implements IStack {
     }
 
     private void addFirst(int element){
-        ListNode node = new ListNode(element);
+        StackNode node = new StackNode(element);
         if(head == null){
             head = node;
         }else{
@@ -122,7 +125,7 @@ public class Stack implements IStack {
 
     private int removeFirst(){
         int el = head.data;
-        ListNode curr = head;
+        StackNode curr = head;
         head = curr.next;
         curr.next = null;
         size--;
