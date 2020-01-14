@@ -6,34 +6,32 @@ import datastructures.LinkedList;
 public class LinkedListMain {
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
-        list.insertNodeAtBegining(4);
-        list.insertNodeAtBegining(3);
-        list.inserNodeAtEnd(5);
-        list.inserNodeAtEnd(6);
-        list.insertNodeAtPosition(2,0);
-        list.insertNodeAtPosition(7,5);
-        list.insertNodeAtPosition(0,0);
-        list.insertNodeAtPosition(1,1);
-        list.traverseLinkedList();
+        list.addFirst(4);
+        list.addFirst(3);
+        list.addLast(5);
+        list.addLast(6);
+        list.add(0,2);
+        list.add(5,7);
+        list.add(0,0);
+        list.add(1,1);
 
-        boolean found = list.searchNode(0) != null ? true :false;
+        int el = list.get(list.size()-1);
+
+        boolean found = list.contains(0);
         System.out.println("found 0:"+found);
-        found = list.searchNode(7) != null ? true :false;
+        found = list.contains(7);
         System.out.println("found 7:"+found);
-        found = list.searchNode(9) != null ? true :false;
+        found = list.contains(9);
         System.out.println("found 9:"+found);
 
-        list.deleteNode(0);
-        list.traverseLinkedList();
-        list.deleteNode(1);
-        list.traverseLinkedList();
-        list.deleteNode(7);
-        list.traverseLinkedList();
-        list.deleteNode(4);
-        list.traverseLinkedList();
-        list.deleteNode(5);
-        list.traverseLinkedList();
-        list.deleteNode(9);
-        list.traverseLinkedList();
+        int index = list.indexOf(4);
+        index = list.indexOf(8);
+
+        list.removeElement(0);
+        list.removeElement(7);
+        list.removeElement(3);
+        list.removeAtIndex(2);
+        list.removeFirst();
+        list.removeLast();
     }
 }
