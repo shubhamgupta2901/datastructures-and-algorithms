@@ -50,12 +50,13 @@ public class DepthFirstTraversal {
      * Iterative approach to perform traversal
      * For graph of n vertices
      * Time Complexity: O(n^2)
-     * Space Complexity: O(n) for recursive stack.
+     * Space Complexity: O(n) for stack because at any time there won't be more than n elements in stack.
      * This time complexity can be improved if we use adjacency list to represent graphs
      * @param graph
      * @param startingVertex
      * @return
      */
+    @Deprecated
     public List<Integer> performIterativeTraversal(Graph graph, int startingVertex){
         List<Integer> traversal = new ArrayList<>();
         if(graph.getVertexCount()<= 0 || startingVertex >= graph.getVertexCount())
@@ -82,6 +83,39 @@ public class DepthFirstTraversal {
             if(i == graph.getVertexCount())
                 stack.pop();
 
+        }
+        return traversal;
+
+    }
+
+    /**
+     * Iterative approach to perform traversal
+     * For graph of n vertices
+     * Time Complexity: O(n^2)
+     * Space Complexity: O(n) for stack. [Need to recheck]
+     * This time complexity can be improved if we use adjacency list to represent graphs
+     * @param graph
+     * @param startingVertex
+     * @return
+     */
+    public List<Integer> iterativeTraversal(Graph graph, int startingVertex){
+        List<Integer> traversal = new ArrayList<>();
+        if(graph.getVertexCount()<= 0 || startingVertex >= graph.getVertexCount())
+            return traversal;
+        boolean[] visited = new boolean[graph.getVertexCount()];
+        Stack<Integer> stack = new Stack<>();
+        stack.push(startingVertex);
+        while(!stack.isEmpty()){
+            int vertex = stack.pop();
+            if(!visited[vertex]){
+                traversal.add(vertex);
+                visited[vertex] = true;
+            }
+
+            for(int i = graph.getVertexCount()-1; i>=0; i--){
+                if(graph.isEdge(vertex,i) && !visited[i])
+                    stack.push(i);
+            }
         }
         return traversal;
 

@@ -45,6 +45,7 @@ public class GraphMain {
         Utils.printList(dfs.performTraversal(graph,0));
         System.out.println("DFS (iterative): ");
         Utils.printList(dfs.performIterativeTraversal(graph,0));
+        Utils.printList(dfs.iterativeTraversal(graph,0));
     }
 
     public void testGraph2(BreadthFirstTraversal bfs, DepthFirstTraversal dfs){
@@ -64,6 +65,7 @@ public class GraphMain {
         Utils.printList(dfs.performTraversal(graph,2));
         System.out.println("DFS (iterative): ");
         Utils.printList(dfs.performIterativeTraversal(graph,2));
+        Utils.printList(dfs.iterativeTraversal(graph,2));
     }
 
     public void testGraph3(BreadthFirstTraversal bfs, DepthFirstTraversal dfs){
@@ -107,6 +109,7 @@ public class GraphMain {
         Utils.printList(dfs.performTraversal(graph,0));
         System.out.println("DFS (iterative): ");
         Utils.printList(dfs.performIterativeTraversal(graph,0));
+        Utils.printList(dfs.iterativeTraversal(graph,0));
 
     }
 }
