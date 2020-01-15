@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
@@ -70,11 +71,62 @@ public class NaryTreePreorderTraversal {
 
 
     /**
-     * TODO:
      * Approach 3: Iterative preorder
+     * Attempting something very similar to dfs.
+     * Performs really badly though time complexity wise.
      */
-    public List<Integer> iterativePreorder(Node root) {
-        return null;
+    public List<Integer> iterativePreorder1(Node root) {
+        List<Integer> traversal = new ArrayList<>();
+        if(root== null)
+            return traversal;
+        HashSet<Node> visitedNodes = new HashSet<>();;
+        Stack<Node> stack = new Stack();
+
+        stack.push(root);
+        traversal.add(root.val);
+
+        while(!stack.isEmpty()){
+            Node node = stack.peek();
+            int i;
+            for(i = 0; i<node.children.size(); i++){
+                Node child = node.children.get(i);
+                if(!visitedNodes.contains(child)){
+                    stack.push(child);
+                    traversal.add(child.val);
+                    visitedNodes.add(child);
+                    break;
+                }
+            }
+
+            if(i == node.children.size())
+                stack.pop();
+        }
+
+        return traversal;
+    }
+
+
+    /**
+     * Approach 4: A better and clean dfs.
+     * Since unlike graphs, trees don't have cycles we don't need
+     * @param root
+     * @return
+     * Time Complexity: O(n)
+     * Space Complexity: O(n) for using stack.
+     */
+    public List<Integer> iterativePreorder(Node root){
+        List<Integer> traversal = new ArrayList<>();
+        if(root == null)
+            return traversal;
+        Stack<Node> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            Node node = stack.pop();
+            traversal.add(node.val);
+            for(int i = node.children.size()-1; i>=0; i--)
+                stack.push(node.children.get(i));
+        }
+        return traversal;
     }
 
 }
