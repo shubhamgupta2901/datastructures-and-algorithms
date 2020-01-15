@@ -19,10 +19,12 @@ public class BreadthFirstTraversal {
 
     /**
      * Note it is assumed that all vertices are reachable from the starting vertex (Connected graphs).
+     * A graph is disconnected if at least two vertices of the graph are not connected by a path.
      * For disconnected graphs we will have to perform BFS for all nodes till all nodes are visited.
      * Time complexity of BFS depends on the data structure we are using.
      * For a graph with n vertices represented by Adjacency Matrix
      * Time Complexity: O(n^2)
+     * Space Complexity: O(n) because the queue and visited set will at max store all the vertices.
      * @param graph
      * @param startingVertex
      * @return
@@ -47,6 +49,42 @@ public class BreadthFirstTraversal {
                     queue.add(i);
                     traversal.add(i);
                     visitedVertices.add(i);
+                }
+            }
+        }
+        return traversal;
+    }
+
+    /**
+     * BFS traversal for a disconnected graph.
+     * A graph is disconnected if at least two vertices of the graph are not connected by a path.
+     * Time Complexity: O(n^3) because after every BFS traversal,
+     * we are checking we
+     * @param graph
+     * @return
+     */
+    public List<Integer> performTraversalForDisconnectedGraph(Graph graph){
+        List<Integer> traversal = new ArrayList<>();
+        if(graph.getVertexCount() <=0)
+            return traversal;
+        boolean[] visitedVertices = new boolean[graph.getVertexCount()];
+        for(int i = 0 ; i<visitedVertices.length; i++){
+            int startVertex = i;
+            if(visitedVertices[i])
+                continue;
+            Queue<Integer> queue = new LinkedList<>();
+            queue.add(startVertex);
+            traversal.add(startVertex);
+            visitedVertices[startVertex]=true;
+
+            while(!queue.isEmpty()){
+                int vertex = queue.remove();
+                for(int j = 0; j<graph.getVertexCount(); j++){
+                    if(graph.isEdge(vertex,j) && visitedVertices[j] ==false){
+                        queue.add(j);
+                        traversal.add(j);
+                        visitedVertices[j] =true;
+                    }
                 }
             }
         }
