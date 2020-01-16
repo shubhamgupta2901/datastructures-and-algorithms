@@ -35,7 +35,7 @@ public class CircularQueue implements IQueue {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    @Override
+
     public boolean enqueue(int value) {
         if(isFull())
             return false;
@@ -54,7 +54,7 @@ public class CircularQueue implements IQueue {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    @Override
+
     public int dequeue() {
         if(isEmpty())
             return Integer.MIN_VALUE;
@@ -62,6 +62,16 @@ public class CircularQueue implements IQueue {
         front = ++front%capacity;
         size--;
         return element;
+    }
+
+    @Override
+    public boolean add(int value) {
+        return false;
+    }
+
+    @Override
+    public int remove() {
+        return 0;
     }
 
     /**
@@ -86,6 +96,11 @@ public class CircularQueue implements IQueue {
     @Override
     public boolean isEmpty() {
         return (size==0);
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     /**

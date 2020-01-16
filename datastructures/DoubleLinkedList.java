@@ -1,172 +1,245 @@
 package datastructures;
 
-public class DoubleLinkedList {
+import datastructures.interfaces.ILinkedList;
 
-    class ListNode{
-        public int data;
-        public ListNode prev;
-        public ListNode next;
+import java.util.NoSuchElementException;
 
-        public ListNode(int data) {
+public class DoubleLinkedList implements ILinkedList {
+
+    private class ListNode{
+        int data;
+        ListNode prev;
+        ListNode next;
+
+        ListNode(int data){
             this.data = data;
-            this.prev = null;
-            this.next = null;
+            this.prev = this.next = null;
         }
     }
-    private ListNode head;
+    private ListNode head, tail;
+    private int size;
 
-    public DoubleLinkedList() {
-        head = null;
+    public DoubleLinkedList(){
+        this.size = 0;
+        this.head = this.tail = null;
     }
 
     /**
-     * Insert node at the beginning of the list
-     * @param data
-     * @return head
+     * Appends the specified element to the end of this list.
+     * Time Complexity: O(1)
+     */
+    @Override
+    public void add(int element) {
+        ListNode node = new ListNode(element);
+        if(head == null)
+            head = tail = node;
+        else {
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
+        size++;
+    }
+
+    /**
+     * Inserts the specified element at the specified position in this list.
+     * @param index 0-based index
+     * @throws  IndexOutOfBoundsException if index is not valid
+     * Time Complexity: O(n)
+     */
+    @Override
+    public void add(int index, int element) {
+        if(index<0 || index> size)
+            throw new IndexOutOfBoundsException();
+        if(index == 0)
+            addFirst(element);
+        else if(index == size)
+            addLast(element);
+        else {
+            ListNode node = new ListNode(element);
+            ListNode ptr = head;
+            for(int i = 0; i<index; i++)
+                ptr = ptr.next;
+            ListNode prvPtr = ptr.prev;
+            prvPtr.next = node;
+            node.prev = prvPtr;
+
+            node.next = ptr;
+            ptr.prev = node;
+            size++;
+        }
+    }
+
+    /**
+     * Removes all of the elements from this list. The list will be empty after this call returns.
      * Time complexity: O(1)
-     * Space complexity: O(1)
      */
-    public ListNode insertNodeAtBeginning(int data){
-        ListNode node = new ListNode(data);
-        //Empty list
-        if(head == null){
-            head = node;
-            return head;
-        }
-        head.prev = node;
-        node.next = head;
-        head = node;
-        return head;
+    @Override
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     /**
-     * Insert node at the end of the list
-     * @param data
-     * @return head
+     * Returns true if this list contains the specified element.
      * Time Complexity: O(n)
-     * Space Complexity: O(1)
      */
-    public ListNode insertNodeAtEnd(int data){
-        ListNode node = new ListNode(data);
-        //Empty list
-        if(head==null){
-            head = node;
-            return head;
-        }
-        ListNode curr = head;
-        while (curr.next!=null){
-            curr = curr.next;
-        }
-        curr.next = node;
-        node.prev = curr;
-        return head;
-    }
-
-    /**
-     * Insert a node at a specific position
-     * @param data data for new node
-     * @param position position at which the node has to be inserted, position 0 means at the start and so on
-     *                 Do not insert if position is larger than size of list.
-     * @return head
-     * Time Complexity: O(n)
-     * Space Complexity: O(1)
-     */
-    public ListNode insertNodeAtPosition(int data, int position){
-        //Insert at the beginning
-        if(position == 0)
-            return insertNodeAtBeginning(data);
-        //If list is empty and position is not 0, node can not be inserted
-        if(head == null)
-            return null;
-        ListNode node = new ListNode(data);
-        ListNode curr = head;
-        for(int i = 1; i<position; i++){
-            //position greater than size of list, can not insert
-            if(curr==null)
-                break;
-            curr = curr.next;
-        }
-        if(curr!=null){
-            node.prev = curr;
-            node.next = curr.next;
-            curr.next = node;
-            if(node.next!=null)
-                node.next.prev = node;
-        }
-        return head;
-
-    }
-
-    /**
-     * Search the first node with given data in list
-     * @param data data of node to be searched.
-     * @return searched node if found, else null
-     * Time Complexity: O(n)
-     * Space Complexity: O(1)
-     */
-    public ListNode searchNode (int data){
-        if(head == null)
-            return null;
+    @Override
+    public boolean contains(int element) {
         ListNode ptr = head;
-        while (ptr!=null){
-            if(ptr.data == data)
-                return ptr;
+        while(ptr!=null){
+            if(ptr.data == element)
+                return true;
             ptr = ptr.next;
         }
-        return null;
+        return false;
     }
 
     /**
-     * delete a node with given value of data
-     * @param value
-     * @return head of linked list
+     * Returns the element at the specified position in this list.
+     * Note this operation takes constant time in {@link ArrayList}
+     * but since memory locations of nodes are not contiguous in linked list
+     * we need to traverse the entire linked list.
+     *
      * Time Complexity: O(n)
-     * Space Complexity: O(1)
+     * @throws IndexOutOfBoundsException
      */
-    public ListNode deleteNode (int value){
-        if(head == null)
-            return null;
-        ListNode ptr = head;
-        while (ptr!=null){
-            if(ptr.data ==value)
-                break;
-            ptr = ptr.next;
-        }
-        //Node to be deleted not in list
-        if(ptr==null)
-            return head;
-        if(ptr.prev == null && ptr.next == null){
-            //Delete the only node in list
-            head =null;
-        } else if(ptr.prev ==null){
-            //Delete the first node in list
-            head = ptr.next;
-            ptr.next.prev =null;
-            ptr.next = null;
+    @Override
+    public int get(int index) {
+        if(index<0 || index >= size)
+            throw new IndexOutOfBoundsException(index +" is invalid index.");
+        ListNode ptr;
+        if(index <= size/2){
+            ptr = head;
+            for(int i = 0 ; i< index; i++)
+                ptr = ptr.next;
+            return ptr.data;
         }else {
-            ptr.prev.next = ptr.next;
-            //If node is not the last node in list
-            if(ptr.next!=null)
-                ptr.next.prev = ptr.prev;
-            ptr.next = null;
-            ptr.prev = null;
+            ptr = tail;
+            for(int i = size-1; i>index; i--)
+                ptr = ptr.prev;
+            return ptr.data;
         }
-        return head;
     }
 
     /**
-     * Traverse the linked list and print every data of every node.
+     * Returns the index of the first occurrence of the specified element in this list,
+     * or -1 if this list does not contain the element.
+     * @param element
+     * @return
      * Time Complexity: O(n)
-     * Space Complexity:O(1)
      */
-    public void traverseLinkedList (){
-        ListNode pointer = head;
-        while (pointer!=null){
-            System.out.print(pointer.data+" -> ");
-            pointer = pointer.next;
+    @Override
+    public int indexOf(int element) {
+        ListNode ptr = head;
+        for(int i = 0; i<size; i++){
+            if(ptr.data == element)
+                return i;
+            ptr = ptr.next;
         }
-        System.out.print("NULL");
-        System.out.println("");
+        return -1;
+    }
+
+    /**
+     * Returns true if this list contains no elements.
+     * Time Complexity: O(1)
+     */
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public int removeAtIndex(int index) {
+        return 0;
+    }
+
+    @Override
+    public boolean removeElement(int element) {
+        return false;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+
+    @Override
+    public void addFirst(int element) {
+        ListNode node = new ListNode(element);
+        if(head == null){
+            head = tail = node;
+        }
+        else{
+            node.next = head;
+            head.prev = node;
+            head = node;
+        }
+        size++;
+    }
+
+    @Override
+    public void addLast(int element) {
+        add(element);
+    }
+
+    /**
+     * Returns the first element in this list.
+     * Time Complexity: O(1)
+     * @throws NoSuchElementException
+     */
+    @Override
+    public int getFirst() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return head.data;
+    }
+
+    /**
+     * Returns the last element in this list.
+     * Time Complexity: O(1)
+     * @throws NoSuchElementException
+     */
+    @Override
+    public int getLast() {
+        if(size == 0)
+            throw new NoSuchElementException();
+        return tail.data;
+    }
+
+    /**
+     * Removes the first element from this list.
+     * Time complexity: O(1)
+     * @throws NoSuchElementException
+     */
+    @Override
+    public void removeFirst() {
+        if(head == null)
+            throw new NoSuchElementException();
+        if(head == tail){
+            head = tail = null;
+        }else {
+            ListNode ptr = head.next;
+            head.next = null;
+            ptr.prev = null;
+            head = ptr;
+        }
+        size--;
+    }
+
+    /**
+     * Removes the last element from this list.
+     * Time Complexity: O(1)
+     * Note this took O(n) in single linked list.
+     * @throws NoSuchElementException
+     */
+    @Override
+    public void removeLast() {
+        if(head == null)
+            throw new NoSuchElementException();
+
     }
 
 }

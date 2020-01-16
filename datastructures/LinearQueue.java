@@ -38,7 +38,7 @@ public class LinearQueue implements IQueue {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    @Override
+
     public boolean enqueue(int value) {
         if(isFull())
             return false;
@@ -54,11 +54,21 @@ public class LinearQueue implements IQueue {
      * Time Complexity: O(1)
      * Space Complexity: O(1)
      */
-    @Override
+
     public int dequeue() {
         if(isEmpty())
             return Integer.MIN_VALUE;
         return arr[front++];
+    }
+
+    @Override
+    public boolean add(int value) {
+        return false;
+    }
+
+    @Override
+    public int remove() {
+        return 0;
     }
 
     /**
@@ -85,6 +95,11 @@ public class LinearQueue implements IQueue {
         if((front ==-1 && rear == -1) || front > rear)
             return true;
         return false;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     /**
