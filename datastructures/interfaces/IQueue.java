@@ -2,11 +2,14 @@ package datastructures.interfaces;
 
 public interface IQueue {
 
-    boolean enqueue(int value);
+    boolean add(int value);
 
-    int dequeue();
+    int remove();
 
     int peek();
 
     boolean isEmpty();
+
+    int size();
+
 }
