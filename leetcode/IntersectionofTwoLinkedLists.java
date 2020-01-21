@@ -82,4 +82,51 @@ public class IntersectionofTwoLinkedLists {
         }
         return null;
     }
+
+
+    /**
+     * Best approach so far. Idea is to find the lengths of both linked lists in one pass.
+     * Keep the pointer at head for shorter linked list, for longer linked list move it forward
+     * by the difference in their lengths.
+     * Now in second pass we can keep checking if the two nodes are similar otherwise move them to their
+     * respective next nodes.
+     * Time Complexity: O(m+n)
+     * Space Complexity: O(1)
+     */
+    public ListNode getIntersectionNodeApproach3(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null)
+            return null;
+        int lenA = 0, lenB = 0;
+        ListNode ptrA = headA, ptrB = headB;
+        while(ptrA!=null || ptrB!=null){
+            if(ptrA!=null){
+                lenA++;
+                ptrA= ptrA.next;
+            }
+            if(ptrB!=null){
+                lenB++;
+                ptrB = ptrB.next;
+            }
+        }
+
+        ptrA = headA;
+        ptrB = headB;
+
+        if(lenA>lenB){
+            for(int i = 0 ; i<lenA-lenB; i++)
+                ptrA = ptrA.next;
+        }else if(lenB> lenA){
+            for(int i = 0; i<lenB-lenA; i++)
+                ptrB = ptrB.next;
+        }
+
+        while(ptrA!=null && ptrB!=null){
+            if(ptrA == ptrB)
+                return ptrA;
+            ptrA = ptrA.next;
+            ptrB = ptrB.next;
+        }
+
+        return null;
+    }
 }
