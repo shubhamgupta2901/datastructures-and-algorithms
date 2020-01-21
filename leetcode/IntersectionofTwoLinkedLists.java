@@ -61,4 +61,25 @@ public class IntersectionofTwoLinkedLists {
         }
         return null;
     }
+
+    /**
+     * For every node in first linked list, check whether second linked list has it.
+     * Time Complexity: O(mn)
+     * Space complexity: O(1)
+     */
+    public ListNode getIntersectionNodeApproach2(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null)
+            return null;
+        ListNode nodeI = headA, nodeJ;
+        while(nodeI!=null){
+            nodeJ = headB;
+            while(nodeJ!=null){
+                if(nodeI ==nodeJ)
+                    return nodeI;
+                nodeJ = nodeJ.next;
+            }
+            nodeI = nodeI.next;
+        }
+        return null;
+    }
 }
