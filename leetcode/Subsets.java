@@ -37,7 +37,7 @@ public class Subsets {
      * Time Complexity: O(n2^n)
      * Space Complexity: O(2^n) storing number of solutions for subsets
      */
-    public List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> subsets1(int[] nums) {
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> emptySubset = new ArrayList<>();
         subsets.add(emptySubset);
@@ -61,9 +61,45 @@ public class Subsets {
     }
 
 
+    /**
+     * Approach 2: recursive solution
+     * For every num in nums, we make a choice of either selecting it for subset or skipping it.
+     * When we have made choices for all the indices we will have a subset.
+     * For an array of N numbers, and for each number having to making 2 decisions, we will have to make 2^N
+     * such decisions and we will have 2^N subsets.
+     *
+     * This is a very slow solution, perhaps a backtracking solution as mentioned in
+     * leetcode solutions might be faster.
+     * Time Complexity: O(n2^n)
+     * Space Complexity: O(2^n) storing number of solutions for subsets
+     *
+     */
+    public List<List<Integer>> subsets2(int[] nums) {
+        List<List<Integer>> subsets = new ArrayList<>();
+        List<Integer> emptySubset = new ArrayList<>();
+        helper(nums,0,emptySubset, subsets);
+        return subsets;
+    }
+
+    private void helper(int[] nums, int index, List<Integer> subset, List<List<Integer>> subsets){
+        //When all indices have been visited, add current subset to list of subsets
+        if(index>=nums.length){
+            subsets.add(subset);
+            return;
+        }
+        //Skip current index
+        helper(nums, index+1, subset, subsets);
+        //Selecting current index
+        subset = new ArrayList<>(subset);
+        subset.add(nums[index]);
+        helper(nums,index+1, subset, subsets);
+        return;
+    }
+
+
     public static void main(String[] args) {
         Subsets demo = new Subsets();
-        List<List<Integer>> subsets = demo.subsets(new int[]{1,2,3});
+        List<List<Integer>> subsets = demo.subsets2(new int[]{1,2,3});
         for(int i = 0; i<subsets.size(); i++){
             List<Integer> subset = subsets.get(i);
             System.out.print("{ ");
