@@ -44,22 +44,13 @@ public class Subsets {
         for(int i = 0; i<nums.length; i++){
             int size = subsets.size();
             for(int j = 0; j<size; j++){
-                List<Integer> newSubset = deepCopy(subsets.get(j));
+                List<Integer> newSubset = new ArrayList<>(subsets.get(j));
                 newSubset.add(nums[i]);
                 subsets.add(newSubset);
             }
         }
         return subsets;
     }
-
-    private List<Integer> deepCopy(List<Integer> originalList){
-        List<Integer> copiedList = new ArrayList<>();
-        for(int i = 0; i<originalList.size(); i++){
-            copiedList.add(originalList.get(i));
-        }
-        return copiedList;
-    }
-
 
     /**
      * Approach 2: recursive solution
@@ -99,7 +90,7 @@ public class Subsets {
 
     public static void main(String[] args) {
         Subsets demo = new Subsets();
-        List<List<Integer>> subsets = demo.subsets2(new int[]{1,2,3});
+        List<List<Integer>> subsets = demo.subsets1(new int[]{1,2,3,4});
         for(int i = 0; i<subsets.size(); i++){
             List<Integer> subset = subsets.get(i);
             System.out.print("{ ");
