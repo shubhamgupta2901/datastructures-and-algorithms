@@ -24,11 +24,11 @@ class Knapsack {
      * 1. Generate all the possible subsets of indexes of weights: O(2^n)
      * 2. Find the valid subsets which do not violate the capacity
      * 3. Get the maximumProfit subset from valid subsets.
-     * Time complexity: O(n2^n) : there will be 2^n subsets and for each subset can have at max n elements
+     * Time complexity: O(2^n) : there will be 2^n subsets and for each subset can have at max n elements
      * Space complexity: O(2^n): Storing the 2^n subsets.
      */
-    private int solveKnapsack(int[] profits, int[] weights, int capacity){
-        List<List<Integer>> subsets = getValidWeightSets(profits, weights, capacity);
+    private int solveKnapsackApproach1(int[] profits, int[] weights, int capacity){
+        List<List<Integer>> subsets = getValidWeightSets(weights);
         int maxProfit = 0;
         for(int i = 0; i<subsets.size(); i++){
             int totalProfit = 0, totalWeight = 0;
@@ -47,7 +47,7 @@ class Knapsack {
         return maxProfit;
     }
 
-    private List<List<Integer>>  getValidWeightSets(int[] profits, int[] weights, int capacity){
+    private List<List<Integer>>  getValidWeightSets(int[] weights){
         List<List<Integer>> subsets = new ArrayList<>();
         List<Integer> emptySubset = new ArrayList<>();
         subsets.add(emptySubset);
@@ -62,13 +62,36 @@ class Knapsack {
         return subsets;
     }
 
+    /**
+     * Approach 2: A better Brute force approach : recursive
+     * Time Complexity: O(2^​n)
+     * ​​Space complexity is O(n). This space will be used to store the recursion stack.
+     * Since our recursive algorithm works in a depth-first fashion,
+     * which means, we can’t have more than ‘n’ recursive calls on the call stack at any time.
+     */
+    private int solveKnapsackApproach2(int[] profits, int[] weights, int capacity){
+        return knapsackHelper(profits,weights,capacity,0);
+    }
+
+    private int knapsackHelper(int[] profits, int[] weights, int capacity, int index){
+        if(index>= weights.length || capacity<= 0 )
+            return 0;
+
+        int profit1 = knapsackHelper(profits, weights, capacity, index+1);
+        int profit2 = 0;
+        if(weights[index]<= capacity)
+          profit2 = profits[index] + knapsackHelper(profits, weights,capacity-weights[index], index+1);
+        return Math.max(profit1, profit2);
+    }
+
+    
     public static void main(String[] args) {
         Knapsack ks = new Knapsack();
         int[] profits = {1, 6, 10, 16};
         int[] weights = {1, 2, 3, 5};
-        int maxProfit = ks.solveKnapsack(profits, weights, 7);
+        int maxProfit = ks.solveKnapsackApproach2(profits, weights, 7);
         System.out.println("Total knapsack profit ---> " + maxProfit);
-        maxProfit = ks.solveKnapsack(profits, weights, 6);
+        maxProfit = ks.solveKnapsackApproach2(profits, weights, 6);
         System.out.println("Total knapsack profit ---> " + maxProfit);
     }
 }
