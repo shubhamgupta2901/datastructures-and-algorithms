@@ -1,5 +1,6 @@
 package leetcode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class MajorityElement {
      * Time Complexity: O(n)
      * Space Complexity: O(n) for storing ~n/2 elements (at max)
      */
-    public int majorityElement(int[] nums) {
+    public int majorityElement1(int[] nums) {
         HashMap<Integer,Integer> map = new HashMap<Integer, Integer>();
         for(int i = 0; i<nums.length; i++){
             int value = map.getOrDefault(nums[i],0);
@@ -39,4 +40,17 @@ public class MajorityElement {
         }
         return -1;
     }
+
+    /**
+     * Approach 2: Sort the array.
+     * then the majority element can be found at n/2 index.
+     * Time Complexity: O(nlogn)
+     * Space Complexity: O(1)
+     */
+    public int majorityElement2(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length/2];
+    }
+
+
 }
