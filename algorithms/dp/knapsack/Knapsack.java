@@ -106,15 +106,13 @@ class Knapsack {
             return cache[currentIndex][capacity];
 
         int profit1  = knapsackHelper(profits, weights, capacity, currentIndex+1, cache);
-        cache[currentIndex+1][capacity] = profit1;
-
         int profit2 = 0;
-        if(capacity>= weights[currentIndex]){
+        if(capacity>= weights[currentIndex])
             profit2 = profits[currentIndex] + knapsackHelper(profits, weights, capacity-weights[currentIndex],currentIndex+1, cache);
-            cache[currentIndex+1][capacity-weights[currentIndex]] = profit2;
-        }
 
-        return Math.max(profit1, profit2);
+        int profit = Math.max(profit1, profit2);
+        cache[currentIndex][capacity] = profit;
+        return profit;
     }
 
     
@@ -122,9 +120,9 @@ class Knapsack {
         Knapsack ks = new Knapsack();
         int[] profits = {1, 6, 10, 16};
         int[] weights = {1, 2, 3, 5};
-        int maxProfit = ks.solveKnapsackApproach2(profits, weights, 7);
+        int maxProfit = ks.solveKnapsackApproach3(profits, weights, 7);
         System.out.println("Total knapsack profit ---> " + maxProfit);
-        maxProfit = ks.solveKnapsackApproach2(profits, weights, 6);
+        maxProfit = ks.solveKnapsackApproach3(profits, weights, 6);
         System.out.println("Total knapsack profit ---> " + maxProfit);
     }
 }
