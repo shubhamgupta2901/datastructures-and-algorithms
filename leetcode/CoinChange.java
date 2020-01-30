@@ -24,7 +24,7 @@ public class CoinChange {
      * Trying out all the combinations and finding the minimum number of coins required
      * Time limit exceeds for larger amounts
      */
-    public int coinChange(int[] coins, int amount) {
+    public int coinChangeApproach1(int[] coins, int amount) {
         return changeHelper(coins, amount);
     }
 
@@ -44,6 +44,40 @@ public class CoinChange {
         }
         return minChange == Integer.MAX_VALUE ? -1: minChange;
     }
+
+
+    /**
+     * Approach 2: DP: Memoizing brute force recursive solution using a cache array.
+     * Solution accepted but very slow. Will attempt tabulization too.
+     */
+    public int coinChange(int[] coins, int amount) {
+        Integer[] cache = new Integer[amount+1];
+        return changeHelper(coins, amount,cache);
+    }
+
+    private int changeHelper(int[] coins, int amount,Integer[] cache){
+        if(amount < 0 || coins.length == 0)
+            return -1;
+        if(amount == 0)
+            return 0;
+        if(cache[amount]!= null)
+            return cache[amount];
+        int minChange = Integer.MAX_VALUE;
+        for(int i = 0; i<coins.length;i++){
+            int change = changeHelper(coins, amount-coins[i],cache);
+            if(change==-1)
+                continue;
+            change = 1 + change;
+            if(change< minChange)
+                minChange = change;
+        }
+        minChange = (minChange == Integer.MAX_VALUE) ? -1: minChange;
+        cache[amount] = minChange;
+        return minChange;
+    }
+
+
+
 
     public static void main(String[] args) {
         int[] coins = new int[]{1,2,5};
