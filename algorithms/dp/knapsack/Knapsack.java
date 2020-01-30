@@ -91,6 +91,8 @@ class Knapsack {
      * return the results from memory if we encounter a problem that has already been solved.
      * Since we have two changing values (capacity and index) in our recursive function,
      * we can use a two-dimensional array to store the results of all the solved sub-problems.
+     * Time Complexity: O(N*C) where N is length of weights array, and C is capacity
+     * Space Complexity: O(N*C) for memoization array
      */
     private int solveKnapsackApproach3(int[] profits, int [] weights, int capacity){
         int [][] cache = new int[profits.length][capacity+1];
@@ -115,14 +117,40 @@ class Knapsack {
         return profit;
     }
 
+
+    /**
+     * Approach 4: Tabulization (Bottom up approach)
+     *
+     */
+    private int solveKnapsackApproach4(int[] profits, int[] weights, int capacity){
+        int[][]table = new int[profits.length][capacity+1];
+
+        for(int index = profits.length-1; index>=0; index--){
+            for(int c = 0; c<= capacity; c++){
+                int profit1 = get(table, index+1, c);
+                int profit2 = 0;
+                if(weights[index]<=c)
+                    profit2 = profits[index] + get(table, index+1, c-weights[index]);
+                table[index][c] = Math.max(profit1, profit2);
+            }
+        }
+        return table[0][capacity];
+
+    }
+
+    private int get(int[][] table, int i, int c){
+        if(i >= table.length || c<0)
+            return 0;
+        return table[i][c];
+    }
     
     public static void main(String[] args) {
         Knapsack ks = new Knapsack();
         int[] profits = {1, 6, 10, 16};
         int[] weights = {1, 2, 3, 5};
-        int maxProfit = ks.solveKnapsackApproach3(profits, weights, 7);
+        int maxProfit = ks.solveKnapsackApproach4(profits, weights, 7);
         System.out.println("Total knapsack profit ---> " + maxProfit);
-        maxProfit = ks.solveKnapsackApproach3(profits, weights, 6);
+        maxProfit = ks.solveKnapsackApproach4(profits, weights, 6);
         System.out.println("Total knapsack profit ---> " + maxProfit);
     }
 }
