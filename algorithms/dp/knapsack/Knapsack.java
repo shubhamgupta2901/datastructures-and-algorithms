@@ -70,17 +70,50 @@ class Knapsack {
      * which means, we can’t have more than ‘n’ recursive calls on the call stack at any time.
      */
     private int solveKnapsackApproach2(int[] profits, int[] weights, int capacity){
-        return knapsackHelper(profits,weights,capacity,0);
+        return knapsackHelper(profits,weights, capacity, 0);
     }
 
-    private int knapsackHelper(int[] profits, int[] weights, int capacity, int index){
-        if(index>= weights.length || capacity<= 0 )
+    private int knapsackHelper(int [] profits, int[] weights, int capacity, int index){
+        if(capacity == 0 || index == weights.length)
             return 0;
-
         int profit1 = knapsackHelper(profits, weights, capacity, index+1);
         int profit2 = 0;
-        if(weights[index]<= capacity)
-          profit2 = profits[index] + knapsackHelper(profits, weights,capacity-weights[index], index+1);
+        if(capacity >= weights[index])
+            profit2 = knapsackHelper(profits, weights,capacity-weights[index], index+1) + profits[index];
+        return Math.max(profit1, profit2);
+    }
+
+    /**
+     * Approach 3: top down dynamic programming
+     * Recusive solution as approach 2 with memoization.
+     * For overlapping subproblems, we can use memoization to solve them.
+     * Memoization is when we store the results of all the previously solved sub-problems and
+     * return the results from memory if we encounter a problem that has already been solved.
+     * Since we have two changing values (capacity and index) in our recursive function,
+     * we can use a two-dimensional array to store the results of all the solved sub-problems.
+     */
+    private int solveKnapsackApproach3(int[] profits, int [] weights, int capacity){
+        int [][] cache = new int[profits.length][capacity+1];
+        return knapsackHelper(profits, weights, capacity, 0, cache);
+    }
+
+    private int knapsackHelper(int [] profits, int[] weights, int capacity, int currentIndex, int[][] cache){
+        if(capacity == 0 || currentIndex == profits.length){
+            return 0;
+        }
+
+        if(cache[currentIndex][capacity] != 0)
+            return cache[currentIndex][capacity];
+
+        int profit1  = knapsackHelper(profits, weights, capacity, currentIndex+1, cache);
+        cache[currentIndex+1][capacity] = profit1;
+
+        int profit2 = 0;
+        if(capacity>= weights[currentIndex]){
+            profit2 = profits[currentIndex] + knapsackHelper(profits, weights, capacity-weights[currentIndex],currentIndex+1, cache);
+            cache[currentIndex+1][capacity-weights[currentIndex]] = profit2;
+        }
+
         return Math.max(profit1, profit2);
     }
 
