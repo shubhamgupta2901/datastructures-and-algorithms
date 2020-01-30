@@ -40,4 +40,28 @@ public class HouseRobber {
         int profit2 = nums[index]+ robHelper(nums, index+2);
         return Math.max(profit1, profit2);
     }
+
+    /**
+     * Approach2: DP memoization of approach 1.
+     * Solution is correct for even large arrays.
+     * Except one edge case: A large array containing only zeros
+     * Time Complexity: ?
+     * Space Complexity: O(n)
+     */
+    public int robApproach2(int[] nums) {
+        int[] cache = new int[nums.length];
+        return robHelper(nums, 0, cache);
+    }
+
+    private int robHelper(int[]nums, int index, int[] cache){
+        if(index >= nums.length)
+            return 0;
+        if(cache[index]!=0)
+            return cache[index];
+        int profit1 = robHelper(nums, index+1, cache);
+        int profit2 = nums[index]+ robHelper(nums, index+2,cache);
+        int profit = Math.max(profit1, profit2);
+        cache[index] = profit;
+        return profit;
+    }
 }
