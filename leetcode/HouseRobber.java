@@ -64,4 +64,54 @@ public class HouseRobber {
         cache[index] = profit;
         return profit;
     }
+
+    /**
+     * DP memoization of approach 1.
+     * Takes care of edge cases by using Wrapper class arrays of primitive data types
+     * for memoization.
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public int robApproach3(int[] nums) {
+        Integer[] cache = new Integer[nums.length];
+        return robHelper(nums, 0, cache);
+    }
+
+    private int robHelper(int[]nums, int index, Integer[] cache){
+        if(index >= nums.length)
+            return 0;
+        if(cache[index]!=null)
+            return cache[index];
+        int profit1 = robHelper(nums, index+1, cache);
+        int profit2 = nums[index]+ robHelper(nums, index+2,cache);
+        int profit = Math.max(profit1, profit2);
+        cache[index] = profit;
+        return profit;
+    }
+
+    /**
+     * Approach 4: DP with tabulation
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public int rob(int[] nums) {
+        if(nums.length == 0)
+            return 0;
+        int n = nums.length;
+        int[] table = new int[n];
+        int profit1, profit2;
+        for(int index = n-1; index>=0; index--){
+            profit1 = nums[index] + get(table,index+2);
+            profit2 = get(table, index+1);
+            table[index] = Math.max(profit1, profit2);
+        }
+        return table[0];
+    }
+
+    private int get(int[]table, int index){
+        if(index>=table.length || index<0)
+            return 0;
+        return table[index];
+    }
+
 }
