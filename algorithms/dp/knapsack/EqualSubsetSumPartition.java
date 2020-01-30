@@ -25,26 +25,71 @@ public class EqualSubsetSumPartition {
      * Approach 1: Brute force recursive solution.
      * Time Complexity: O(2^n)
      * Space Complexity: O(n) because at any given time there may be n elements in recursive stack
+     *
+     * The idea behind this solution was to find the sum of all elements in an array,
+     * Try all combinations of partitioning the given numbers into two sets to see if any pair of sets has an equal sum.
+     * And in a way (similar to how we find subsets) I keep going through the array, either selecting the number
+     * or not selecting the number.
+     * When a number is selected, sum is reduced by the number , and remainder is increased by the number.
+     * For an array of size n there will be 2^n such possibilities.
+     * If for any such possibility where the sum is equal to remainder, we say that we have partitioned the array in two
+     * subsets such that the elements of elements in both subsets is equal.
+     *
+     * The solution seems to be right for the testcases I checked.
+     * However, for very large arrays, the timelimit exceeds as expected.
      */
-    private boolean solveEqualSubsetSumPartition(int[]set){
+    private boolean canPartitionApproach1(int[]set){
         int totalSum = 0;
         for(int i = 0; i<set.length; i++)
             totalSum+= set[i];
-        return helper(set,totalSum,0,0);
+        return canPartitionHelper(set,totalSum,0,0);
     }
 
-    private boolean helper(int[]set, int sum, int remainder, int index){
+    private boolean canPartitionHelper(int[]set, int sum, int remainder, int index){
         if(sum == remainder)
             return true;
         if(index>= set.length)
             return false;
-        return helper(set,sum-set[index],remainder+set[index], index+1) || helper(set, sum, remainder, index+1);
+        boolean case1 = canPartitionHelper(set,sum-set[index],remainder+set[index], index+1);
+        boolean case2 = canPartitionHelper(set, sum, remainder, index+1);
+        return  case1 || case2;
+    }
+
+    /**
+     * Another Brute force solution
+     * Assume if S represents the total sum of all the given numbers,
+     * then the two equal subsets must have a sum equal to S/2.
+     * This essentially transforms our problem to: "Find a subset of the given numbers that has a total sum of S/2".
+     * Time Complexity: O(2^n)
+     * Space Complexity: O(n)
+     */
+    private boolean canPartitionApproach2(int[] set){
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+=set[i];
+        //If the sum is odd, don't proceed
+        if(sum%2 != 0)
+            return false;
+        return canPartitionHelper(set, sum/2,0);
+    }
+
+    private boolean canPartitionHelper(int[] set, int sum, int index){
+        if(sum == 0)
+            return true;
+        if(index>= set.length)
+            return false;
+        if(sum >= set[index]){
+            if(canPartitionHelper(set, sum-set[index], index+1))
+                return true;
+        }
+        return canPartitionHelper(set, sum, index+1);
+
     }
 
     public static void main(String[] args) {
-        int[] set = new int[]{100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100};
+        int[] set = new int[]{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
         System.out.println(set.length);
-        boolean canPartition = new EqualSubsetSumPartition().solveEqualSubsetSumPartition(set);
+        boolean canPartition = new EqualSubsetSumPartition().canPartitionApproach1(set);
         System.out.println(canPartition);
     }
 }
