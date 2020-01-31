@@ -56,6 +56,7 @@ public class EqualSubsetSumPartition {
     }
 
     /**
+     * Approach 2:
      * Another Brute force solution
      * Assume if S represents the total sum of all the given numbers,
      * then the two equal subsets must have a sum equal to S/2.
@@ -83,7 +84,46 @@ public class EqualSubsetSumPartition {
                 return true;
         }
         return canPartitionHelper(set, sum, index+1);
+    }
 
+    /**
+     * Approach 3: Optimising approach 2 with DP memoization
+     * Time Complexity:O(N*S) where N is number of elements in set
+     * and S is the total sum of all the numbers.
+     * Space Compleixty: O(N*S) for memoization array
+     */
+    private boolean canPartitionApproach3(int[] set){
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum += set[i];
+        if(sum%2 !=0)
+            return false;
+        int halfSum = sum/2;
+        Boolean[][]cache = new Boolean[set.length][halfSum+1];
+        return canPartitionHelper(set,halfSum,0,cache);
+    }
+
+    private boolean canPartitionHelper(int[] set, int target, int index, Boolean[][] cache){
+        if(target == 0)
+            return true;
+        if(index>= set.length)
+            return false;
+        if(cache[index][target]!= null)
+            return cache[index][target];
+
+        boolean case1 = false;
+        if(target>=set[index])
+                case1 = canPartitionHelper(set, target-set[index], index+1, cache);
+
+        if(case1){
+            cache[index][target] = true;
+            return true;
+        }
+        else{
+            boolean case2 = canPartitionHelper(set,target,index+1, cache);
+            cache[index][target] = case2;
+            return case2;
+        }
     }
 
     public static void main(String[] args) {
