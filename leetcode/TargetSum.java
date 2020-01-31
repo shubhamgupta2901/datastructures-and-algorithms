@@ -52,4 +52,31 @@ public class TargetSum {
         helper(nums, target+nums[index],index+1, ways);
         helper(nums, target-nums[index], index+1, ways);
     }
+
+
+    /**
+     * Approach 2: Brute force recursion
+     * Same solution and logic as approach 1,
+     * Rather than creating an additional variable to keep track of number of ways,
+     * changed the code such that the helper function now returns the total number of ways.
+     * This looks intutive if I want to try optimization with memoization and tabulation.
+     * Time Complexity: O(2^n)
+     * Space Complexity: O(n)
+     */
+    public int findTargetSumWaysApproach2(int[] nums, int S) {
+        return helper(nums, S, 0);
+    }
+
+    private int helper(int[] nums, int target,int index){
+        if(index == nums.length){
+            if(target == 0)
+                return 1;
+            return 0;
+        }
+        int ways = helper(nums, target+nums[index],index+1) +
+                helper(nums, target-nums[index], index+1);
+        return ways;
+    }
+
+
 }
