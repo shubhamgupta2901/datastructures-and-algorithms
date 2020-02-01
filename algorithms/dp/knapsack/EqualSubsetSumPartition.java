@@ -126,6 +126,44 @@ public class EqualSubsetSumPartition {
         }
     }
 
+    /**
+     * Approach 4: Bottom up tabulation
+     * Remember tabulation is a bottom up approach. So we solve the smallest subproblems first
+     * and work our way to bigger subproblems.
+     * So table[i][target] here would be true, if we can make sum ‘target’ from the first ‘i’ numbers of set.
+     * This is different from how we approached memoization of recursive solution, which was top down approach,
+     * There we said cache[i][target] will be true if we can make sum 'target' from the numbers of set starting from index 'i'.
+     */
+    private boolean canParititionHelperApproach4(int[]set){
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+=0;
+        if(sum%2 !=0)
+            return false;
+        int target = sum/2;
+        boolean[][] table = new boolean[set.length][target+1];
+
+        // Solving the smallest subproblem: table[i][0] will always be true as we can always get '0' sum starting from any index.
+        for(int index = 0; index<set.length; index++)
+            table[index][0] = true;
+
+        // Solving the smallest subproblem: with only one number, we can form a subset only when the required target is equal to its value
+        for(int index=0;index<set.length; index++)
+            table[index][target] = set[index] == target ? true : false;
+
+        for (int index = 1; index <set.length; index++){
+            for(int t =1; t<= target; t++){
+                if(table[index-1][t])
+                    table[index][t] = true;
+                else if(t>=set[index]){
+                    table[index][t] = table[index-1][t-set[index]];
+                }else
+                    table[index][t] = false;
+            }
+        }
+        return table[set.length-1][target];
+
+    }
     public static void main(String[] args) {
         int[] set = new int[]{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
         System.out.println(set.length);
