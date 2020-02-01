@@ -19,7 +19,14 @@ package leetcode;
  * Explanation: The array cannot be partitioned into equal sum subsets.
  */
 public class PartitionEqualSubsetSum {
-    public boolean canPartition(int[] set) {
+    /**
+     * DP with memoization
+     * Time Complexity: O(N*S)
+     * Space Complexity: O(N*S)
+     * where N is total number of elements in set.
+     * and S is the sum of elements in set.
+     */
+    public boolean canPartitionApproach1(int[] set) {
         int sum = 0;
         for(int i = 0; i<set.length; i++)
             sum+=set[i];
@@ -49,4 +56,44 @@ public class PartitionEqualSubsetSum {
         cache[index][sum] = canPartition;
         return canPartition;
     }
+
+
+    /**
+     * DP Tabulization
+     * Time Complexity: O(N*S)
+     * Space Complexity: O(N*S)
+     * where N is total number of elements in set.
+     * and S is the sum of elements in set.
+     */
+    private boolean canParititionApproach2(int[]set){
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+=0;
+        if(sum%2 !=0)
+            return false;
+        int target = sum/2;
+        boolean[][] table = new boolean[set.length][target+1];
+
+        // Solving the smallest subproblem: table[i][0] will always be true as we can always get '0' sum starting from any index.
+        for(int index = 0; index<set.length; index++)
+            table[index][0] = true;
+
+        // Solving the smallest subproblem: with only one number, we can form a subset only when the required target is equal to its value
+        for(int index=0;index<set.length; index++)
+            table[index][target] = set[index] == target ? true : false;
+
+        for (int index = 1; index <set.length; index++){
+            for(int t =1; t<= target; t++){
+                if(table[index-1][t])
+                    table[index][t] = true;
+                else if(t>=set[index]){
+                    table[index][t] = table[index-1][t-set[index]];
+                }else
+                    table[index][t] = false;
+            }
+        }
+        return table[set.length-1][target];
+
+    }
+
 }

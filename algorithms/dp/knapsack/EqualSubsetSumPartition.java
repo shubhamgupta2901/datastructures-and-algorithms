@@ -133,8 +133,10 @@ public class EqualSubsetSumPartition {
      * So table[i][target] here would be true, if we can make sum ‘target’ from the first ‘i’ numbers of set.
      * This is different from how we approached memoization of recursive solution, which was top down approach,
      * There we said cache[i][target] will be true if we can make sum 'target' from the numbers of set starting from index 'i'.
+     * Time complexity: O(N*S)
+     * Space Complexity: O(N*S)
      */
-    private boolean canParititionHelperApproach4(int[]set){
+    private boolean canParititionApproach4(int[]set){
         int sum = 0;
         for(int i = 0; i<set.length; i++)
             sum+=0;
