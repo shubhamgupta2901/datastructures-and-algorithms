@@ -38,9 +38,9 @@ public class CountOfSubsetSum {
 
 
     /**
-     * Approach 1: Brute force solution
-     * Time complexity: O(2^n)
-     * Space Complexity: O(n)
+     * Approach 2: DP Memoization
+     * Time complexity:?
+     * Space Complexity:O(n*S)
      */
     private int countSubsetsApproach2(int[] set, int sum){
         Integer[][] cache = new Integer[set.length][sum+1];
@@ -64,5 +64,35 @@ public class CountOfSubsetSum {
     }
 
 
+    /**
+     * Approach 4: Bottom up tabulization
+     * Time complexity:O(n*S)
+     * Space Complexity:O(n*S)
+     */
+    private int countSubsetsApproach3(int[] set, int sum){
+        int[][] table = new int[set.length][sum+1];
+
+        //Base case : we can always have an empty set with sum 0
+        for(int i = 0; i<set.length; i++)
+            table[i][0] = 1;
+
+
+        for(int s = 1; s<=sum; s++)
+            table[set.length-1][s] = set[set.length-1] == s ? 1 : 0;
+
+
+
+        for(int i = set.length-2; i>=0; i--){
+            for(int s = 0; s<=sum; s++){
+                int count = table[i+1][s];
+                if(s>=set[i])
+                    count+= table[i+1][s-set[i]];
+                table[i][s] = count;
+            }
+        }
+
+        return table[0][sum];
+
+    }
 
 }
