@@ -20,7 +20,7 @@ public class CountOfSubsetSum {
      * Time complexity: O(2^n)
      * Space Complexity: O(n)
      */
-    private int countSubsets(int[] set, int sum){
+    private int countSubsetsApproach1(int[] set, int sum){
         return helper(set, sum, 0);
     }
 
@@ -35,4 +35,34 @@ public class CountOfSubsetSum {
             count += helper(set,sum-set[index], index+1);
         return count;
     }
+
+
+    /**
+     * Approach 1: Brute force solution
+     * Time complexity: O(2^n)
+     * Space Complexity: O(n)
+     */
+    private int countSubsetsApproach2(int[] set, int sum){
+        Integer[][] cache = new Integer[set.length][sum+1];
+        return helper(set, sum, 0,cache);
+    }
+
+    private int helper(int[]set,int sum, int index, Integer[][]cache){
+        if(sum == 0)
+            return 1;
+        if(index>=set.length)
+            return 0;
+
+        if(cache[index][sum] != null)
+            return cache[index][sum];
+
+        int count = helper(set, sum, index+1,cache);
+        if(sum>=set[index])
+            count += helper(set,sum-set[index], index+1,cache);
+        cache[index][sum] = count;
+        return count;
+    }
+
+
+
 }
