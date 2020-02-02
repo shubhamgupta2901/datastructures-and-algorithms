@@ -61,7 +61,7 @@ public class MinimumSubsetSumDifference {
         int sum = 0;
         for(int i = 0; i<set.length; i++)
             sum+=set[i];
-        return this.findDifferenceHelper(set,sum, 0,0);
+        return this.findDifferenceHelper2(set,sum, 0,0);
     }
 
     private int findDifferenceHelper2(int [] set,int totalSum, int index, int subsetSum){
@@ -72,14 +72,40 @@ public class MinimumSubsetSumDifference {
     }
 
 
+    /**
+     * Approach 3: Memoization (Top Down)
+     * If at all there are any overlapping subproblems, we this technique could be useful
+     * Time complexity: ? Probably O(2^n) because I couldn't find overlapping subproblems here
+     * Space Complexity: O(n*S) where S is the sum of array.
+     */
+    public int findDifferenceApproach3(int[] set) {
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+=set[i];
+        Integer [][] cache = new Integer[set.length][sum+1];
+        return this.findDifferenceHelper3(set,sum, 0,0,cache);
+    }
+
+    private int findDifferenceHelper3(int [] set,int totalSum, int index, int subsetSum, Integer[][]cache){
+        if(index == set.length)
+            return Math.abs(totalSum-2*subsetSum);
+        if(cache[index][subsetSum] != null)
+            return cache[index][subsetSum];
+        int difference =  Math.min(findDifferenceHelper3(set,totalSum,index+1,subsetSum,cache),
+                findDifferenceHelper3(set, totalSum,index+1,subsetSum+set[index],cache));
+        cache[index][subsetSum] = difference;
+        return difference;
+    }
+
+
     public static void main(String[] args) {
         MinimumSubsetSumDifference ps = new MinimumSubsetSumDifference();
         int[] num = {1, 2, 3, 9};
-        System.out.println(ps.findDifferenceApproach1(num));
+        System.out.println(ps.findDifferenceApproach3(num));
         num = new int[]{1, 2, 7, 1, 5};
-        System.out.println(ps.findDifferenceApproach1(num));
+        System.out.println(ps.findDifferenceApproach3(num));
         num = new int[]{1, 3, 100, 4};
-        System.out.println(ps.findDifferenceApproach1(num));
+        System.out.println(ps.findDifferenceApproach3(num));
     }
 
 }
