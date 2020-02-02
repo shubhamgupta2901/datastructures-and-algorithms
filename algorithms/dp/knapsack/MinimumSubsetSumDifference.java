@@ -97,15 +97,51 @@ public class MinimumSubsetSumDifference {
         return difference;
     }
 
+    /**
+     * Approach 4: Bottom up tabulation
+     * Idea is:
+     * 1. table[i][s] represents the minimum difference of subsets starting from index i with current subset sum s
+     * 2. we need to find table[0][0] i.e. starting from index 0 and with current subset sum 0,
+     *   find the minimum difference in two subsets of set
+     * 3.Bottom case:  The table[set.length-1][s] row is filled by calculating the both the possiblity,
+     *  adding the last number of set and checking difference, and not adding the last number and checking the difference.
+     *  fill it with minimum of the two differences.
+     * 4. Fill up the table in bottom up fashion.
+     * Time complexity: O(n*S)
+     * Space Complexity: O(n*S)
+     */
+    public int findDifferenceApproach4(int[] set){
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+=set[i];
+        int[][] table = new int[set.length][sum+1];
+
+        //Filling up the bottom cases.
+        for(int s = 0; s<=sum; s++)
+            table[set.length-1][s] = Math.min(Math.abs(sum-2*s),Math.abs(sum-2*(s+set[set.length-1])));
+
+        for(int i = set.length-2; i>=0; i--){
+            for (int s = 0; s<=sum; s++){
+                if(s+set[i]>sum)
+                    table[i][s] =table[i+1][s];
+                else table[i][s] = Math.min(table[i+1][s],table[i+1][s+set[i]]);
+            }
+        }
+
+        return table[0][0];
+    }
+
+
+
 
     public static void main(String[] args) {
         MinimumSubsetSumDifference ps = new MinimumSubsetSumDifference();
         int[] num = {1, 2, 3, 9};
-        System.out.println(ps.findDifferenceApproach3(num));
+        System.out.println(ps.findDifferenceApproach4(num));
         num = new int[]{1, 2, 7, 1, 5};
-        System.out.println(ps.findDifferenceApproach3(num));
+        System.out.println(ps.findDifferenceApproach4(num));
         num = new int[]{1, 3, 100, 4};
-        System.out.println(ps.findDifferenceApproach3(num));
+        System.out.println(ps.findDifferenceApproach4(num));
     }
 
 }
