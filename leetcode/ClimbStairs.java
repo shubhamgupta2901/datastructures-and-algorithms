@@ -45,6 +45,11 @@ public class ClimbStairs {
      * Time Complexity: ? Certainly not O(2^n)
      * because a lot of overlapping subproblems are cached in array.
      * Runtime percentile is 100%
+     * I am inclined to say O(n) because if we look into the recursion tree,
+     * once we go till the height of tree, or till we encounter our first base case,
+     * we have solved all the subproblems and saved the results in the array.
+     * After that every subproblem we encounter, are overlapping and their
+     * results are already present in array
      * But need to check what exactly is asymptotic time complexity.
      * Space Complexity: O(n) cache array and recursive stack.
      * Memory usage is ~5 percentile.
@@ -66,5 +71,16 @@ public class ClimbStairs {
         return ways;
     }
 
-
+    /**
+     * Approach 3: Bottom up Tabulation.
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public int climbStairsApproach3(int n) {
+        int[] table = new int[n+1];
+        table[0] = table[1] = 1;
+        for(int i = 2;i<=n ;i++)
+            table[i] = table[i-1]+table[i-2];
+        return table[n];
+    }
 }
