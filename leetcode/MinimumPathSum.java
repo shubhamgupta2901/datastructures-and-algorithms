@@ -65,4 +65,28 @@ public class MinimumPathSum {
         cache[i][j] = sum;
         return sum;
     }
+
+    /**
+     * Approach 3: Bottom up tabulation using DP.
+     * This is the most elegant looking solution.
+     * Time complexity: O(m*n)
+     * Space Complexity: O(1) because tabulation was performed in place.
+     */
+    public int minPathSumApproach3(int[][] grid) {
+        int m = grid.length-1;
+        int n = grid[0].length-1;
+
+        for(int j = n-1;j>=0;j--)
+            grid[m][j]+= grid[m][j+1];
+
+        for(int i = m-1;i>=0; i--)
+            grid[i][n]+= grid[i+1][n];
+
+        for(int i = m-1; i>=0; i--){
+            for(int j = n-1; j>=0 ; j--){
+                grid[i][j]+= Math.min(grid[i+1][j], grid[i][j+1]);
+            }
+        }
+        return grid[0][0];
+    }
 }
