@@ -139,7 +139,7 @@ public class EqualSubsetSumPartition {
     private boolean canParititionApproach4(int[]set){
         int sum = 0;
         for(int i = 0; i<set.length; i++)
-            sum+=0;
+            sum+=set[i];
         if(sum%2 !=0)
             return false;
         int target = sum/2;
@@ -166,6 +166,44 @@ public class EqualSubsetSumPartition {
         return table[set.length-1][target];
 
     }
+
+    /**
+     * Approach 5: Bottom up tabulation
+     * The solution is same as approach 4, and nothing changes, except we are thinking about tabulation
+     * like we were thinking about memoization. So there is consistency in thought process.
+     * Here table[i][target] here would be true, if we can make sum ‘target’ using numbers
+     * starting from index i to last index of set. This means we are looking for table[0][target]
+     * Time complexity: O(N*S)
+     * Space Complexity: O(N*S)
+     */
+    public boolean canPartitionApproach5(int[] set) {
+        int sum = 0;
+        for(int i = 0; i<set.length; i++)
+            sum+= set[i];
+        if(sum %2 !=0)
+            return false;
+        int target = sum/2;
+        boolean[][] table = new boolean[set.length][target+1];
+        for(int i=0; i<set.length; i++)
+            table[i][0] = true;
+
+        for(int t = 0; t<= target; t++)
+            table[set.length-1][t] = set[set.length-1] == t ? true: false;
+
+        for(int i = set.length-2; i>=0; i-- ){
+            for(int t = 1; t<=target; t++){
+                if(table[i+1][t])
+                    table[i][t] = true;
+                else if(t>= set[i])
+                    table[i][t] = table[i+1][t-set[i]];
+                else table[i][t] = false;
+            }
+        }
+
+        return table[0][target];
+    }
+
+
     public static void main(String[] args) {
         int[] set = new int[]{10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10};
         System.out.println(set.length);
