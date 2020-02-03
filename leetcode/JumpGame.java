@@ -60,7 +60,36 @@ public class JumpGame {
                 }
             }
         }
-
         return canJump[0];
+    }
+
+
+    /**
+     * Approach3: DP memoization.
+     * The solution is accepted but is very slow.
+     * Faster than only 7% of java submissions in leetcode.
+     * I don't think there are any overlapping subproblems here
+     */
+    public boolean canJumpApproach3(int[] nums) {
+        Boolean[] cache = new Boolean[nums.length+1];
+        return helper(nums, 0, cache);
+    }
+
+    private boolean helper(int[] nums, int index, Boolean[]cache){
+        if(index>=nums.length-1)
+            return true;
+        if(nums[index] == 0)
+            return false;
+        if(cache[index]!=null)
+            return cache[index];
+        for(int i = nums[index]; i>0; i--){
+            if(helper(nums, index+i, cache) == true){
+                cache[index] = true;
+                return true;
+            }
+        }
+
+        cache[index]= false;
+        return false;
     }
 }
