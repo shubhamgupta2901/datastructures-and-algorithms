@@ -25,7 +25,7 @@ public class JumpGame {
      * @param nums
      * @return
      */
-    public boolean canJump(int[] nums) {
+    public boolean canJumpApproach1(int[] nums) {
         return helper(nums, 0);
     }
 
@@ -38,5 +38,29 @@ public class JumpGame {
         for(int i = nums[index]; i>=1; i--)
             canJump = canJump || helper(nums, index+i);
         return canJump;
+    }
+
+
+    /**
+     * Approach 2: Directly attempting dp tabulation
+     * Accepted but quite slow.
+     * Time Complexity: ?  Probably O(n*S) where n is the number of elements
+     * and S is the largest number in array.
+     * Space Complexity: O(n)
+     */
+    public boolean canJumpApproach2(int[] nums) {
+        boolean[] canJump = new boolean[nums.length];
+        canJump[nums.length-1] = true;
+
+        for(int i = nums.length-2;i>=0; i--){
+            for(int j = nums[i]; j>0; j--){
+                if(i+j >= nums.length || canJump[i+j] == true){
+                    canJump[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return canJump[0];
     }
 }
