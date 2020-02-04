@@ -150,6 +150,47 @@ public class LongestPalindromicSubsequence {
         return lps;
     }
 
+    /**
+     * Approach 5: Bottom up Tabulation
+     * Since we want to try all the subsequences of the given sequence, we can use a two-dimensional array to store our results.
+     * Table: table[st.length()][st.length()]
+     * What does table[s][e] means? It denotes what is the longest palindromic subsequence in string which starts from index s
+     * and ends in index e (both indices inclusive)
+     * Base cases: table[s][e] should be 1 if s==e and 0 if s>e
+     * What do we return? table[0][st.length()-1]
+     * How do we fill table bottom up?
+     * run nested loops of: s : length-> 0 , e: 0->length
+     * if s == e table[s][e] = 2+ table[s+1][e-1]
+     * else table[s][e] = max(table[s+1][e], table[s][e-1]
+     * Time Complexity: O(n^2)
+     * Space complexity: O(n^2)
+     */
+    public int longestPalindromeSubseqApproach5(String str) {
+        int length = str.length();
+        int[][]table = new int[length][length];
+
+        //Base Case : start == end ? table[start][end] = 1
+        for(int i = 0; i<length; i++)
+            table[i][i] = 1;
+        //Base Case: start>end? table[start][end] = 0
+        //Not necessary: As the default value of primitive int is 0
+        for(int s = 1; s<length; s++){
+            for(int e = 0; e<s; e++){
+                table[s][e] = 0;
+            }
+        }
+        //Fill up table in bottom up manner.
+        for(int s = length-1;s>=0; s--){
+            for(int e = s+1; e<length; e++){
+                if(str.charAt(s) == str.charAt(e))
+                    table[s][e] = 2+ table[s+1][e-1];
+                else table[s][e] = Math.max(table[s+1][e], table[s][e-1]);
+            }
+        }
+
+        return table[0][length-1];
+    }
+
     public static void main(String[] args) {
         LongestPalindromicSubsequence lps = new LongestPalindromicSubsequence();
         String s = "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiwfckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhpljwszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxittxjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoznklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwmshdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxpfinaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew";
