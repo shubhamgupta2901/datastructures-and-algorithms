@@ -38,6 +38,27 @@ public class Subsequence {
         helper(arr, index+1,newSubsequence,subsequences);
     }
 
+
+    List<String> findAllSubsequencesApproach2(String s){
+        List<String> subsequences = new ArrayList<>();
+        helper(s,0,new String(),subsequences);
+        return subsequences;
+    }
+
+    private void helper(String str, int index, String subsequence, List<String> subsequences){
+        if(index == str.length()){
+            subsequences.add(subsequence);
+            return;
+        }
+
+        helper(str,index+1,subsequence,subsequences);
+        String newSubsequence = new String(subsequence);
+        newSubsequence = newSubsequence.concat(str.substring(index,index+1));
+        helper(str, index+1, newSubsequence, subsequences);
+    }
+
+    /** Helper methods*/
+
     private static void printStrings(List<List<Character>> subsequences){
         for(List<Character> subsequence: subsequences){
             for(Character chr: subsequence){
@@ -47,9 +68,20 @@ public class Subsequence {
         }
     }
 
+    private static void printString(List<String> subsequences){
+        for(String subsequence: subsequences){
+            System.out.println(subsequence);
+        }
+    }
+
+
+    /** Main function*/
+
     public static void main(String[] args) {
         String s = new String("abc");
-        List<List<Character>> subsequences = new Subsequence().findAllSubsequences(s);
-        printStrings(subsequences);
+//        List<List<Character>> subsequences = new Subsequence().findAllSubsequences(s);
+//        printStrings(subsequences);
+        List<String> subsequences = new Subsequence().findAllSubsequencesApproach2(s);
+        printString(subsequences);
     }
 }
