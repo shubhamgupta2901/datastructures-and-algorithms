@@ -115,10 +115,45 @@ public class LongestPalindromicSubsequence {
 
     }
 
+
+    /**
+     * Approach 4: DP Memoization - Accepted.
+     * Its very strange how memoization solution are faster even when there are no overlapping subproblems.
+     * The two changing values to our recursive function are the two indexes, startIndex and endIndex.
+     * Therefore, we can store the results of all the subproblems in a two-dimensional array.
+     * Time Complexity: O(n^2) : Since our memoization array dp[st.length()][st.length()] stores the results
+     * for all the subproblems, we can conclude that we will not have more than n*n subproblems
+     * (where ‘n’ is the length of the input sequence)
+     * Space complexity: O(n^2) : algorithm will be using O(n^2) space for the memoization array.
+     * Other than that we will use O(n) space for the recursion call-stack.
+     * So the total space complexity will be O(n^2 + n) ,which is asymptotically equivalent to O(n^2)
+     */
+    public int longestPalindromeSubseqApproach4(String s) {
+        int length = s.length();
+        Integer[][]cache = new Integer[length][length];
+        return helper(s, 0, length-1, cache);
+    }
+
+    private int helper(String sequence, int start, int end, Integer[][] cache){
+        if(start>end)
+            return 0;
+        if(start==end)
+            return 1;
+        if(cache[start][end]!=null)
+            return cache[start][end];
+        if(sequence.charAt(start) == sequence.charAt(end))
+            return 2 + helper(sequence, start+1, end-1, cache);
+
+        int lps =  Math.max(helper(sequence, start+1, end, cache),
+                helper(sequence, start, end-1, cache));
+        cache[start][end] = lps;
+        return lps;
+    }
+
     public static void main(String[] args) {
         LongestPalindromicSubsequence lps = new LongestPalindromicSubsequence();
         String s = "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiwfckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhpljwszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxittxjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoznklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwmshdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxpfinaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew";
-        int length =  lps.longestPalindromeSubseqApproach2(s);
+        int length =  lps.longestPalindromeSubseqApproach4(s);
         System.out.println(length);
     }
 }
