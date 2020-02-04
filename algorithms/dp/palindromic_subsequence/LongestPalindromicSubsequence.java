@@ -34,7 +34,7 @@ public class LongestPalindromicSubsequence {
      * if it is palindrome which takes additional n. So O(n*2^n) ~ O(2^n)
      * Space Complexity: Recursive stack runs for O(n) but storing all the subsequences require O(2^n) space
      */
-    public int longestPalindromeSubseq(String s) {
+    public int longestPalindromeSubseqApproach1(String s) {
         return helper(s, 0, new String());
     }
 
@@ -57,10 +57,37 @@ public class LongestPalindromicSubsequence {
         return true;
     }
 
+
+    /**
+     * Approach 2: Brute force recursion - Time limit exceeds for larger strings
+     * This time rather than taking an empty string and then either adding or not adding characters
+     * in new  subsequences in the recursions tree,
+     * I thought of taking the string and then either removing or not removing characters to create new
+     * subsequences. I thought while it will not reduce time complexity, it will lower the number of recursive calls.
+     * Apparently it does not make any difference both the solutions end up being the same.
+     * Time Complexity: O(2^n)
+     * Space Complexity: O(2^n)
+     */
+    public int longestPalindromeSubseqApproach2(String s) {
+        return helper(s, 0);
+    }
+
+    private int helper(String subsequence, int index){
+        if(isPalindrome(subsequence))
+            return subsequence.length();
+        if(index == subsequence.length())
+            return 0;
+        int lps1 = helper(subsequence, index+1);
+        String newSubsequence = subsequence.substring(0, index) + subsequence.substring(index+1, subsequence.length());
+        int lps2 = helper(newSubsequence, index);
+        return Math.max(lps1, lps2);
+    }
+
+
     public static void main(String[] args) {
         LongestPalindromicSubsequence lps = new LongestPalindromicSubsequence();
         String s = "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiwfckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhpljwszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxittxjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoznklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwmshdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxpfinaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew";
-        int length =  lps.longestPalindromeSubseq(s);
+        int length =  lps.longestPalindromeSubseqApproach2(s);
         System.out.println(length);
     }
 }
