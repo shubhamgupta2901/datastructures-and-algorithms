@@ -84,6 +84,37 @@ public class LongestPalindromicSubsequence {
     }
 
 
+    /**
+     * Approach 3: A much better brute force - Time limit exceeds for larger strings.
+     * Try all the subsequences of the given sequence.
+     * We can start processing from the beginning and the end of the sequence.
+     * So at any step, we have two options:
+     * 1) If the element at the beginning and the end are the same, we increment our count by two
+     *    and make a recursive call for the remaining sequence.
+     * 2) We will skip the element either from the beginning or the end to make
+     *    two recursive calls for the remaining subsequence.
+     * If option one applies then it will give us the length of LPS;
+     * otherwise,the length of LPS will be the maximum number returned by the two recurse calls from the second option.
+     * Time Complexity: O(2^n)
+     * Space Complexity: O(n) for recursion stack. where n is string length.
+     */
+    public int longestPalindromeSubseqApproach3(String s) {
+        return helper(s, 0, s.length()-1);
+    }
+
+    private int helper(String sequence, int start, int end){
+        if(start>end)
+            return 0;
+        if(start==end)
+            return 1;
+        if(sequence.charAt(start) == sequence.charAt(end))
+            return 2 + helper(sequence, start+1, end-1);
+
+        return Math.max(helper(sequence, start+1, end),
+                helper(sequence, start, end-1));
+
+    }
+
     public static void main(String[] args) {
         LongestPalindromicSubsequence lps = new LongestPalindromicSubsequence();
         String s = "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiwfckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhpljwszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxittxjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoznklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwmshdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxpfinaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew";
