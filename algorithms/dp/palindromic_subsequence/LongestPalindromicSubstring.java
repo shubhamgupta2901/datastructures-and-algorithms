@@ -36,7 +36,7 @@ public class LongestPalindromicSubstring {
      * Space complexity: O(n) which is used to store the recursion stack.
      */
 
-    public int findLPSLength(String s) {
+    public int findLPSLengthApproach1(String s) {
         int length = s.length();
         return helper(s,0,length-1);
     }
@@ -55,5 +55,40 @@ public class LongestPalindromicSubstring {
         return Math.max(helper(s, startIndex+1, endIndex),
                 helper(s, startIndex, endIndex-1));
 
+    }
+
+    /**
+     * We can use an array to store the already solved subproblems.
+     * The two changing values to our recursive function are the two indexes, startIndex and endIndex.
+     * Therefore, we can store the results of all the subproblems in a two-dimensional array.
+     * Time Compelxity: One can argue that the time complexity is O(n^2) because we will not have more than
+     * n*n subproblems.
+     * Space Compelxity: O(n^2) for storing results in cache
+     */
+    public int findLPSLengthApproach2(String s){
+        int length = s.length();
+        Integer[][] cache = new Integer[length][length];
+        return helper(s,0, length-1, cache);
+    }
+
+    private int helper(String s, int startIndex, int endIndex, Integer[][]cache){
+        if(startIndex==endIndex)
+            return 1;
+        if(startIndex>endIndex)
+            return 0;
+        if(cache[startIndex][endIndex]!=null)
+            return cache[startIndex][endIndex];
+
+        if(s.charAt(startIndex) == s.charAt(endIndex)){
+            if(helper(s,startIndex+1,endIndex-1,cache) == endIndex-startIndex-1){
+                cache[startIndex][endIndex] = endIndex-startIndex+1;
+                return cache[startIndex][endIndex];
+            }
+        }
+
+        int lpsLength = Math.max(helper(s,startIndex+1, endIndex,cache),
+                helper(s, startIndex, endIndex-1, cache));
+        cache[startIndex][endIndex] = lpsLength;
+        return lpsLength;
     }
 }
