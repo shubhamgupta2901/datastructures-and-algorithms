@@ -91,4 +91,52 @@ public class LongestPalindromicSubstring {
         cache[startIndex][endIndex] = lpsLength;
         return lpsLength;
     }
+
+
+    /**
+     * Approach 3: Bottom up Tabulation
+     * Since we want to try all the substrings of the given sequence, we can use a two-dimensional array to store our results.
+     * Table: table[st.length()][st.length()]
+     * What does table[s][e] means? It denotes what is the longest palindromic substring in string which starts from index s
+     * and ends in index e (both indices inclusive)
+     * Base cases: table[s][e] should be 1 if s==e and 0 if s>e
+     * What do we return? table[0][st.length()-1]
+     * How do we fill table bottom up?
+     * run nested loops of: s : length-> 0 , e: 0->length
+     * if charAt(s) == charAt(e) check if table[s+1][e-1] = length of substring from s+1 to e-1 indices
+     *  in this case table[s][e] = 2+table[s+1][e-1]
+     * else table[s][e] = max(table[s+1][e], table[s][e-1]
+     * Time Complexity: O(n^2)
+     * Space complexity: O(n^2)
+     */
+    public int findLPSLengthApproach3(String st){
+        int length = st.length();
+        int[][] table = new int[length][length];
+
+        //Base case start == end ? table[start][end] = 1
+        for(int i = 0; i<length; i++)
+            table[i][i] = 1;
+
+        // Base case start> end ? table [start][end] = 0
+        // Although not required because its int array default values will be 0 anyway
+        for(int s = 0; s<length; s++){
+            for(int e = 0; e<s; e++){
+                table[s][e] = 0;
+            }
+        }
+        //fill table bottom up
+        for(int s = length-1; s>=0; s--){
+            for(int e = s+1;e<length; e++ ){
+                if(st.charAt(s)==st.charAt(e)){
+                    if(table[s+1][e-1] == e-s-1){
+                        table[s][e] = 2+table[s+1][e-1];
+                        continue;
+                    }
+                }
+
+                table[s][e] = Math.max(table[s+1][e], table[s][e-1]);
+            }
+        }
+        return table[0][length-1];
+    }
 }
