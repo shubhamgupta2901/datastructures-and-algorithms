@@ -43,6 +43,9 @@ public class MinimumDeletionInStringToMakePalindrome {
     }
 
 
+    /**
+     * Approach 2: Top down Dynamic Programming - Memoization
+     */
     private int minDeleteApproach2(String str){
         int length = str.length();
         Integer[][] cache = new Integer[length][length];
@@ -64,15 +67,48 @@ public class MinimumDeletionInStringToMakePalindrome {
     }
 
 
+    /**
+     * Approach 3: Bottom Down DP - Tabulating
+     * Time Complexity: O(n^2)
+     * Space Complexity: O(n^2)
+     * Base case: when start<=end table[start][end] = 0
+     * here its not necessary because we are using int array
+     */
+    private int minDeleteApproach3(String str){
+        int length = str.length();
+        if(length == 0 || length== 1)
+            return 0;
+        int[][] table = new int[length][length];
+
+        for(int s = length-1; s>=0; s--){
+            for(int e = s+1; e< length; e++){
+                if(str.charAt(s) == str.charAt(e))
+                    table[s][e] = table[s+1][e-1];
+                else table[s][e] = 1 + Math.min(table[s+1][e], table[s][e-1]);
+            }
+        }
+        return table[0][length-1];
+    }
+
+
+
+
     public static void main(String[] args) {
         MinimumDeletionInStringToMakePalindrome mdsp = new MinimumDeletionInStringToMakePalindrome();
         System.out.println("--Approach 1--");
         System.out.println(mdsp.minDeleteApproach1("abdbca"));
         System.out.println(mdsp.minDeleteApproach1("cddpd"));
         System.out.println(mdsp.minDeleteApproach1("pqr"));
+        System.out.println(mdsp.minDeleteApproach1("bbbab"));
         System.out.println("--Approach 2--");
         System.out.println(mdsp.minDeleteApproach2("abdbca"));
         System.out.println(mdsp.minDeleteApproach2("cddpd"));
         System.out.println(mdsp.minDeleteApproach2("pqr"));
+        System.out.println(mdsp.minDeleteApproach2("bbbab"));
+        System.out.println("--Approach 3--");
+        System.out.println(mdsp.minDeleteApproach3("abdbca"));
+        System.out.println(mdsp.minDeleteApproach3("cddpd"));
+        System.out.println(mdsp.minDeleteApproach3("pqr"));
+        System.out.println(mdsp.minDeleteApproach3("bbbab"));
     }
 }
