@@ -27,7 +27,7 @@ public class MinimumDeletionInStringToMakePalindrome {
      * Time Complexity: O(n^2)
      * Space Complexity: O(n^2)
      */
-    private int minDelete(String s){
+    private int minDeleteApproach1(String s){
         return helper(s,0, s.length()-1);
     }
 
@@ -43,11 +43,36 @@ public class MinimumDeletionInStringToMakePalindrome {
     }
 
 
+    private int minDeleteApproach2(String str){
+        int length = str.length();
+        Integer[][] cache = new Integer[length][length];
+        return helper(str, 0, length-1,cache);
+    }
+
+    private int helper(String str, int startIndex, int endIndex, Integer[][]cache){
+        if(startIndex>=endIndex)
+            return 0;
+        if(cache[startIndex][endIndex]!=null)
+            return cache[startIndex][endIndex];
+        if(str.charAt(startIndex) == str.charAt(endIndex))
+            return helper(str, startIndex+1, endIndex-1, cache);
+
+        int min = 1 + Math.min(helper(str, startIndex+1, endIndex, cache),
+                helper(str, startIndex, endIndex-1, cache));
+        cache[startIndex][endIndex] = min;
+        return min;
+    }
+
 
     public static void main(String[] args) {
         MinimumDeletionInStringToMakePalindrome mdsp = new MinimumDeletionInStringToMakePalindrome();
-        System.out.println(mdsp.minDelete("abdbca"));
-        System.out.println(mdsp.minDelete("cddpd"));
-        System.out.println(mdsp.minDelete("pqr"));
+        System.out.println("--Approach 1--");
+        System.out.println(mdsp.minDeleteApproach1("abdbca"));
+        System.out.println(mdsp.minDeleteApproach1("cddpd"));
+        System.out.println(mdsp.minDeleteApproach1("pqr"));
+        System.out.println("--Approach 2--");
+        System.out.println(mdsp.minDeleteApproach2("abdbca"));
+        System.out.println(mdsp.minDeleteApproach2("cddpd"));
+        System.out.println(mdsp.minDeleteApproach2("pqr"));
     }
 }
