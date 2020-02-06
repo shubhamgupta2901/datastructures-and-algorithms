@@ -85,4 +85,25 @@ public class MinimumInsertionStepsToMakeStringPalindrome {
         cache[startIndex][endIndex] = minInsertions;
         return minInsertions;
     }
+
+    /**
+     * Approach 3: Tabulating Bottom up DP - Accepted
+     * Time Complexity: O(n^2)
+     * Space Complexity: O(n^2)
+     */
+    public int minInsertionsApproach3(String str) {
+        int length = str.length();
+        int[][] table = new int[length][length];
+
+        for(int s = length-1; s>=0; s--){
+            for(int e = s+1; e<length; e++){
+                if(str.charAt(s)== str.charAt(e))
+                    table[s][e] = table[s+1][e-1];
+                else table[s][e] = 1+ Math.min(table[s+1][e], table[s][e-1]);
+            }
+        }
+
+        return table[0][length-1];
+
+    }
 }
