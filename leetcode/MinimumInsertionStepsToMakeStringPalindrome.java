@@ -63,4 +63,26 @@ public class MinimumInsertionStepsToMakeStringPalindrome {
                 helper(s,startIndex, endIndex-1));
         return minInsertions;
     }
+
+    /**
+     * Approach 2: Memoization of first approach - Accepted
+     */
+    public int minInsertionsApproach2(String s) {
+        int length = s.length();
+        Integer[][] cache = new Integer[length][length];
+        return helper(s, 0, length-1, cache);
+    }
+
+    private int helper(String s, int startIndex, int endIndex, Integer[][] cache){
+        if(startIndex>= endIndex)
+            return 0;
+        if(cache[startIndex][endIndex] != null)
+            return cache[startIndex][endIndex];
+        if(s.charAt(startIndex) == s.charAt(endIndex))
+            return helper(s, startIndex+1, endIndex-1, cache);
+        int minInsertions = 1 + Math.min(helper(s, startIndex+1, endIndex, cache),
+                helper(s,startIndex, endIndex-1,cache));
+        cache[startIndex][endIndex] = minInsertions;
+        return minInsertions;
+    }
 }
