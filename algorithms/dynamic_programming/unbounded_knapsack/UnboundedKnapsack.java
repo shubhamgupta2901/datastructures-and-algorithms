@@ -47,11 +47,41 @@ public class UnboundedKnapsack {
     }
 
 
+    /**
+     * Approach 2: Memoization
+     * Using memoization to overcome the overlapping sub-problems.
+     * Use a 2d array to store results for every sub-array and for every possible capacity
+     *
+     * Time Complexity:O(N*C) Since our memoization array dp[profits.length][capacity+1] stores the results
+     * for all the subproblems, we can conclude that we will not have more than N*C subproblems
+     * (where ‘N’ is the number of items and ‘C’ is the knapsack capacity).
+     * This means that our time complexity will be O(N*C).
+     * Space Complecity: O(N*C). Using O(N*C)space for the memoization array.
+     * Other than that we will use O(N) space for the recursion call-stack.
+     */
+    private int solveKnapsackApproach2(int[] profits, int[] weights, int capacity){
+        Integer[][] cache = new Integer[profits.length][capacity+1];
+        return knapsackHelper(profits, weights, capacity, 0, cache);
+    }
+
+    private int knapsackHelper(int[] profits, int [] weights, int capacity, int index, Integer[][] cache){
+        if(capacity == 0 || index == profits.length)
+            return 0;
+        if(cache[index][capacity]!= null)
+            return cache[index][capacity];
+        int profit1 = 0;
+        if(weights[index]<= capacity)
+            profit1 = profits[index] + knapsackHelper(profits, weights, capacity-weights[index], index, cache);
+        int profit2 = knapsackHelper(profits, weights, capacity, index+1, cache);
+        cache[index][capacity] =  Math.max(profit1, profit2);
+        return cache[index][capacity];
+    }
+
     public static void main(String[] args) {
         UnboundedKnapsack ks = new UnboundedKnapsack();
         int[] profits = { 15, 50, 60, 90 };
         int[] weights = { 1, 3, 4, 5 };
-        int maxProfit = ks.solveKnapsackApproach1(profits, weights, 8);
+        int maxProfit = ks.solveKnapsackApproach2(profits, weights, 8);
         System.out.println(maxProfit);
     }
 
