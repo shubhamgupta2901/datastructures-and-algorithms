@@ -1,4 +1,4 @@
-package algorithms.dp.knapsack;
+package algorithms.dynamic_programming.knapsack;
 
 /**
  * Given a set of positive numbers, find if we can partition it into

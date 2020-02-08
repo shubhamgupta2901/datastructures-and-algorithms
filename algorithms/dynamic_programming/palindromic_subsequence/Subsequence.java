@@ -1,4 +1,4 @@
-package algorithms.dp.palindromic_subsequence;
+package algorithms.dynamic_programming.palindromic_subsequence;
 
 import java.util.ArrayList;
 import java.util.List;

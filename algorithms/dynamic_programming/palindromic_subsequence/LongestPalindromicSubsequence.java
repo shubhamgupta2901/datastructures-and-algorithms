@@ -1,4 +1,4 @@
-package algorithms.dp.palindromic_subsequence;
+package algorithms.dynamic_programming.palindromic_subsequence;
 
 /**
  * Given a sequence, find the length of its Longest Palindromic Subsequence (LPS).
@@ -121,7 +121,7 @@ public class LongestPalindromicSubsequence {
      * Its very strange how memoization solution are faster even when there are no overlapping subproblems.
      * The two changing values to our recursive function are the two indexes, startIndex and endIndex.
      * Therefore, we can store the results of all the subproblems in a two-dimensional array.
-     * Time Complexity: O(n^2) : Since our memoization array dp[st.length()][st.length()] stores the results
+     * Time Complexity: O(n^2) : Since our memoization array dynamic_programming[st.length()][st.length()] stores the results
      * for all the subproblems, we can conclude that we will not have more than n*n subproblems
      * (where ‘n’ is the length of the input sequence)
      * Space complexity: O(n^2) : algorithm will be using O(n^2) space for the memoization array.

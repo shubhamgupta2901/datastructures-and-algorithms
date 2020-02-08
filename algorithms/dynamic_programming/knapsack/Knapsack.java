@@ -1,4 +1,4 @@
-package algorithms.dp.knapsack;
+package algorithms.dynamic_programming.knapsack;
 
 
 import java.util.ArrayList;

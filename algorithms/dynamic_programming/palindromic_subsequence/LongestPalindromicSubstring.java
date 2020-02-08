@@ -1,4 +1,4 @@
-package algorithms.dp.palindromic_subsequence;
+package algorithms.dynamic_programming.palindromic_subsequence;
 
 /**
  * Given a string, find the length of its Longest Palindromic Substring (LPS).

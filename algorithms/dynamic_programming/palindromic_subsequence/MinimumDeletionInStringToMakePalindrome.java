@@ -1,4 +1,4 @@
-package algorithms.dp.palindromic_subsequence;
+package algorithms.dynamic_programming.palindromic_subsequence;
 
 /**
  * Given a string, find the minimum number of characters that we can remove to make it a palindrome.
