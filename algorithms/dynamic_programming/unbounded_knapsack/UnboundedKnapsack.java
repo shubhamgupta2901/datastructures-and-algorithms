@@ -77,11 +77,53 @@ public class UnboundedKnapsack {
         return cache[index][capacity];
     }
 
+
+    /**
+     * Approach 3: Dynamic Programming Tabulation
+     * table[i][c] would define maximum capacity that we can have in sub array starting from index i to length-1
+     * with capacity c.
+     * We are looking to find table[0][capacity]
+     * Note that for table[length-1][c:0->length] row I manually calculated the max profit, which was not required,
+     * as the bottom up tabulation of would have filled the last row in similar manner.
+     * Time Complexity: O(n*C)
+     * Space Complexity: O(n*C)
+     */
+    private int solveKnapsackApproach3(int[] profits, int[] weights, int capacity){
+        int length = profits.length;
+        int[][] table = new int[length][capacity+1];
+        //Base case: when capacity is 0, profit is 0
+        for(int i = 0; i<length; i++)
+            table[i][0] = 0;
+        //Base case: for only one index, find max profit by repeatedly adding the profit,
+        //till its weight exceeds capacity.
+        for(int c = 1; c<=capacity; c++){
+            int maxProfit = (c/weights[length-1]) * profits[length-1];
+            table[length-1][c] = maxProfit;
+        }
+
+        //Bottom up tabulation
+        for(int i = length-2; i>=0; i--){
+            for(int c = 1; c<=capacity; c++){
+                //By ignoring the current weight
+                int maxProfit = table[i+1][c];
+
+                //by adding the current weight and finding for remaining capacity
+                if(weights[i]<=c)
+                    maxProfit = Math.max(maxProfit, profits[i]+table[i][c-weights[i]]);
+                table[i][c] = maxProfit;
+            }
+        }
+
+        return table[0][capacity];
+    }
+
     public static void main(String[] args) {
         UnboundedKnapsack ks = new UnboundedKnapsack();
         int[] profits = { 15, 50, 60, 90 };
         int[] weights = { 1, 3, 4, 5 };
-        int maxProfit = ks.solveKnapsackApproach2(profits, weights, 8);
+        int maxProfit = ks.solveKnapsackApproach3(profits, weights, 8);
+        System.out.println(maxProfit);
+        maxProfit = ks.solveKnapsackApproach3(profits, weights, 6);
         System.out.println(maxProfit);
     }
 
