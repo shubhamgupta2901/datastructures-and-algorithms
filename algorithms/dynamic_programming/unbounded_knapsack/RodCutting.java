@@ -31,11 +31,35 @@ public class RodCutting {
         return Math.max(profit1,profit2);
     }
 
+
+    /**
+     * Approach 2: Memoizing recursion
+     * Time Complexity: O(n*N)
+     * Space Complexity: O(n*N)
+     */
+    private int solveRodCuttingApproach2(int[] prices, int[] lengths, int n){
+        Integer[][] cache = new Integer[prices.length][n+1];
+        return helper(prices, lengths, n, 0, cache);
+    }
+
+    private  int helper(int[] prices, int [] lengths, int n, int index, Integer[][] cache){
+        if(n == 0 || index == prices.length)
+            return 0;
+        if(cache[index][n]!=null)
+            return cache[index][n];
+        int profit = helper(prices, lengths, n, index+1, cache);
+        if(lengths[index]<= n)
+            profit = Math.max(profit,
+                    prices[index] + helper(prices, lengths, n-lengths[index],index,cache));
+        cache[index][n] = profit;
+        return profit;
+    }
+
     public static void main(String[] args) {
         RodCutting rc = new RodCutting();
         int[] lengths = {1, 2, 3, 4, 5};
         int[] prices = {2, 6, 7, 10, 13};
-        int maxProfit = rc.solveRodCuttingApproach1(prices, lengths, 5);
+        int maxProfit = rc.solveRodCuttingApproach2(prices, lengths, 5);
         System.out.println(maxProfit);
     }
 }
