@@ -55,6 +55,37 @@ public class RodCutting {
         return profit;
     }
 
+
+    /**
+     * Approach 3: Bottom up tabulation DP
+     * table[i][c] represents the what is the maximum profit we can make from cutting a rod of length 'c'
+     * using lengths from index i to lengths.length-1
+     * We are interested in table[0][n]
+     * Time Complexity: O(n*N)
+     * Space Complexity: O(n*N)
+     *
+     */
+    private int solveRodCuttingApproach3(int[] prices, int[] lengths, int n){
+        if (n <= 0 || prices.length == 0 || prices.length != lengths.length)
+            return 0;
+        int [][] table = new int[prices.length][n+1];
+
+        //Base case: if n = 0, profit made will be 0
+        for(int i = 0; i<prices.length; i++)
+            table[i][n] = 0;
+
+        for(int i = prices.length-1; i>=0; i--){
+            for(int c = 1; c<=n ; c++){
+                int profit1 = i < prices.length-1 ? table[i+1][c] : 0;
+                int profit2 = c>=lengths[i] ? prices[i] + table[i][c-lengths[i]] : 0;
+                table[i][c] = Math.max(profit1,profit2);
+            }
+        }
+
+        return table[0][n];
+
+    }
+
     public static void main(String[] args) {
         RodCutting rc = new RodCutting();
         int[] lengths = {1, 2, 3, 4, 5};
