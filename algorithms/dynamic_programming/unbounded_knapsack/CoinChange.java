@@ -70,9 +70,36 @@ public class CoinChange {
         return cache[index][total];
     }
 
+    /**
+     * Approach 3: DP tabulation
+     * table[denominations.length][total]
+     * table[i][t] denotes number of distinct ways to make change of target t using denominations
+     * index i to denominations.length
+     * table[i][t] = table[i+1][t] + table[i][t-denominations[i]]
+     * return table[0][t]
+     * Time Complexity: O(N*T)
+     * Space Complexity: O(N*T)
+     */
+    public int countChangeApproach3(int[] denominations, int total){
+        int[][]table = new int[denominations.length][total+1];
+        //Total 0 can be obtained with empty set
+        for(int i = 0; i<denominations.length; i++)
+            table[i][0] = 1;
+
+        for(int i = denominations.length-1; i>=0; i--){
+            for( int t = 1; t<= total; t++){
+                int way1 = i < denominations.length-1 ? table[i+1][t] : 0;
+                int way2 = t>= denominations[i] ? table[i][t-denominations[i]] : 0;
+                table[i][t] = way1 + way2;
+            }
+        }
+
+        return table[0][total];
+    }
+
     public static void main(String[] args) {
         CoinChange cc = new CoinChange();
         int[] denominations = {1, 2, 3};
-        System.out.println(cc.countChangeApproach2(denominations, 5));
+        System.out.println(cc.countChangeApproach3(denominations, 5));
     }
 }
