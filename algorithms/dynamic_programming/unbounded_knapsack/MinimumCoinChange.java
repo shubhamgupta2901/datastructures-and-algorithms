@@ -25,7 +25,10 @@ public class MinimumCoinChange {
      * Space Complexity: O(n+T)
      */
     private int findMinCoinChangeApproach1(int[] denominations, int total){
-        return helper(denominations, total, 0);
+        int result =  helper(denominations, total, 0);
+        if(result == Integer.MAX_VALUE)
+            return -1;
+        return result;
     }
 
     private int helper(int[] denominations,int total, int index){
@@ -57,7 +60,10 @@ public class MinimumCoinChange {
      */
     private int findMinCoinChangeApproach2(int[] denominations, int total){
         Integer[][] cache = new Integer[denominations.length][total+1];
-        return helper(denominations, total, 0,cache);
+        int result =  helper(denominations, total, 0,cache);
+        if(result == Integer.MAX_VALUE)
+            return -1;
+        return result;
     }
 
     private int helper(int[] denominations,int total, int index, Integer[][]cache){
@@ -85,6 +91,38 @@ public class MinimumCoinChange {
 
     }
 
+    /**
+     * Approach 3: Bottom up DP Tabulation
+     * table[i][t] would represent the min number of coins that we need to make target t from
+     * denominations starting at index i to index denominations.length-1.
+     * Time Complexity: O(n*T)
+     * Space Complexity: O(n*T)
+     */
+    private int findMinCoinChangeApproach3(int[] denominations, int total){
+        int[][] table = new int[denominations.length][total+1];
+
+        //base case:
+        for(int i = 0; i<denominations.length; i++)
+            table[i][0] = 0;
+
+        //fill table bottom up
+        for(int i = denominations.length-1; i>=0; i--){
+            for (int t = 1; t<=total; t++){
+                int ways1 = Integer.MAX_VALUE;
+                if(i<denominations.length-1)
+                    ways1 =  table[i+1][t];
+                int ways2 = Integer.MAX_VALUE;
+                if(t>= denominations[i]){
+                    int ways = table[i][t-denominations[i]];
+                    if(ways!=Integer.MAX_VALUE)
+                        ways2 = 1 + ways;
+                }
+                table[i][t] = Math.min(ways1, ways2 );
+            }
+        }
+        return table[0][total] == Integer.MAX_VALUE ? -1 : table[0][total];
+    }
+
     public static void main(String[] args) {
         MinimumCoinChange cc = new MinimumCoinChange();
         int[] denominations = {1, 2, 3};
@@ -102,5 +140,13 @@ public class MinimumCoinChange {
         System.out.println(cc.findMinCoinChangeApproach2(denominations, 7));
         denominations = new int[]{3, 5};
         System.out.println(cc.findMinCoinChangeApproach2(denominations, 7));
+        System.out.println("-------------------");
+        System.out.println("Tabulation");
+        denominations = new int[]{1, 2, 3};
+        System.out.println(cc.findMinCoinChangeApproach3(denominations, 5));
+        System.out.println(cc.findMinCoinChangeApproach3(denominations, 11));
+        System.out.println(cc.findMinCoinChangeApproach3(denominations, 7));
+        denominations = new int[]{3, 5};
+        System.out.println(cc.findMinCoinChangeApproach3(denominations, 7));
     }
 }
