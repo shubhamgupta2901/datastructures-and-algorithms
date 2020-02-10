@@ -29,7 +29,7 @@ public class CoinChange {
      * Time Complexity: O(2^{N+T}) where N is number of denominations and T is the total amount we want to make change.
      * Space Complexity: O(N+T)
      */
-    public int countChange(int[] denominations, int total){
+    public int countChangeApproach1(int[] denominations, int total){
         return helper(denominations, total, 0);
     }
 
@@ -45,10 +45,34 @@ public class CoinChange {
         return ways1 + ways2;
     }
 
+    /**
+     * Approach 2: DP Memoization
+     * Use memoization to overcome the overlapping sub-problems.
+     */
+    public int countChangeApproach2(int[] denominations, int total){
+        Integer[][] cache = new Integer[denominations.length][total+1];
+        return helper(denominations, total, 0, cache);
+    }
+
+    private int helper(int[] denominations, int total , int index, Integer[][] cache){
+        if(total == 0)
+            return 1;
+        if(index == denominations.length)
+            return 0;
+        if(cache[index][total]!=null)
+            return cache[index][total];
+
+        int ways1 = helper(denominations, total, index+1, cache);
+        int ways2 = 0;
+        if(denominations[index]<= total)
+            ways2 = helper(denominations, total-denominations[index],index, cache);
+        cache[index][total] = ways1+ways2;
+        return cache[index][total];
+    }
 
     public static void main(String[] args) {
         CoinChange cc = new CoinChange();
         int[] denominations = {1, 2, 3};
-        System.out.println(cc.countChange(denominations, 5));
+        System.out.println(cc.countChangeApproach2(denominations, 5));
     }
 }
