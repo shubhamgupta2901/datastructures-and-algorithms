@@ -94,6 +94,39 @@ public class MaximumRibbonCut {
         return cache[index][total];
     }
 
+    /**
+     * Approach 3: Tabulation Bottom up DP
+     * table[i][t] represents the maximum number of ribbon cuts for total t
+     * using lengths in ribbonLengths from index i to ribbonLenghts.length-1
+     * Time Complexity: O(n*T)
+     * Space Complexity: O(n*T)
+     */
+    private int countRibbonPiecesApproach3(int[] ribbonLengths, int total){
+        int[][] table = new int[ribbonLengths.length][total+1];
+
+        for(int i = 0; i<ribbonLengths.length; i++)
+            table[i][0] = 0;
+
+        for(int i =ribbonLengths.length-1; i>= 0; i--){
+            for(int t = 1; t<= total; t++){
+                int ways1 = Integer.MIN_VALUE;
+                if(i < ribbonLengths.length-1)
+                    ways1 = table[i+1][t];
+                int ways2 = Integer.MIN_VALUE;
+                if(t>= ribbonLengths[i]){
+                    int ways = table[i][t-ribbonLengths[i]];
+                    if(ways!=Integer.MIN_VALUE)
+                        ways2 = 1 + ways;
+                }
+                table[i][t] = Math.max(ways1, ways2);
+            }
+        }
+
+        return table[0][total] == Integer.MIN_VALUE ? -1 : table[0][total];
+    }
+
+
+
 
 
     public static void main(String[] args) {
@@ -117,5 +150,15 @@ public class MaximumRibbonCut {
         System.out.println(cr.countRibbonPiecesApproach2(ribbonLengths, 13));
         ribbonLengths = new int[]{3,5};
         System.out.println(cr.countRibbonPiecesApproach2(ribbonLengths, 7));
+        System.out.println("--------------");
+        System.out.println("Tabulation");
+        ribbonLengths = new int[]{2,3,5};
+        System.out.println(cr.countRibbonPiecesApproach3(ribbonLengths, 5));
+        ribbonLengths = new int[]{2,3};
+        System.out.println(cr.countRibbonPiecesApproach3(ribbonLengths, 7));
+        ribbonLengths = new int[]{3,5,7};
+        System.out.println(cr.countRibbonPiecesApproach3(ribbonLengths, 13));
+        ribbonLengths = new int[]{3,5};
+        System.out.println(cr.countRibbonPiecesApproach3(ribbonLengths, 7));
     }
 }
