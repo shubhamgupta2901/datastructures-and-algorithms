@@ -35,8 +35,8 @@ public class StairCase {
     }
 
     /**
-     * Approach 1: Brute force
-     * Time Complexity: O(3^n)
+     * Approach 2: Memoization - Bottom up DP
+     * Time Complexity: O(n)
      * Space Complexity: O(n)
      */
     private int countWaysApproach2(int n){
@@ -56,5 +56,21 @@ public class StairCase {
     }
 
 
+    /**
+     * Approach 3: Bottom up DP
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    private int countWaysApproach3(int n){
+        int[] table = new int[n+1];
+        table[0] = 1;
+        for(int i = 1; i<=n; i++){
+            int ways = table[i-1];
+            if(i>=2) ways+= table[i-2];
+            if(i>=3) ways+= table[i-3];
+            table[i] = ways;
+        }
+        return table[n];
+    }
 
 }
