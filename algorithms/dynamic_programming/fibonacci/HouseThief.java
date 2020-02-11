@@ -62,13 +62,34 @@ public class HouseThief {
         return cache[index];
     }
 
+    /**
+     * Approach 3: Bottom up Dynamic Programming - Tabulating
+     * table[i] suggests the maximum profit thief can make
+     * in subarray starting from index i to wealth.length-1
+     * we are interested in table[0]
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    private int findMaxStealApproach3(int[] wealth){
+        int length = wealth.length;
+        int[] table = new int[length];
+        //Max profit for last index
+
+        for(int i = length-1; i>=0; i--){
+            int profit1 = i+1 < length ? table[i+1] : 0;
+            int profit2 = i+2 < length ? wealth[i] + table[i+2] : wealth[i] ;
+            table[i] = Math.max(profit1, profit2);
+        }
+        return table[0];
+    }
+
 
 
     public static void main(String[] args) {
         HouseThief ht = new HouseThief();
         int[] wealth = {2, 5, 1, 3, 6, 2, 4};
-        System.out.println(ht.findMaxStealApproach2(wealth));
+        System.out.println(ht.findMaxStealApproach3(wealth));
         wealth = new int[]{2, 10, 14, 8, 1};
-        System.out.println(ht.findMaxStealApproach2(wealth));
+        System.out.println(ht.findMaxStealApproach3(wealth));
     }
 }
