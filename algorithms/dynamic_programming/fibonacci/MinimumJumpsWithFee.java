@@ -23,11 +23,10 @@ package algorithms.dynamic_programming.fibonacci;
 public class MinimumJumpsWithFee {
 
     /**
-     *
      * Time Complexity: O(3^n)
      * Space Complexity: O(n) for recursion stack.
      */
-    private int minimumFee(int[] fees){
+    private int minimumFeeApproach1(int[] fees){
         return helper(fees,0);
     }
 
@@ -48,11 +47,43 @@ public class MinimumJumpsWithFee {
         return fees[index] + Math.min(Math.min(fees1,fees2), fees3);
     }
 
+    /**
+     * Approach 2: Top Down Memoization
+     * store the solutions of overlapping subproblems
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    private int minimumFeeApproach2(int[] fees){
+        Integer[] cache = new Integer[fees.length];
+        return helper(fees,0, cache);
+    }
+
+    private int helper(int[] fees, int index, Integer[] cache){
+        //base case:
+        if(index == fees.length-1)
+            return fees[fees.length-1];
+
+        if(index>=fees.length)
+            return 0;
+        //memomization
+        if(cache[index] != null)
+            return cache[index];
+
+        //recursion
+        int fees1 = helper(fees,index+1);
+        int fees2 = helper(fees, index+2);
+        int fees3 = helper(fees, index+3);
+
+        //memoization & return
+        cache[index] =  fees[index] + Math.min(Math.min(fees1,fees2), fees3);
+        return cache[index];
+    }
+
     public static void main(String[] args) {
         MinimumJumpsWithFee sc = new MinimumJumpsWithFee();
         int[] fee = {1,2,5,2,1,2};
-        System.out.println(sc.minimumFee(fee));
+        System.out.println(sc.minimumFeeApproach2(fee));
         fee = new int[]{2,3,4,5};
-        System.out.println(sc.minimumFee(fee));
+        System.out.println(sc.minimumFeeApproach2(fee));
     }
 }
