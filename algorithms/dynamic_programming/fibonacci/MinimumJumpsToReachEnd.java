@@ -28,6 +28,8 @@ public class MinimumJumpsToReachEnd {
      * Time complexity: O(2^n) where ‘n’ is the size of the input array.
      * Need to check how for loop effects the time complexity.
      * The space complexity is O(n) which is used to store the recursion stack.
+     *
+     * TODO: We can optimise the for-loop by running it till from 1 to min(jump[index],jumps.length).
      */
     private int countMinJumpsApproach1(int[] jumps){
         int minJumps =  helper(jumps, 0);
@@ -76,12 +78,42 @@ public class MinimumJumpsToReachEnd {
         return minJumps;
     }
 
+
+    /**
+     * table[i] represents the minimum number of jumps required to reach the end of array,
+     * in the subarray of 'jumps' starting from index i to jumps.length-1
+     * We are interested in table[0]
+     */
+    private int countMinJumpsApproach3(int[] jumps){
+        int length = jumps.length;
+        int[] table = new int[length];
+
+        //base case: 0 steps needed to go from last index to last index
+        table[length-1] = 0;
+
+        for(int i = length-2; i>=0; i--){
+            int minJump = Integer.MAX_VALUE;
+            for(int jump = 1; jump<=jumps[i]; jump++){
+                if(get(table,i+jump) < minJump)
+                    minJump = table[i+jump];
+            }
+            table[i] = minJump == Integer.MAX_VALUE ? minJump : 1 + minJump;
+        }
+
+        return table[0];
+
+    }
+
+    private int get(int[]table, int index){
+        return index < table.length ? table[index] : 0;
+    }
+
     public static void main(String[] args) {
         MinimumJumpsToReachEnd aj = new MinimumJumpsToReachEnd();
         int[] jumps = {2, 1, 1, 1, 4};
-        System.out.println(aj.countMinJumpsApproach2(jumps));
+        System.out.println(aj.countMinJumpsApproach3(jumps));
         jumps = new int[]{1, 1, 3, 6, 9, 3, 0, 1, 3};
-        System.out.println(aj.countMinJumpsApproach2(jumps));
+        System.out.println(aj.countMinJumpsApproach3(jumps));
     }
 
 
