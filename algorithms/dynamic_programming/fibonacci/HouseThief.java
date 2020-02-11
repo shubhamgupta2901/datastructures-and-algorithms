@@ -38,11 +38,37 @@ public class HouseThief {
         return Math.max(profit1, profit2);
     }
 
+
+    /**
+     * Approach 2: Top Down Dynamic Programming - Memoization
+     * Create an array of size wealth.length and save the results of solved subproblems,
+     * this way when the overlapping subproblems are encountered, it can be fetched from cache.
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    private int findMaxStealApproach2(int[] wealth){
+        Integer[] cache = new Integer[wealth.length];
+        return helper(wealth,0, cache);
+    }
+
+    private int helper(int[] wealth, int index, Integer[] cache){
+        if(index >= wealth.length)
+            return 0;
+        if(cache[index]!=null)
+            return cache[index];
+        int profit1 = helper(wealth, index+1,cache);
+        int profit2 = wealth[index] + helper(wealth,index+2, cache);
+        cache[index] =  Math.max(profit1, profit2);
+        return cache[index];
+    }
+
+
+
     public static void main(String[] args) {
         HouseThief ht = new HouseThief();
         int[] wealth = {2, 5, 1, 3, 6, 2, 4};
-        System.out.println(ht.findMaxStealApproach1(wealth));
+        System.out.println(ht.findMaxStealApproach2(wealth));
         wealth = new int[]{2, 10, 14, 8, 1};
-        System.out.println(ht.findMaxStealApproach1(wealth));
+        System.out.println(ht.findMaxStealApproach2(wealth));
     }
 }
