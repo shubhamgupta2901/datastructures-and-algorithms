@@ -79,11 +79,41 @@ public class MinimumJumpsWithFee {
         return cache[index];
     }
 
+    /**
+     * Approach 3: Bottom up DP - Tabulation
+     * create a 1-d array table of length fees.length
+     * table[i] represents minimum fees required to reach the top (beyond the top most stair)
+     * in fees subarray starting from i to fees.length-1
+     * We are interested in table[0]
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    private int minimumFeeApproach3(int[] fees){
+        int length = fees.length;
+        int[] table = new int[length];
+
+        //Base cases
+        table[length-1] = fees[length-1];
+
+        for(int i = length-2; i>=0; i--){
+            table[i] = fees[i] + Math.min(
+                            Math.min(
+                                    get(table, i+1),
+                                    get(table, i+2)),
+                            get(table,i+3));
+        }
+        return table[0];
+    }
+
+    private int get(int[] table, int i){
+        return (i >= table.length) ? 0 : table[i];
+    }
+
     public static void main(String[] args) {
         MinimumJumpsWithFee sc = new MinimumJumpsWithFee();
         int[] fee = {1,2,5,2,1,2};
-        System.out.println(sc.minimumFeeApproach2(fee));
+        System.out.println(sc.minimumFeeApproach3(fee));
         fee = new int[]{2,3,4,5};
-        System.out.println(sc.minimumFeeApproach2(fee));
+        System.out.println(sc.minimumFeeApproach3(fee));
     }
 }
