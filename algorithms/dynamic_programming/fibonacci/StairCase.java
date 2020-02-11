@@ -22,7 +22,7 @@ public class StairCase {
      * Time Complexity: O(3^n)
      * Space Complexity: O(n)
      */
-    private int ways(int n){
+    private int countWaysApproach1(int n){
         return helper(n);
     }
 
@@ -32,6 +32,27 @@ public class StairCase {
         if(n == 0)
             return 1;
         return helper(n-1) + helper(n-2) + helper(n-3);
+    }
+
+    /**
+     * Approach 1: Brute force
+     * Time Complexity: O(3^n)
+     * Space Complexity: O(n)
+     */
+    private int countWaysApproach2(int n){
+        Integer[] cache = new Integer[n+1];
+        return helper(n, cache);
+    }
+
+    private int helper(int n, Integer[] cache){
+        if(n < 0)
+            return 0;
+        if(n == 0)
+            return 1;
+        if(cache[n]!=null)
+            return cache[n];
+        cache[n] =  helper(n-1, cache) + helper(n-2, cache) + helper(n-3, cache);
+        return cache[n];
     }
 
 
