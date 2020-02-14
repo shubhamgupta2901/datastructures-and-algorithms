@@ -42,7 +42,7 @@ public class JumpGame {
 
 
     /**
-     * Approach 2: Directly attempting dp tabulation
+     * Approach 2: Directly attempting dynamic_programming tabulation
      * Accepted but quite slow.
      * Time Complexity: ?  Probably O(n*S) where n is the number of elements
      * and S is the largest number in array.
