@@ -26,6 +26,7 @@ package leetcode;
  */
 public class UniquePaths {
     /**
+     * Approach 1: Permutation - Accepted
      * My idea of implementation was that there are total m-1 right moves the robot can move.
      * And there are total n-1 down moves that the robot can take.
      * In m+n-2 moves he will reach to the matrix[m][n], if he is at matrix[0][0] at start.
@@ -34,7 +35,7 @@ public class UniquePaths {
      * @param n
      * @return
      */
-    public int uniquePaths(int m, int n) {
+    public int uniquePathsApproach1(int m, int n) {
         if(m == 0 || n==0)
             return 0;
         if(m == 1 || n==1)
@@ -60,5 +61,32 @@ public class UniquePaths {
             x--;
         }
         return product;
+    }
+
+    /**
+     * Approach 2 : Top Down Dynamic Programming with memoization - Accepted
+     *
+     */
+    public int uniquePathsApproach2(int m, int n) {
+        if(m == 0 || n ==0)
+            return 0;
+        if(m ==1 || n == 1)
+            return 1;
+        Integer[][] cache = new Integer[m][n];
+        return helper(m-1, n-1, 0, 0, cache);
+    }
+
+    private int helper(int m, int n, int mIndex, int nIndex, Integer[][]cache){
+        //base case
+        if(mIndex == m && nIndex == n)
+            return 1;
+        if(cache[mIndex][nIndex]!=null)
+            return cache[mIndex][nIndex];
+        //recurrence
+        int ways1 = mIndex < m ? helper(m, n, mIndex+1, nIndex, cache) : 0;
+        int ways2 = nIndex < n ? helper(m, n, mIndex, nIndex+1, cache) : 0;
+        //return
+        cache[mIndex][nIndex] =  ways1+ways2;
+        return cache[mIndex][nIndex];
     }
 }
