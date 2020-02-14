@@ -89,4 +89,37 @@ public class UniquePaths {
         cache[mIndex][nIndex] =  ways1+ways2;
         return cache[mIndex][nIndex];
     }
+
+    /**
+     * Approach 3: Bottom up Dynamic Programming - Accepted
+     */
+    public int uniquePathsApproach3(int m, int n) {
+        if(m == 0 || n ==0)
+            return 0;
+        if(m ==1 || n == 1)
+            return 1;
+        int[][] table = new int[m][n];
+
+        //table[i][j] represents number of unique paths from grid[i][j] to grid[m][n]
+        // we want to find table[0][0]
+
+        //bottom up case: table[i][n-1] = 1
+        for(int i = 0; i<m ; i++)
+            table[i][n-1] = 1;
+
+        //bottom up case: table[m-1][j] = 1
+        for(int j = 0; j<n; j++)
+            table[m-1][j] = 1;
+
+        //filling table bottom-up
+        //table[i][j] = table[i+1][j] + table[i][j+1]
+        for(int i = m-2; i>= 0; i--){
+            for(int j = n-2; j>=0; j--){
+                table[i][j] = table[i+1][j] + table[i][j+1];
+            }
+        }
+
+        return table[0][0];
+    }
+
 }
