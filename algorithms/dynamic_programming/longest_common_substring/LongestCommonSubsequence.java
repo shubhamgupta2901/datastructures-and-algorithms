@@ -65,4 +65,50 @@ public class LongestCommonSubsequence {
         cache[i][j] = Math.max(lcs1, lcs2);
         return cache[i][j];
     }
+
+
+    /**
+     * Approach 3: Bottom up Dynamic Programming
+     * table[i][j] represents starting str1 from i to str1.length()
+     * and str2 from j to str2.length() what is the longest common subsequence.
+     * We are interested in table[0][0]
+     *
+     * Time Complexity: O(m*n)
+     * Space Complexity; O(m*n)
+     */
+    public int longestCommonSubsequenceApproach3(String str1, String str2) {
+        int m = str1.length();
+        int n = str2.length();
+        if(m == 0 || n == 0)
+            return 0;
+        int[][] table = new int[m][n];
+
+        //bottom case
+        if(str1.charAt(m-1) == str2.charAt(n-1))
+            table[m-1][n-1] = 1;
+
+        //bottom case
+        for(int j = n-2; j>=0; j--){
+            if(table[m-1][j+1] == 1 || str1.charAt(m-1) == str2.charAt(j))
+                table[m-1][j] = 1;
+        }
+
+        //bottom case
+        for(int i = m-2; i>=0; i--){
+            if(table[i+1][n-1] ==1 || str1.charAt(i) == str2.charAt(n-1))
+                table[i][n-1] = 1;
+        }
+
+        //fill table bottom up
+        for(int i = m-2; i>=0; i--){
+            for(int j = n-2; j>=0; j--){
+                if(str1.charAt(i) == str2.charAt(j))
+                    table[i][j] = 1+ table[i+1][j+1];
+                else table[i][j] = Math.max(table[i+1][j], table[i][j+1]);
+            }
+        }
+
+        //return
+        return table[0][0];
+    }
 }
