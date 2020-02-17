@@ -38,14 +38,43 @@ package algorithms.dynamic_programming.longest_common_substring;
  * Both the problems are variations of {@link LongestCommonSubsequence} only.
  * DeletionDistance: The "deletion distance" between two strings is just the total length of the strings
  * minus twice the length of the LCS.
- * i.e deletion distance str1.length() + str2.length() - 2*lcs(str1, str2)
+ * i.e deletion distance = str1.length() + str2.length() - 2*lcs(str1, str2)
  *
  * Minimum Deletions & Insertions to Transform a String into another:
  * 1. To transform str1 into str2, we need to delete everything from str1 which is not part of LCS,
  * so minimum deletions we need to perform from str1 => str1.length() - lcs(str1, str2)
  * 2. We need to insert everything in str1 which is present in str2 but not part of LCS,
  * so minimum insertions we need to perform in str1 => str2.length() - lcs(str1,str2)
- * so, Insertions + Deletions: str1.length() + str2.length() - 2*lcs(str1, str2)
+ * so, Insertions + Deletions = str1.length() + str2.length() - 2*lcs(str1, str2)
  */
 public class DeletionDistance {
+    /**
+     * Approach 1: Top Down DP + Memoization
+     * Time complexity Brute force: O(2^(M+N)
+     * Space Complexity Brute force : O(M+N)
+     *
+     * Time Complexity Memoized DP: O(M*N)
+     * Space Complexity Memoized DP: O(M*N)
+     */
+    private int deletionDistanceApproach1(String str1, String str2){
+        Integer[][] cache = new Integer[str1.length()][str2.length()];
+        int lcs = lcsHelper(str1, str2, 0, 0, cache);
+        return str1.length() + str2.length() - 2 * lcs;
+    }
+
+    private int lcsHelper(String str1, String str2, int i, int j, Integer[][] cache){
+        if(i == str1.length() || j == str2.length())
+            return 0;
+        if(cache[i][j] != null)
+            return  cache[i][j];
+        if(str1.charAt(i) == str2.charAt(j))
+            return 1 + lcsHelper(str1, str2, i+1, j+1,cache);
+
+        int lcs1 = lcsHelper(str1, str2, i+1, j,cache);
+        int lcs2 = lcsHelper(str1, str2, i, j+1,cache);
+        cache[i][j] =  Math.max(lcs1, lcs2);
+        return cache[i][j];
+    }
+
+
 }
