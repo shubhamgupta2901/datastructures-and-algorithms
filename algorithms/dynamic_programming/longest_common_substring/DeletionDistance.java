@@ -76,5 +76,45 @@ public class DeletionDistance {
         return cache[i][j];
     }
 
+    /**
+     * Approach 2: Bottom up Dp
+     * Time Complexity: O(M*N)
+     * Space complexity: O(M*N)
+     */
+    private int deletionDistanceApproach2(String str1, String str2){
+        int m = str1.length();
+        int n = str2.length();
+        int[][] table = new int[m][n];
+
+        //bottom case:
+        if(str1.charAt(m-1) == str2.charAt(n-1))
+            table[m-1][n-1] = 1;
+
+        //bottom case:
+        for(int j = n-2; j>=0; j--){
+            if(table[m-1][j+1] == 1 || str1.charAt(m-1) == str2.charAt(j))
+                table[m-1][j] = 1;
+        }
+
+        //bottom case:
+        for(int i = m-2; i>=0; i--){
+            if(table[i+1][n-1] == 1|| str1.charAt(i) == str2.charAt(n-2))
+                table[i][n-1] = 1;
+        }
+
+
+        //fill table bottom up
+        for(int i = m-2; i>=0; i--){
+            for(int j = n-2; j>=0; j--){
+                if(str1.charAt(i)== str2.charAt(j))
+                    table[i][j] = 1 + table[i+1][j+1];
+                else table[i][j] = Math.max(table[i+1][j], table[i][j+1]);
+            }
+        }
+        //return str1.length() + str2.length - 2* lcs(str1, str2)
+        return m + n - 2*table[0][0];
+    }
+
+
 
 }
