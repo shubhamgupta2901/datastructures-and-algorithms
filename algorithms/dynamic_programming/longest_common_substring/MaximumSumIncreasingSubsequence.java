@@ -36,10 +36,35 @@ public class MaximumSumIncreasingSubsequence {
         return Math.max(subsequence1, subsequence2);
     }
 
+    /**
+     * Approach 2: Top Down Dynamic Programming Memoization
+     * Time Complexity: O(n^2)
+     * Space Complexity: O(n^2)
+     */
+    private int maxIncreasingSubsequenceApproach2(int []nums){
+        Integer[][] cache = new Integer[nums.length+1][nums.length];
+        return helper(nums,-1, 0, cache);
+    }
+
+    private int helper(int[] nums, int prevIndex, int currentIndex, Integer[][] cache){
+        if(currentIndex == nums.length)
+            return 0;
+        if(cache[prevIndex+1][currentIndex]!=null)
+            return cache[prevIndex+1][currentIndex];
+        int subsequence1 = 0;
+        if(prevIndex == -1 || nums[prevIndex]< nums[currentIndex])
+            subsequence1 = nums[currentIndex] + helper(nums, currentIndex, currentIndex+1, cache);
+        int subsequence2 = helper(nums, prevIndex, currentIndex+1, cache);
+        cache[prevIndex+1][currentIndex] = Math.max(subsequence1, subsequence2);
+        return cache[prevIndex+1][currentIndex];
+    }
+
+
+
     public static void main(String[] args) {
         int[] nums = new int[]{-4,10,3,7,15};
         int[] nums2 = new int[]{4,1,2,6,10,1,12};
-        int max = new MaximumSumIncreasingSubsequence().maxIncreasingSubsequence(nums2);
+        int max = new MaximumSumIncreasingSubsequence().maxIncreasingSubsequenceApproach2(nums);
         System.out.println(max);
     }
 
