@@ -1,5 +1,9 @@
 package algorithms.dynamic_programming.longest_common_substring;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Given a number sequence, find the length of its Longest Increasing Subsequence (LIS). In an increasing subsequence,
  * all the elements are in increasing order (from lowest to highest).
@@ -69,5 +73,83 @@ public class LongestIncreasingSubsequence {
         int lis2 = helper(nums, prevIndex, currentIndex+1, cache);
         cache[prevIndex+1][currentIndex] =  Math.max(lis1, lis2);
         return cache[prevIndex+1][currentIndex];
+    }
+
+    /**
+     * Approach 3: Bottom up Approach - Wrong Answer.
+     * TODO: Fix it.
+     */
+    public int lengthOfLISApproach3(int[] nums) {
+        int length = nums.length;
+        if(length == 0 || length == 1)
+            return length;
+        int[][] table = new int[length+1][length];
+
+        //base case: table[p][c] == 0 if p-1 >= c
+
+        //base case
+        for(int p = -1; p < length-1; p++){
+            if(p == -1 || nums[p]<nums[length-1])
+                table[p+1][length-1] = 1;
+        }
+
+        //fill the table bottom up
+        for(int p= length-2; p>=0; p--){
+            for(int c = length-2; c>=p; c--){
+                int subsequence1 = 0;
+                if(p == 0 || nums[p-1]< nums[c])
+                    subsequence1 = 1 + table[c][c+1];
+                int subsequence2 = table[p][c+1];
+                table[p][c] = Math.max(subsequence1, subsequence2);
+            }
+        }
+
+        return table[0][0];
+    }
+
+    /**
+     * Approach 4: Bottom up approach with a hashmap instead of 2-d array - Wrong Answer
+     * This is to avoid the confusion of previousIndex being -1.
+     * @param nums
+     * @return
+     */
+    public int lengthOfLISApproach4(int[] nums) {
+        int length = nums.length;
+        if(length == 0 || length == 1)
+            return length;
+        HashMap<Integer, int[]> table = new HashMap<>();
+
+        for(int p = -1; p<length; p++)
+            table.put(p,new int[length]);
+
+        //base case: table[p][c] == 0 if p >= c
+        for(int p = -1; p<length; p++){
+            for(int c = p; c>=0; c--){
+                table.get(p)[c] = 0;
+            }
+        }
+
+        //base case: table[p][length-1] = 1
+        for(int p =-1; p <length-1; p++)
+            table.get(p)[length-1] = 1;
+
+        //fill the table bottom up
+        for(int p = length-2; p>=-1; p--){
+            for(int c = length-2; c>p; c--){
+                int subsequence1 = 0;
+                if(p == -1 || nums[p]<nums[c])
+                    subsequence1 = 1 + table.get(c)[c+1];
+                int subsequence2 = table.get(p)[c+1];
+                table.get(p)[c] = Math.max(subsequence1, subsequence2);
+            }
+        }
+        return table.get(-1)[0];
+    }
+
+    public static void main(String[] args) {
+        int[] nums1 = new int[]{10,9,2,5,3,7,101,18};
+        int[] nums2 = new int[]{-4,10,3,7,15};
+        int lis = new LongestIncreasingSubsequence().lengthOfLISApproach4(nums1);
+        System.out.println(lis);
     }
 }
