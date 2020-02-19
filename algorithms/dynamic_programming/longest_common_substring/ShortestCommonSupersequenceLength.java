@@ -59,6 +59,9 @@ public class ShortestCommonSupersequenceLength {
     }
 
 
+    /**
+     * Approach 2: Top Down DP - Memoization
+     */
     private int findSCSLengthApproach2(String str1, String str2){
         Integer[][] cache = new Integer[str1.length()][str2.length()];
         return helper(str1, str2, 0, 0, cache);
@@ -86,10 +89,43 @@ public class ShortestCommonSupersequenceLength {
         return cache[i][j];
     }
 
+    /**
+     * Approach 3: Bottom up DP: Tabulation
+     * table[i][j] represents the shortest common subsequence length for strings
+     * str1 from index i to str1.length(), and
+     * str2 from index i to str2.length()
+     * We are interested in finding table[0][0]
+     *
+     * Time Complexity: O(m*n)
+     * Space Complexity: O(m*n)
+     */
+    private int findSCSLengthApproach3(String str1, String str2){
+        int m = str1.length();
+        int n = str2.length();
+        int[][] table = new int[m+1][n+1];
+
+        // bottom case: for j = str2.length(), table[i][j] should be length of remaining characters in str1
+        for(int i = m; i>=0; i--)
+            table[i][n] = m-i;
+
+        //bottom case: for i = str1.length(), table
+        for(int j = n; j>=0; j--)
+            table[m][j] = n-j;
+
+        for(int i = m-1; i>=0; i--){
+            for(int j = n-1; j>=0; j--){
+                if(str1.charAt(i) == str2.charAt(j))
+                    table[i][j] = 1 + table[i+1][j+1];
+                else table[i][j] = 1 + Math.min(table[i+1][j], table[i][j+1]);
+            }
+        }
+
+        return table[0][0];
+    }
 
     public static void main(String[] args) {
         ShortestCommonSupersequenceLength scs = new ShortestCommonSupersequenceLength();
-        System.out.println(scs.findSCSLengthApproach2("abcf", "bdcf"));
-        System.out.println(scs.findSCSLengthApproach2("dynamic", "programming"));
+        System.out.println(scs.findSCSLengthApproach3("abcf", "bdcf"));
+        System.out.println(scs.findSCSLengthApproach3("dynamic", "programming"));
     }
 }
