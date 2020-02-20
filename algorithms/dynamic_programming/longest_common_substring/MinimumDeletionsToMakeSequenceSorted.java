@@ -41,7 +41,7 @@ public class MinimumDeletionsToMakeSequenceSorted {
      * Time Complexity: O(2^N)
      * Space Complexity: O(N) for recursive stack.
      */
-    private int findMinimumDeletions(int[] nums){
+    private int findMinimumDeletionsApproach1(int[] nums){
         return helper(nums, -1, 0);
     }
 
@@ -59,14 +59,38 @@ public class MinimumDeletionsToMakeSequenceSorted {
         return Math.min(delOp1, delOp2);
     }
 
+
+    private int findMinimumDeletionsApproach2(int[] nums){
+        Integer[][] cache = new Integer[nums.length+1][nums.length];
+        return helper(nums, -1, 0, cache);
+    }
+
+    private int helper(int[] nums, int prevIndex, int currentIndex, Integer[][] cache){
+        //base condition
+        if(currentIndex == nums.length)
+            return 0;
+        if(cache[prevIndex+1][currentIndex]!=null)
+            return cache[prevIndex+1][currentIndex];
+        //recursion
+        int delOp1 = Integer.MAX_VALUE;
+        if(prevIndex == -1 || nums[prevIndex]<nums[currentIndex])
+            delOp1 = helper(nums, currentIndex, currentIndex+1);
+        int delOp2 = 1 + helper(nums, prevIndex, currentIndex+1);
+
+        //return statements
+        cache[prevIndex+1][currentIndex] =  Math.min(delOp1, delOp2);
+        return cache[prevIndex+1][currentIndex];
+    }
+
+
     public static void main(String[] args) {
         MinimumDeletionsToMakeSequenceSorted mdss = new MinimumDeletionsToMakeSequenceSorted();
         int[] nums = {4,2,3,6,10,1,12};
-        System.out.println(mdss.findMinimumDeletions(nums));
+        System.out.println(mdss.findMinimumDeletionsApproach2(nums));
         nums = new int[]{-4,10,3,7,15};
-        System.out.println(mdss.findMinimumDeletions(nums));
+        System.out.println(mdss.findMinimumDeletionsApproach2(nums));
         nums = new int[]{3,2,1,0};
-        System.out.println(mdss.findMinimumDeletions(nums));
+        System.out.println(mdss.findMinimumDeletionsApproach2(nums));
     }
 
 }
