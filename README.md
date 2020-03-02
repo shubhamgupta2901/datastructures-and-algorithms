@@ -1,2 +1,4 @@
-# datastructures-and-algorithms
-Implementation of datastructures and algorithms in Java, solution to leetcode problems and some of my notes on ADTs.
+## Contents 
+  * [Data Structures](https://github.com/shubhamgupta2901/datastructures-and-algorithms/tree/master/datastructures)
+* [Dynamic Programming](https://github.com/shubhamgupta2901/datastructures-and-algorithms/tree/master/algorithms/dynamic_programming)
+* [Leetcode Solutions](https://github.com/shubhamgupta2901/datastructures-and-algorithms/tree/master/leetcode)
