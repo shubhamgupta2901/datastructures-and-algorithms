@@ -61,6 +61,43 @@ public class HappyNumber {
         return sum;
     }
 
+    /**
+     * Approach 2: Slow and fast pointer approach
+     * Time Complexity: Difficult to determine
+     * Space Complexity: O(1)
+     */
+    private boolean isHappyApproach2(int n){
+        int slow = n, fast = n;
+        while(sumOfSquares(fast) != 1 && sumOfSquares(sumOfSquares(fast))!=1){
+            slow = sumOfSquares(slow);
+            fast = sumOfSquares(sumOfSquares(fast));
+
+            if(slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Approach 3: Optimising sumofSquares call in Approach2
+     * Time Complexity: Difficult to determine
+     * Space Complexity: O(1)
+     */
+    private boolean isHappyApproach3(int n){
+     int slow = n , fast = n;
+     while (true){
+         slow = sumOfSquares(slow);
+         fast = sumOfSquares(sumOfSquares(fast));
+
+         if(slow == 1 || fast == 1)
+             return true;
+
+         if(slow == fast)
+             return false;
+     }
+    }
+
     public static void main(String[] args) {
         HappyNumber hn = new HappyNumber();
         System.out.println(hn.isHappy(19));
