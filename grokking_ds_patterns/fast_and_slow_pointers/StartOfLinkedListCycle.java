@@ -36,4 +36,33 @@ public class StartOfLinkedListCycle {
         }
         return null;
     }
+
+    /**
+     * slow and fast pointer approach.
+     * When the slow and fast pointers meet, initialize a new pointer ptr with head of linked list
+     * Move ptr, and slow pointer by one node till both ptr and slow point to same node in linked list,
+     * this it the start of cycle in a linked list.
+     * Time Complexity: O(n)
+     * Space Complexity: O(1)
+     */
+    public ListNode detectCycleApproach2(ListNode head) {
+        if(head == null)
+            return null;
+        ListNode slow = head, fast = head;
+        while(fast.next != null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if(slow == fast){
+                ListNode ptr = head;
+                while(ptr != slow){
+                    ptr = ptr.next;
+                    slow = slow.next;
+                }
+                return ptr;
+            }
+        }
+
+        return null;
+    }
 }
