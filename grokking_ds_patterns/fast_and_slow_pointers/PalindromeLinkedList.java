@@ -1,24 +1,8 @@
-package leetcode;
+package grokking_ds_patterns.fast_and_slow_pointers;
 
 import java.util.Stack;
 
-/**
- * <a href="https://leetcode.com/problems/palindrome-linked-list/"/>
- * Given a singly linked list, determine if it is a palindrome.
- *
- * Example 1:
- *
- * Input: 1->2
- * Output: false
- * Example 2:
- *
- * Input: 1->2->2->1
- * Output: true
- * Follow up:
- * Could you do it in O(n) time and O(1) space?
- */
 public class PalindromeLinkedList {
-
     class ListNode {
         int val;
         ListNode next;
