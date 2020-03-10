@@ -83,4 +83,30 @@ public class DiameterOfABinaryTree {
             return Math.max(nodeDiameter, Math.max(leftDiameter, rightDiameter));
         }
     }
+
+    /**
+     * Approach 2: Take a class level variable maxDiameter and while finding out the height of a node,
+     * also calculate its diameter, update the value of maxDiameter if the current diameter is greater than
+     * maxDiameter and then return the height of the node.
+     * Time Complexity: O(n)
+     * Space Complexity: O(h)
+     */
+    class Approach2 {
+        int maxDiameter = 0;
+        public int diameterOfBinaryTree(TreeNode root) {
+            height(root);
+            return maxDiameter;
+        }
+
+        private int height(TreeNode root){
+            if(root == null)
+                return 0;
+            int leftHeight = height(root.left);
+            int rightHeight = height(root.right);
+            int diameter = 1 + leftHeight + rightHeight;
+            if(diameter>maxDiameter)
+                maxDiameter = diameter;
+            return 1 + Math.max(leftHeight, rightHeight);
+        }
+    }
 }
