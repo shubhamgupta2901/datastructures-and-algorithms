@@ -112,4 +112,38 @@ public class BinaryTreeMaximumPathSum {
             return Math.max(a, Math.max(b, Math.max(c,d)));
         }
     }
+
+    /**
+     * Approach 3: Accepted
+     * A more elegant looking alternative to solution written in approach 2.
+     * All we do here is here we ignore the paths with negative sums.
+     * Since we need to find the overall maximum sum, we should ignore any path which has an overall negative sum.
+     * and make them 0.
+     * Time Complexity: O(n)
+     * Space Compelxity: O(h)
+     */
+    class Approach3 {
+        int maxPathSum = Integer.MIN_VALUE;
+        public int maxPathSum(TreeNode root) {
+            maxRootLeafSum(root);
+            return maxPathSum;
+        }
+        private int maxRootLeafSum(TreeNode root){
+            if(root == null)
+                return 0;
+            int leftRootLeafSum = maxRootLeafSum(root.left);
+            if(leftRootLeafSum<0)
+                leftRootLeafSum = 0;
+            int rightRootLeafSum = maxRootLeafSum(root.right);
+            if(rightRootLeafSum<0)
+                rightRootLeafSum = 0;
+
+            int pathSum = leftRootLeafSum + rightRootLeafSum + root.val;
+            if(maxPathSum<pathSum)
+                maxPathSum = pathSum;
+
+            return root.val + Math.max(leftRootLeafSum,rightRootLeafSum);
+
+        }
+    }
 }
