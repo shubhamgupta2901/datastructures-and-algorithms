@@ -61,4 +61,55 @@ public class BinaryTreeMaximumPathSum {
             return root.val + Math.max(maxLeftRootToLeafSum,maxRightRootToLeafSum);
         }
     }
+
+    /**
+     * Approach 2: Accepted.
+     * While the logic in first approach seems correct it does not take into account the negative root-leaf path sums of a
+     * node's children.
+     * In those cases it is better to ignore them and only return the value of current node while finding the max root-leaf
+     * path sum of a node.
+     * The edge cases the first approach didn't cover were:
+     * Case I:
+     *        2
+     *       /
+     *      -1
+     * Expected output: 2
+     * Output: 1
+     *
+     * Case II:
+     *                9
+     *               / \
+     *              6  -3
+     *                 / \
+     *                -6  2
+     *                   / \
+     *                  -6 -6
+     * Expected Output: 16 [6->9->-3->2->2]
+     * Ouput: 15[ 6->9]
+     *
+     * Time Complexity: O(n)
+     * Space Compelxity: O(h)
+     */
+    class Approach2 {
+        int maxPathSum = Integer.MIN_VALUE;
+        public int maxPathSum(TreeNode root) {
+            maxSumRootToLeafPath(root);
+            return maxPathSum;
+        }
+
+        private int maxSumRootToLeafPath(TreeNode root){
+            if(root == null)
+                return 0;
+            int maxLeftRootToLeafSum = maxSumRootToLeafPath(root.left);
+            int maxRightRootToLeafSum = maxSumRootToLeafPath(root.right);
+            int totalPathSum = largest(root.val, root.val + maxLeftRootToLeafSum, root.val + maxRightRootToLeafSum, root.val + maxLeftRootToLeafSum + maxRightRootToLeafSum );
+            if(totalPathSum>maxPathSum)
+                maxPathSum = totalPathSum;
+            return Math.max(root.val , root.val + Math.max(maxLeftRootToLeafSum,maxRightRootToLeafSum));
+        }
+
+        private int largest(int a , int b, int c, int d){
+            return Math.max(a, Math.max(b, Math.max(c,d)));
+        }
+    }
 }
