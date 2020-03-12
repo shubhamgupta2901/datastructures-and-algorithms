@@ -2,6 +2,7 @@ package grokking_ds_patterns.top_k_elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Given an unsorted array of numbers, find the ‘K’ largest numbers in it.
@@ -12,11 +13,38 @@ public class TopKNumbers {
      *
      * Approach:  One approach could be to sort the array and return the top k elements. This would take O(nlogn) time.
      * But in this approach I am creating a Min-Heap of the largest k numbers in array. This will only take (nlogk) time.
-     * Also no extra space will be used apart from the list that needs to be returned.
+     * Time Complexity: O(nlogk)
+     * Space Complexity: O(n) for the list to be returned and additional O(k) space for creating Min Heap.
+     */
+    public static List<Integer> findKLargestNumbers1(int[] nums, int k) {
+        List<Integer> list = new ArrayList<>();
+        if(nums.length == 0 || k == 0)
+            return list;
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for(int i = 0; i<nums.length; i++){
+            if(queue.size()<k)
+                queue.add(nums[i]);
+            else if(queue.peek()<nums[i]){
+                queue.poll();
+                queue.add(nums[i]);
+            }
+        }
+        while(!queue.isEmpty()){
+            list.add(queue.poll());
+        }
+
+        return list;
+    }
+
+
+    /**
+     * Approach: Similar to above approach, except here I am creating a min heap in the list to be returned.
+     * This way we do not need extra O(k) space for Min Heap and extra O(k) time for copying values from heap to list.
+     * So no extra space will be used apart from the list that needs to be returned.
      * Time Complexity: O(nlogk)
      * Space Complexity: O(n) for the list to be returned.
      */
-    public List<Integer> findKLargestNumbers(int[] nums, int k) {
+    public List<Integer> findKLargestNumbers2(int[] nums, int k) {
         List<Integer> list = new ArrayList<>();
 
         for(int i = 0; i<nums.length; i++){
@@ -80,11 +108,12 @@ public class TopKNumbers {
     }
 
 
+
     public static void main(String[] args) {
-        List<Integer> result = new TopKNumbers().findKLargestNumbers(new int[] { 3, 1, 5, 12, 2, 11 }, 3);
+        List<Integer> result = new TopKNumbers().findKLargestNumbers2(new int[] { 3, 1, 5, 12, 2, 11 }, 3);
         System.out.println("Here are the top K numbers: " + result);
 
-        result = new TopKNumbers().findKLargestNumbers(new int[] { 5, 12, 11, -1, 12 }, 3);
+        result = new TopKNumbers().findKLargestNumbers2(new int[] { 5, 12, 11, -1, 12 }, 3);
         System.out.println("Here are the top K numbers: " + result);
     }
 
