@@ -1,6 +1,5 @@
-package leetcode;
+package grokking_ds_patterns.top_k_elements;
 
-import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
