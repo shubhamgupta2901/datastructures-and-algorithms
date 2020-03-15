@@ -1,9 +1,6 @@
 package grokking_ds_patterns.top_k_elements;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * <a href="https://leetcode.com/problems/find-k-closest-elements/"/>
