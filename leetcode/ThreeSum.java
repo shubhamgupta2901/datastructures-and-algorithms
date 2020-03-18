@@ -88,5 +88,69 @@ public class ThreeSum {
        }
    }
 
+    /**
+     * Approach 2: Wrong answer for one really large array, passes 312/313 cases.
+     * Don't understand why this solution is not working, my only guess in may adding two numbers is overflowing for really
+     * large integers.
+     *
+     * Pretty similar to Approach 2 but optimising the finding out of triplets.
+     * For each number x to find a triplet [x,y,z] such that x+y+z = 0,
+     * we need to find two numbers y and such that y+x = -z.
+     * Using the two sum approach from here where we use a hashset to find if two numbers equal to a target.
+     *
+     * Time Complexity: O(n^2)
+     */
+    class Approach2 {
+        class Key {
+            List<Integer> list = new ArrayList<>();
+
+            Key(int i1, int i2, int i3){
+                list.add(i1);
+                list.add(i2);
+                list.add(i3);
+                Collections.sort(list);
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if(obj instanceof Key == false)
+                    return false;
+                Key key = (Key) obj;
+                for(int i = 0; i<3; i++){
+                    if(this.list.get(i) != key.list.get(i))
+                        return false;
+                }
+                return true;
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(this.list.get(0), this.list.get(1), this.list.get(2));
+            }
+        }
+
+        int[] nums;
+        public List<List<Integer>> threeSum(int[] nums) {
+            this.nums = nums;
+            HashSet<Key> hashSet = new HashSet<>();
+            for(int i = 0; i<nums.length; i++){
+                int target = -1 * nums[i];
+                HashSet<Integer> targetSet = new HashSet<Integer>();
+                for(int j = i+1; j<nums.length; j++){
+                    if(targetSet.contains(target-nums[j]))
+                        hashSet.add(new Key(nums[i], nums[j], target-nums[j]));
+                    targetSet.add(nums[j]);
+                }
+            }
+
+            List<List<Integer>> sums = new ArrayList<>();
+            Iterator<Key> iterator = hashSet.iterator();
+            while(iterator.hasNext()){
+                sums.add(iterator.next().list);
+            }
+            return sums;
+
+        }
+    }
 
 }
