@@ -75,4 +75,26 @@ public class WaveArray {
 
         return output;
     }
+
+
+    /**
+     * Sort the array, and then swap adjacent elements in pairs, the array is now in the wave form
+     * Time Complexity: O(nlogn)
+     * Space Complexity: O(1)
+     */
+    public int[] approach2(int[] A) {
+        if(A == null || A.length <=1)
+            return A;
+        Arrays.sort(A);
+        for(int i = 0; i<A.length-1; i=i+2){
+            swap(A, i, i+1);
+        }
+        return A;
+    }
+
+    private void swap(int[] arr, int i , int j){
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
 }
