@@ -72,5 +72,21 @@ public class DivisorGame {
         }
         return gcd;
     }
-}
+
+    /**
+     * Approach 2:
+     * Same as approach 2, but efficiently finding hcf using euclid's algorithm
+     * Time complexity: O(log(min(a,b))
+     */
+    public int approach3(int A, int B, int C) {
+        int gcd = gcd(B,C);
+        int lcm =  B/gcd * C;
+        return A/lcm;
+    }
+
+    private int gcd (int a, int b){
+        if(b ==0)
+            return a;
+        return gcd(b, a%b);
+    }
 }
