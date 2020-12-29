@@ -1,4 +1,4 @@
-package scaler;
+package problem_solving;
 
 /**
  * Scooby has 3 three integers A, B and C.

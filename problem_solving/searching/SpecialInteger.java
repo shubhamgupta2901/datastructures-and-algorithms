@@ -1,4 +1,4 @@
-package scaler.searching;
+package problem_solving.searching;
 
 /**
  * Given an array of integers A and an integer B, find and return the maximum value K such that there is no subarray

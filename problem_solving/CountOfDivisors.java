@@ -1,4 +1,4 @@
-package scaler;
+package problem_solving;
 
 public class CountOfDivisors {
     public int[] solve(int[] A) {
@@ -21,4 +21,5 @@ public class CountOfDivisors {
         }
         return isPerfectSquare? count-1 : count;
     }
+
 }

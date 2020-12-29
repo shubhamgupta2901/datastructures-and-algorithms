@@ -1,4 +1,4 @@
-package scaler.searching;
+package problem_solving.searching;
 
 /**
  *  Given a sorted array of integers A of size N and an integer B.

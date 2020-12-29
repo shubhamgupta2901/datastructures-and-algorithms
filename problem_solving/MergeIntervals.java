@@ -1,4 +1,4 @@
-package scaler;
+package problem_solving;
 
 
 import java.util.ArrayList;

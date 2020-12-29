@@ -1,4 +1,4 @@
-package scaler.bitwise_operators;
+package problem_solving.bitwise_operators;
 
 /**
  * We define f(X, Y) as number of different corresponding bits in binary representation of X and Y.
@@ -79,5 +79,35 @@ public class DifferentBitsSumPairwise {
             }
         }
         return sum%MODULO;
+    }
+
+    /**
+     * Approach 3:
+     * Assume that all values in input have only 1 bit i.e. Ai = 0 or 1.
+     * Lets say A = count of elements which are 0
+     * and B = count of elements which are 1
+     *
+     * In this case our answer is just 2 * A * B, since each such pair contributes 1 to answer.
+     *
+     * Can you combine this logic if we have multiple bits?
+     *
+     * Note that all bits are independent in counting, since we are counting number of bits which are different in each pair.
+     * So, we just do the same process for all different bits. Since Ai is an integer, we just have to do this for 31 different bits, so our solution is O(31*N).
+     * @param A
+     * @return
+     */
+    public int approach3(int[] A) {
+        long sum = 0;
+        for(int i = 0; i<31; i++){
+            int zeros =0, ones = 0;
+            for(int j = 0; j<A.length; j++){
+                if(((A[j]>>i) & 1)  == 1)
+                    ones++;
+                else zeros++;
+            }
+            sum+= (2*zeros*ones)%MODULO;
+            sum = sum%MODULO;
+        }
+        return (int)sum;
     }
 }

@@ -1,4 +1,4 @@
-package scaler.recursion_and_backtracking;
+package problem_solving.recursion_and_backtracking;
 
 import java.util.ArrayList;
 import java.util.Stack;

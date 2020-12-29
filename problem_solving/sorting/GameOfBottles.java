@@ -1,4 +1,4 @@
-package scaler.sorting;
+package problem_solving.sorting;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package scaler;
+package problem_solving;
 
 public class FindAPeakElement {
     public int solve(int[] A) {
