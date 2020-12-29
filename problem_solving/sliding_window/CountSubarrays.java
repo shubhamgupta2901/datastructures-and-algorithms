@@ -55,6 +55,33 @@ public class CountSubarrays {
         return (int)(count%MOD);
     }
 
+    /**
+     * Approach 2: Sliding window approach.
+     * The idea is to initialize left, and right pointers from index zero, and maintain a set
+     * If arr[right] was not present in the set, we can include all subarrays ending at arr[right],
+     * (which would be right-left+1). and add arr[right] to set
+     * If arr[right] was already present we remove arr[left] from set and increment left.
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     */
+    public int approach2(int[] A){
+        int MOD = 1000000007;
+        long count = 0;
+        int left = 0, right = 0;
+        HashSet<Integer> set = new HashSet<>();
+        while(left<=right && right<A.length){ //todo: check condition
+            if(!set.contains(A[right])){
+                count+= (right-left+1);
+                set.add(A[right]);
+                right++;
+            }else {
+                set.remove(A[left]);
+                left++;
+            }
+        }
+        return (int)(count%MOD);
+    }
+
     public static void main(String[] args) {
         int[] input = new int[]{1,2,1,1,4};
         CountSubarrays driver = new CountSubarrays();
