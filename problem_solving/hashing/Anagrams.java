@@ -1,5 +1,10 @@
 package problem_solving.hashing;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Given an array A of N strings, return all groups of strings that are anagrams.
  * Represent a group by a list of integers representing the index(1-based) in the original list.
@@ -26,4 +31,80 @@ package problem_solving.hashing;
  * All three strings are anagrams.
  */
 public class Anagrams {
+    static class Approach1{
+        public ArrayList<ArrayList<Integer>> anagrams(final List<String> A) {
+            ArrayList<ArrayList<Integer>> output = new ArrayList<>();
+
+            if(A == null || A.size() == 0)
+                return output;
+            boolean[] markArr = new boolean[A.size()];
+            for(int i = 0;i<A.size();i++){
+                if(markArr[i])
+                    continue;
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                list.add(i+1);
+                markArr[i] = true;
+                for(int j = i+1; j<A.size(); j++){
+                    if(markArr[j])
+                        continue;
+                    if(isAnagram(A.get(i), A.get(j))){
+                        list.add(j+1);
+                        markArr[j] = true;
+                    }
+                }
+                output.add(list);
+            }
+            return output;
+        }
+
+        private boolean isAnagram(String str1, String str2){
+            if(str1 == null || str2 == null)
+                return false;
+            if(str1.length() != str2.length())
+                return false;
+            HashMap<Character, Integer> map = new HashMap<>();
+            for(int i = 0; i<str1.length(); i++){
+                char c = str1.charAt(i);
+                int frequency = map.getOrDefault(c, 0);
+                map.put(c, frequency+1);
+            }
+
+            for(int i=0; i<str2.length(); i++){
+                char c = str2.charAt(i);
+                if(!map.containsKey(c))
+                    return false;
+                int frequency = map.get(c);
+                if(frequency == 1)
+                    map.remove(c);
+                else map.put(c, frequency-1);
+            }
+            return map.isEmpty();
+        }
+    }
+
+    static class Approach2{
+        public ArrayList<ArrayList<Integer>> anagrams(final List<String> A) {
+            ArrayList<ArrayList<Integer>> output = new ArrayList<>();
+            HashMap<String, ArrayList<Integer>> map = new HashMap<>();
+            for(int i = 0; i<A.size(); i++){
+                String str = A.get(i);
+                char[] arr = str.toCharArray();
+                Arrays.sort(arr);
+                str = new String(arr);
+                if(map.containsKey(str)){
+                    ArrayList<Integer> list = map.get(str);
+                    list.add(i+1);
+                }
+                else {
+                   ArrayList<Integer> list = new ArrayList<>();
+                   list.add(i+1);
+                   map.put(str, list);
+                }
+            }
+            for(ArrayList<Integer> list: map.values()){
+                output.add(list);
+            }
+            return output;
+        }
+    }
 }
