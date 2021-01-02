@@ -1,4 +1,4 @@
-package problem_solving.sliding_window;
+package problem_solving.two_pointers;
 
 import java.util.HashSet;
 
