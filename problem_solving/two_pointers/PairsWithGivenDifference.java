@@ -76,4 +76,47 @@ public class PairsWithGivenDifference {
         return count;
     }
 
+    /**
+     * Approach 2: Sort the array, and apply two pointers approach
+     * left pointer starts at index 0, right pointer at index 1
+     * Time Complexity: O(nlogn) : For sorting the array
+     * Space Complexity: O(1)
+     */
+    public int approach2(int[] A, int B) {
+        int count = 0;
+        if(A == null || A.length <= 1)
+            return count;
+        Arrays.sort(A);
+        int left = 0, right = 1;
+        while(right<A.length){
+            if(left == right){
+                right++;
+                continue;
+            }
+            int diff = A[right]-A[left];
+            if(diff<B){
+                right++;
+            }else if(diff>B){
+                left++;
+            }
+            else{
+                count++;
+                while(left< A.length-1 && A[left] == A[left+1])
+                    left++;
+                while(right< A.length-1 && A[right] == A[right+1])
+                    right++;
+                left++;
+                right++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int[] input = new int[]{1,2};
+        PairsWithGivenDifference driver = new PairsWithGivenDifference();
+        int output = driver.approach2(input,3);
+        System.out.println(output);
+    }
+
 }
