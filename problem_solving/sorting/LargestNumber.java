@@ -77,26 +77,41 @@ public class LargestNumber {
         }
     }
 
+    /**
+     * Observations:
+     * 1. If the array had all elements between 0-9, we would simply require to sort the array in descending order.
+     * 2. Here "3" > "30" because if we concat both strings, "330" > "303", which can become our criteria to sort elements.
+     * Time Complexity: O(nlogn) since comparator will take O(1) time for each comparison
+     *
+     */
    static class Approach2{
        public String largestNumber(final int[] A) {
+           if(A == null)
+               return "";
            String[] arr = new String[A.length];
-           for(int i = 0; i<arr.length; i++)
+           boolean areAllZeros = true;
+           for(int i = 0; i<arr.length; i++){
+               if(A[i]>0)
+                   areAllZeros = false;
                arr[i] = String.valueOf(A[i]);
-
-           Arrays.sort(arr,new StringComparator());
-           String largestNumber = "";
-           for(int i = arr.length-1; i>=0; i--){
-               largestNumber+=arr[i];
            }
-           return largestNumber;
+           if(areAllZeros){
+               return "0";
+           }
+
+           Arrays.sort(arr, new CustomComparator());
+           StringBuilder output = new StringBuilder();
+           for(int i = 0; i<arr.length; i++){
+               output.append(arr[i]);
+           }
+           return output.toString();
        }
 
-       private class StringComparator implements Comparator<String>{
-           @Override
-           public int compare(String str1, String str2){
+       class CustomComparator implements Comparator<String>{
+           public int compare(String str1,String str2){
                String str1Pre = str1.concat(str2);
                String str2Pre = str2.concat(str1);
-               return str1Pre.compareTo(str2Pre);
+               return str2Pre.compareTo(str1Pre);
            }
        }
    }
