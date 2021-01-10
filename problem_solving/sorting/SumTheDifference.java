@@ -102,4 +102,39 @@ public class SumTheDifference {
         }
     }
 
+    /**
+     * Observations:
+     * 1. (a-b) + (c-d) + (e-f) = (a+c+e) - (b+d+f)
+     * 2. So we can calculate the sum of all the maximums from all subsets, and sum of all minimums from all subsets, and subtract them
+     * Approach:
+     * 1. Sort the array
+     * 2. For each element at index i, the number of subsets where a[i] is maximum: Math.pow(2,i)
+     *      And for each of these subsets a[i]'s contribution in sum of maximums of all subsets would be: a[i]*Math.pow(2,i)
+     * 3. Similarly, For each element at index i, the number of subsets where a[i] is minimum: Math.pow(2,len-1-i)
+     *     And for each of these subsets a[i]'s contribution in sum of minimums of all subsets would be: a[i]*Math.pow(2,len-1-i)
+     * 4. Keep collating each element's contribution in sum of maximums, and sum of minimums
+     * 5. Finally subtract them to get answer.
+     * Time Complexity: O(nlogn)
+     * Space Complexity: O(1)
+     *
+     */
+    static class Approach3{
+        int MOD = 1000000007;
+        public int solve(int[] A) {
+            if(A == null || A.length<=1)
+                return 0;
+            Arrays.sort(A);
+            int ans = 0;
+            long maxSum = 0;
+            long minSum =0;
+            for(int i = 0; i<A.length; i++){
+                maxSum += (Math.pow(2,i) * A[i])%MOD;
+                maxSum= maxSum%MOD;
+                minSum += (Math.pow(2, A.length-1-i) * A[i])%MOD;
+                minSum = minSum%MOD;
+            }
+            return (int)(maxSum%MOD-minSum%MOD)%MOD;
+        }
+    }
+
 }
