@@ -66,9 +66,42 @@ public class LongestSubstringWithoutRepeat {
         return maxLen;
     }
 
+    /**
+     * Approach: Sliding Window  - Linear Time
+     * Continuing with the idea of previous approach, we are interested in finding the maximum length of substring with no repeating
+     * characters which start from index i.
+     * If we repeat this process for every index starting from 0 to str.len -1, at the end we will have the max length substring
+     * with non repeating characters.
+     * To achieve this in linear time : All we need to do is use two pointers to keep a window with no repetitions of characters.
+     * Keep moving the right pointer and if you encounter any repeating character start moving left pointer untill no character is repeated.
+     * Time Complexity: O(n)
+     * Space Complexity: O(n)
+     * */
+    public int approach2(String str) {
+        if(str == null)
+            return 0;
+        int maxLen = 0;
+        HashSet<Character> set = new HashSet<>();
+        int i = 0, j = 0;
+        while(j<str.length()){
+            char c = str.charAt(j);
+            if(set.contains(c)){
+                int len = j-i;
+                maxLen = Math.max(maxLen, len);
+                set.remove(str.charAt(i));
+                i++;
+            }else {
+                set.add(c);
+                j++;
+            }
+        }
+        maxLen = Math.max(maxLen, j-i);
+        return maxLen;
+    }
+
     public static void main(String[] args) {
         LongestSubstringWithoutRepeat driver = new LongestSubstringWithoutRepeat();
-        int output = driver.approach1("");
+        int output = driver.approach2("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         System.out.println(output);
     }
 }
